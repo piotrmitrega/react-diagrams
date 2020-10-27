@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-canvas-core",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
@@ -31,7 +31,7 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/geometry": "^1.0.2"
+		"@piotrmitrega/geometry": "^1.0.4"
 	},
 	"peerDependencies": {
 		"closest": "^0.0.1",
