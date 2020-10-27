@@ -1,11 +1,11 @@
 {
-	"name": "@projectstorm/react-diagrams",
-	"author": "dylanvorster",
-  "version": "0.1.0",
+	"name": "@piotrmitrega/react-diagrams",
+	"author": "piotrmitrega",
+  "version": "1.0.0",
 	"private": true,
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/projectstorm/react-diagrams.git"
+		"url": "https://github.com/piotrmitrega/react-diagrams.git"
 	},
 	"workspaces": [
 		"packages/*"
@@ -28,6 +28,7 @@
 		"watch": "yarn build:clean && lerna run watch --stream",
 		"publish:dev": "yarn build:prod && lerna publish --force-publish --dist-tag=next",
 		"publish:prod": "yarn build:prod && lerna publish --force-publish",
+		"publish:es": "yarn build:es && lerna publish --force-publish",
 		"publish:storybook": "cd packages/diagrams-demo-gallery && yarn storybook:build && ../../node_modules/.bin/storybook-to-ghpages --existing-output-dir .out",
 		"build:clean": "lerna run clean --stream",
 		"test:ci": "lerna run test --stream -- --runInBand --ci ",

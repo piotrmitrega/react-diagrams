@@ -7,16 +7,16 @@ The first thing you need to do, is grab the distribution files on NPM. You can d
 **Via yarn:**
 
 ```text
-yarn add @projectstorm/react-diagrams@next
+yarn add @piotrmitrega/react-diagrams@next
 ```
 
 **Via npm:**
 
 ```text
-npm install @projectstorm/react-diagrams@next
+npm install @piotrmitrega/react-diagrams@next
 ```
 
-When you run this in your project directory, this will install the library into `./node_modules/@projectstorm/react-diagrams`. You will then find a **dist** folder that contains all the minified and production ready code.
+When you run this in your project directory, this will install the library into `./node_modules/@piotrmitrega/react-diagrams`. You will then find a **dist** folder that contains all the minified and production ready code.
 
 ## Install the peer dependencies
 

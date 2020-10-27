@@ -1,7 +1,7 @@
 import * as React from 'react';
-import createEngine, { DiagramModel, DefaultNodeModel } from '@projectstorm/react-diagrams';
+import createEngine, { DiagramModel, DefaultNodeModel } from '@piotrmitrega/react-diagrams';
 import { DemoButton, DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
-import { CanvasWidget } from '@projectstorm/react-canvas-core';
+import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 /**

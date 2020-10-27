@@ -3,6 +3,6 @@ module.exports = {
 	...config,
 	output: {
 		...config.output,
-		library: 'projectstorm/react-diagrams-defaults'
+		library: 'piotrmitrega/react-diagrams-defaults'
 	}
 };

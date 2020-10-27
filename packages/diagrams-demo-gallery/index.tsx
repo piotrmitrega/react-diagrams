@@ -3,7 +3,7 @@ import { storiesOf, addParameters, addDecorator } from '@storybook/react';
 import { setOptions } from '@storybook/addon-options';
 import { themes } from '@storybook/theming';
 import './demos/helpers/index.css';
-import { Toolkit } from '@projectstorm/react-canvas-core';
+import { Toolkit } from '@piotrmitrega/react-canvas-core';
 
 Toolkit.TESTING = true;
 
@@ -15,7 +15,7 @@ addParameters({
 
 setOptions({
 	name: 'STORM React Diagrams',
-	url: 'https://github.com/projectstorm/react-diagrams',
+	url: 'https://github.com/piotrmitrega/react-diagrams',
 	addonPanelInRight: true
 });
 

@@ -1,4 +1,4 @@
-import { LinkModel, PortModel, DefaultLinkModel, PortModelAlignment } from '@projectstorm/react-diagrams';
+import { LinkModel, PortModel, DefaultLinkModel, PortModelAlignment } from '@piotrmitrega/react-diagrams';
 
 export class DiamondPortModel extends PortModel {
 	constructor(alignment: PortModelAlignment) {

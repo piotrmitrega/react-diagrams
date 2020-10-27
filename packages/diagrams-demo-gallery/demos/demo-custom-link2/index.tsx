@@ -6,10 +6,10 @@ import createEngine, {
 	DefaultLinkPointWidget,
 	DefaultLinkModel,
 	DefaultLinkWidget
-} from '@projectstorm/react-diagrams';
-import { DiagramEngine, LinkWidget, PointModel } from '@projectstorm/react-diagrams-core';
+} from '@piotrmitrega/react-diagrams';
+import { DiagramEngine, LinkWidget, PointModel } from '@piotrmitrega/react-diagrams-core';
 import * as React from 'react';
-import { CanvasWidget } from '@projectstorm/react-canvas-core';
+import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 export class AdvancedLinkModel extends DefaultLinkModel {

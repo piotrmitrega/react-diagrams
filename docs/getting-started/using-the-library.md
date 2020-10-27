@@ -2,20 +2,20 @@
 
 ## Using Typescript
 
-If you are using typescript, then you are in luck! The library is built in typescript, and includes advanced types for everything you need right out of the box. 
+If you are using typescript, then you are in luck! The library is built in typescript, and includes advanced types for everything you need right out of the box.
 
 Lets start by including the things we are going to need:
 
 ```typescript
-import createEngine, { 
-    DefaultLinkModel, 
+import createEngine, {
+    DefaultLinkModel,
     DefaultNodeModel,
-    DiagramModel 
-} from '@projectstorm/react-diagrams';
+    DiagramModel
+} from '@piotrmitrega/react-diagrams';
 
 import {
     CanvasWidget
-} from '@projectstorm/react-canvas-core';
+} from '@piotrmitrega/react-canvas-core';
 ```
 
 Now we call `createEngine` which will bootstrap a **DiagramEngine** for us that contains all the defaults setup.

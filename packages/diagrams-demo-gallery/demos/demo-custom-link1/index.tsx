@@ -4,9 +4,9 @@ import createEngine, {
 	DefaultPortModel,
 	DefaultLinkFactory,
 	DefaultLinkModel
-} from '@projectstorm/react-diagrams';
+} from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
-import { CanvasWidget } from '@projectstorm/react-canvas-core';
+import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 export class AdvancedLinkModel extends DefaultLinkModel {

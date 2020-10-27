@@ -3,6 +3,6 @@ module.exports = {
 	...config,
 	output: {
 		...config.output,
-		library: '@projectstorm/react-diagrams-geometry'
+		library: '@piotrmitrega/react-diagrams-geometry'
 	}
 };

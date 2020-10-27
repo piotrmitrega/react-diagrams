@@ -1,0 +1,113 @@
+52 error Error: Command failed: git commit -m v1.0.0
+52 error On branch master
+52 error Your branch is up to date with 'origin/master'.
+52 error
+52 error Changes not staged for commit:
+52 error 	modified:   docs/customizing/extending-default-links.md
+52 error 	modified:   docs/getting-started/README.md
+52 error 	modified:   docs/getting-started/using-the-library.md
+52 error 	modified:   package.json
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-alternative-linking/CreateLinkState.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-alternative-linking/DefaultState.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-alternative-linking/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-animation/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-canvas-drag/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-cloning/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-action/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-link-label/EditableLabelFactory.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-link-label/EditableLabelModel.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-link-label/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-link1/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-link2/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-node1/DiamondNodeFactory.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-node1/DiamondNodeModel.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-node1/DiamondNodeWidget.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-node1/DiamondPortModel.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-node1/SimplePortFactory.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom-node1/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-custom_delete_keys/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-dagre/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-drag-and-drop/Application.ts
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-drag-and-drop/components/BodyWidget.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-dynamic-ports/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-grid/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-labelled-links/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-listeners/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-locks/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-mutate-graph/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-performance/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-right-angles-routing/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-serializing/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-simple-flow/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-simple/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-smart-routing/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-zoom-to-fit-nodes/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/demos/demo-zoom-to-fit/index.tsx
+52 error 	modified:   packages/diagrams-demo-gallery/index.tsx
+52 error 	modified:   packages/diagrams-demo-project/src/BodyWidget.tsx
+52 error 	modified:   packages/diagrams-demo-project/src/custom-node-js/JSCustomNodeFactory.jsx
+52 error 	modified:   packages/diagrams-demo-project/src/custom-node-js/JSCustomNodeModel.js
+52 error 	modified:   packages/diagrams-demo-project/src/custom-node-js/JSCustomNodeWidget.jsx
+52 error 	modified:   packages/diagrams-demo-project/src/custom-node-ts/TSCustomNodeFactory.tsx
+52 error 	modified:   packages/diagrams-demo-project/src/custom-node-ts/TSCustomNodeModel.ts
+52 error 	modified:   packages/diagrams-demo-project/src/custom-node-ts/TSCustomNodeWidget.tsx
+52 error 	modified:   packages/diagrams-demo-project/src/main.tsx
+52 error 	modified:   packages/geometry/webpack.config.js
+52 error 	modified:   packages/react-canvas-core/src/CanvasEngine.ts
+52 error 	modified:   packages/react-canvas-core/src/core-models/BasePositionModel.ts
+52 error 	modified:   packages/react-canvas-core/src/core/ModelGeometryInterface.ts
+52 error 	modified:   packages/react-canvas-core/src/states/MoveItemsState.ts
+52 error 	modified:   packages/react-canvas-core/src/states/SelectionBoxState.ts
+52 error 	modified:   packages/react-canvas-core/webpack.config.js
+52 error 	modified:   packages/react-diagrams-core/src/DiagramEngine.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/label/LabelModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/link-layer/LinkLayerFactory.tsx
+52 error 	modified:   packages/react-diagrams-core/src/entities/link-layer/LinkLayerModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/link/LinkModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/link/LinkWidget.tsx
+52 error 	modified:   packages/react-diagrams-core/src/entities/link/PointModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/node-layer/NodeLayerFactory.tsx
+52 error 	modified:   packages/react-diagrams-core/src/entities/node-layer/NodeLayerModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/node/NodeModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/node/NodeWidget.tsx
+52 error 	modified:   packages/react-diagrams-core/src/entities/port/PortModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/entities/port/PortWidget.tsx
+52 error 	modified:   packages/react-diagrams-core/src/models/DiagramModel.ts
+52 error 	modified:   packages/react-diagrams-core/src/states/DefaultDiagramState.ts
+52 error 	modified:   packages/react-diagrams-core/src/states/DragDiagramItemsState.ts
+52 error 	modified:   packages/react-diagrams-core/src/states/DragNewLinkState.ts
+52 error 	modified:   packages/react-diagrams-core/webpack.config.js
+52 error 	modified:   packages/react-diagrams-defaults/src/label/DefaultLabelFactory.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/label/DefaultLabelModel.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/link/DefaultLinkFactory.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/link/DefaultLinkModel.ts
+52 error 	modified:   packages/react-diagrams-defaults/src/link/DefaultLinkPointWidget.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/link/DefaultLinkSegmentWidget.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/link/DefaultLinkWidget.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/node/DefaultNodeFactory.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/node/DefaultNodeModel.ts
+52 error 	modified:   packages/react-diagrams-defaults/src/node/DefaultNodeWidget.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/port/DefaultPortFactory.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/port/DefaultPortLabelWidget.tsx
+52 error 	modified:   packages/react-diagrams-defaults/src/port/DefaultPortModel.ts
+52 error 	modified:   packages/react-diagrams-defaults/webpack.config.js
+52 error 	modified:   packages/react-diagrams-routing/src/dagre/DagreEngine.ts
+52 error 	modified:   packages/react-diagrams-routing/src/engine/PathFinding.ts
+52 error 	modified:   packages/react-diagrams-routing/src/link/PathFindingLinkFactory.tsx
+52 error 	modified:   packages/react-diagrams-routing/src/link/PathFindingLinkModel.ts
+52 error 	modified:   packages/react-diagrams-routing/src/link/PathFindingLinkWidget.tsx
+52 error 	modified:   packages/react-diagrams-routing/src/link/RightAngleLinkFactory.tsx
+52 error 	modified:   packages/react-diagrams-routing/src/link/RightAngleLinkModel.ts
+52 error 	modified:   packages/react-diagrams-routing/src/link/RightAngleLinkWidget.tsx
+52 error 	modified:   packages/react-diagrams-routing/webpack.config.js
+52 error 	modified:   packages/react-diagrams/src/index.ts
+52 error 	modified:   packages/react-diagrams/webpack.config.js
+52 error
+52 error Untracked files:
+52 error 	yarn.lock
+52 error
+52 error no changes added to commit
+52 error
+52 error     at makeError (D:\Work\react-diagrams-fork\node_modules\execa\index.js:174:9)
+52 error     at D:\Work\react-diagrams-fork\node_modules\execa\index.js:278:16
+52 error     at processTicksAndRejections (internal/process/task_queues.js:97:5)

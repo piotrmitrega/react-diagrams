@@ -1,7 +1,7 @@
 import { NodeModel } from '../node/NodeModel';
 import { LinkModel } from '../link/LinkModel';
 import * as _ from 'lodash';
-import { Point, Rectangle } from '@projectstorm/geometry';
+import { Point, Rectangle } from '@piotrmitrega/geometry';
 import {
 	BaseEntityEvent,
 	BaseModelOptions,
@@ -9,7 +9,7 @@ import {
 	BasePositionModelGenerics,
 	BasePositionModelListener,
 	DeserializeEvent
-} from '@projectstorm/react-canvas-core';
+} from '@piotrmitrega/react-canvas-core';
 
 export enum PortModelAlignment {
 	TOP = 'top',
