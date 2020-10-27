@@ -1,11 +1,11 @@
 {
-	"name": "@projectstorm/react-diagrams",
-	"version": "6.2.0",
-	"author": "dylanvorster",
+	"name": "@piotrmitrega/react-diagrams",
+	"version": "1.0.0",
+	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/projectstorm/react-diagrams.git"
+		"url": "https://github.com/piotrmitrega/react-diagrams.git"
 	},
 	"scripts": {
 		"clean": "rimraf ./dist",
@@ -31,9 +31,9 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@projectstorm/react-diagrams-core": "^6.2.0",
-		"@projectstorm/react-diagrams-defaults": "^6.2.0",
-		"@projectstorm/react-diagrams-routing": "^6.2.0"
+		"@piotrmitrega/react-diagrams-core": "^1.0.0",
+		"@piotrmitrega/react-diagrams-defaults": "^1.0.0",
+		"@piotrmitrega/react-diagrams-routing": "^1.0.0"
 	},
 	"gitHead": "bb878657ba0c2f81764f32901fd96158a0f8352e"
 }
