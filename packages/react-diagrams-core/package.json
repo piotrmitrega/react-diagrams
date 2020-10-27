@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-diagrams-core",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
@@ -31,8 +31,8 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/geometry": "^1.0.0",
-		"@piotrmitrega/react-canvas-core": "^1.0.0"
+		"@piotrmitrega/geometry": "^1.0.1",
+		"@piotrmitrega/react-canvas-core": "^1.0.1"
 	},
 	"peerDependencies": {
 		"closest": "^0.0.1",
