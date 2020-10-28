@@ -23,7 +23,7 @@ export class DefaultDiagramState extends State<DiagramEngine> {
 		});
 		this.childStates = [new SelectingState()];
 		this.dragCanvas = new DragCanvasState();
-		this.dragNewLink = new DragNewLinkState();
+		this.dragNewLink = new DragNewLinkState({ allowLooseLinks: false});
 		this.dragItems = new DragDiagramItemsState();
 
 		// determine what was clicked on
