@@ -11,8 +11,9 @@
 		"clean": "rimraf ./dist",
 		"build": "../../node_modules/.bin/webpack",
 		"build:es": "../../node_modules/.bin/tsc",
-		"build:prod": "set $NODE_ENV=production ../../node_modules/.bin/webpack && set $NODE_ENV=production ../../node_modules/.bin/tsc"
-	},
+		"build:prod": "set $NODE_ENV=production ../../node_modules/.bin/webpack && set $NODE_ENV=production ../../node_modules/.bin/tsc",
+		"watch": "../../node_modules/.bin/tsc -w"
+  },
 	"publishConfig": {
 		"access": "public"
 	},
