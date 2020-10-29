@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/geometry",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
@@ -13,7 +13,7 @@
 		"build:es": "../../node_modules/.bin/tsc",
 		"build:prod": "set $NODE_ENV=production ../../node_modules/.bin/webpack && set $NODE_ENV=production ../../node_modules/.bin/tsc",
 		"watch": "../../node_modules/.bin/tsc -w"
-  },
+	},
 	"publishConfig": {
 		"access": "public"
 	},

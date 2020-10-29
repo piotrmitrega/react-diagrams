@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-diagrams-routing",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
@@ -14,7 +14,7 @@
 		"build:prod": "NODE_ENV=production ../../node_modules/.bin/webpack && NODE_ENV=production  ../../node_modules/.bin/tsc",
 		"test": "../../node_modules/.bin/jest --no-cache",
 		"watch": "../../node_modules/.bin/tsc -w"
-  },
+	},
 	"publishConfig": {
 		"access": "public"
 	},
@@ -33,9 +33,9 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/geometry": "^1.0.4",
-		"@piotrmitrega/react-diagrams-core": "^1.0.4",
-		"@piotrmitrega/react-diagrams-defaults": "^1.0.4"
+		"@piotrmitrega/geometry": "^1.0.5",
+		"@piotrmitrega/react-diagrams-core": "^1.0.5",
+		"@piotrmitrega/react-diagrams-defaults": "^1.0.5"
 	},
 	"peerDependencies": {
 		"dagre": "^0.8.4",

@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-diagrams-defaults",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
@@ -13,7 +13,7 @@
 		"build:es": "../../node_modules/.bin/tsc",
 		"build:prod": "NODE_ENV=production ../../node_modules/.bin/webpack && NODE_ENV=production  ../../node_modules/.bin/tsc",
 		"watch": "../../node_modules/.bin/tsc -w"
-  },
+	},
 	"publishConfig": {
 		"access": "public"
 	},
@@ -32,7 +32,7 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/react-diagrams-core": "^1.0.4"
+		"@piotrmitrega/react-diagrams-core": "^1.0.5"
 	},
 	"peerDependencies": {
 		"@emotion/core": "^10.*",
