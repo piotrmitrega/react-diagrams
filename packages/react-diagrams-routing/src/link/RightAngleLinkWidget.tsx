@@ -69,8 +69,12 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 	}
 
 	generateLink(path: string, extraProps: any, id: string | number): JSX.Element {
+		if (this.refPaths.length < Number(id) + 1) {
+			this.refPaths.push(React.createRef<SVGPathElement>());
+		}
+
 		const ref = React.createRef<SVGPathElement>();
-		this.refPaths.push(ref);
+
 		return (
 			<DefaultLinkSegmentWidget
 				key={`link-${id}`}
@@ -206,7 +210,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				this.props.link.addPoint(
 					new PointModel({
 						link: this.props.link,
-						position: new Point(pointLeft.getX(), pointRight.getY())
+						position: new Point(pointLeft.getX(), Math.max(pointLeft.getY(), pointRight.getY()))
 					}),
 					1
 				);
@@ -218,12 +222,12 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		//  in function fireMouseMoved to avoid calling this unexpectedly e.g. after Deserialize
 		else if (this.props.link.getTargetPort() === null && this.props.link.getSourcePort() !== null) {
 			points[1].setPosition(
-				pointRight.getX() + (pointLeft.getX() - pointRight.getX()) / 2,
-				!hadToSwitch ? pointLeft.getY() : pointRight.getY()
+				hadToSwitch ? pointRight.getX() : pointLeft.getX(),
+				!hadToSwitch ? pointRight.getY() : pointLeft.getY(),
 			);
 			points[2].setPosition(
-				pointRight.getX() + (pointLeft.getX() - pointRight.getX()) / 2,
-				!hadToSwitch ? pointRight.getY() : pointLeft.getY()
+				hadToSwitch ? pointRight.getX() : pointLeft.getX(),
+				!hadToSwitch ? pointRight.getY() : pointLeft.getY(),
 			);
 		}
 		// Render was called but link is not moved but user.
