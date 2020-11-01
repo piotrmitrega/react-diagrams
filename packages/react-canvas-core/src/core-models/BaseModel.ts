@@ -4,7 +4,7 @@ import {
 	BaseEntityGenerics,
 	BaseEntityListener,
 	BaseEntityOptions,
-	DeserializeEvent
+	DeserializeEvent, SerializedBaseEntity
 } from './BaseEntity';
 import { CanvasModel } from '../entities/canvas/CanvasModel';
 
@@ -24,6 +24,12 @@ export interface BaseModelGenerics extends BaseEntityGenerics {
 	LISTENER: BaseModelListener;
 	PARENT: BaseEntity;
 	OPTIONS: BaseModelOptions;
+}
+
+export interface SerializedBaseModel extends SerializedBaseEntity {
+	type?: string,
+	selected?: boolean,
+	extras?: any
 }
 
 export class BaseModel<G extends BaseModelGenerics = BaseModelGenerics> extends BaseEntity<G> {
@@ -61,7 +67,7 @@ export class BaseModel<G extends BaseModelGenerics = BaseModelGenerics> extends 
 		return [this];
 	}
 
-	serialize() {
+	serialize(): SerializedBaseModel {
 		return {
 			...super.serialize(),
 			type: this.options.type,

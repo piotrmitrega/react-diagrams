@@ -8,7 +8,7 @@ import {
 	BasePositionModel,
 	BasePositionModelGenerics,
 	BasePositionModelListener,
-	DeserializeEvent
+	DeserializeEvent, SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
 
 export enum PortModelAlignment {
@@ -35,6 +35,13 @@ export interface PortModelGenerics extends BasePositionModelGenerics {
 	OPTIONS: PortModelOptions;
 	PARENT: NodeModel;
 	LISTENER: PortModelListener;
+}
+
+export interface SerializedPortModel extends SerializedBasePositionModel {
+	name: string;
+	alignment: PortModelAlignment;
+	parentNode: string;
+	links: string[];
 }
 
 export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends BasePositionModel<G> {

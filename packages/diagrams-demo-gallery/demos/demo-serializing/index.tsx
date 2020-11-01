@@ -38,19 +38,71 @@ export default () => {
 
 	//!------------- DESERIALIZING ----------------
 
-	var model2 = new DiagramModel();
-	model2.deserializeModel(JSON.parse(str), engine);
-	engine.setModel(model2);
+	const add = `
+	{
+    "nodes": {
+        "56806388-842d-4a60-9497-63458201cee5": {
+            "id": "56806388-842d-4a60-9497-63458201cee5",
+            "type": "default",
+            "name": "awesome nooode",
+            "color": "#ff00ff",
+            "x": 264,
+            "y": 210,
+            "ports": [{
+                "id": "c8084129-b432-4ca9-9684-cefc451c50f6",
+                "type": "default",
+                "x": 297,
+                "y": 198,
+                "name": "in",
+                "parentNode": "56806388-842d-4a60-9497-63458201cee5",
+                "links": [],
+                "alignment": "bottom",
+                "in": true
+            }],
+            "portsInOrder": ["c8084129-b432-4ca9-9684-cefc451c50f6"]
+        }
+    },
+    "links": {}
+	}	`;
+
+	const remove = `
+	{
+    "nodes": {
+        "56806388-842d-4a60-9497-63458201cee5": null
+    },
+    "links": {}
+	}	`;
+
+	const addJson = JSON.parse(add);
+	const removeJson = JSON.parse(remove);
 
 	return (
 		<DemoWorkspaceWidget
 			buttons={
-				<DemoButton
-					onClick={() => {
-						action('Serialized Graph')(beautify(model2.serialize(), null, 2, 80));
-					}}>
-					Serialize Graph
-				</DemoButton>
+				[
+					<DemoButton
+						onClick={() => {
+							action('Serialized Graph')(beautify(model.serialize(), null, 2, 80));
+						}}>
+						Serialize Graph
+					</DemoButton>,
+					<DemoButton
+						onClick={() => {
+							action('Deserialize Graph (add)')(
+								model.deserializeLayers(engine, addJson)
+							);
+						}}>
+						Deserialize Graph (add)
+					</DemoButton>,
+					<DemoButton
+						onClick={() => {
+							action('Deserialize Graph (remove)')(
+								model.deserializeLayers(engine, removeJson)
+							);
+						}}>
+						Deserialize Graph (remove)
+					</DemoButton>
+				]
 			}>
 			<DemoCanvasWidget>
 				<CanvasWidget engine={engine} />

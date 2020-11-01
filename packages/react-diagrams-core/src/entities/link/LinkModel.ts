@@ -1,7 +1,7 @@
 import { PortModel } from '../port/PortModel';
 import { PointModel } from './PointModel';
 import * as _ from 'lodash';
-import { LabelModel } from '../label/LabelModel';
+import { LabelModel, SerializedLabelModel } from '../label/LabelModel';
 import { DiagramEngine } from '../../DiagramEngine';
 import { DiagramModel } from '../../models/DiagramModel';
 import { Point, Polygon, Rectangle } from '@piotrmitrega/geometry';
@@ -11,7 +11,7 @@ import {
 	BaseModelGenerics,
 	BaseModelListener,
 	DeserializeEvent,
-	ModelGeometryInterface
+	ModelGeometryInterface, SerializedBaseModel, SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
 
 export interface LinkModelListener extends BaseModelListener {
@@ -23,6 +23,15 @@ export interface LinkModelListener extends BaseModelListener {
 export interface LinkModelGenerics extends BaseModelGenerics {
 	LISTENER: LinkModelListener;
 	PARENT: DiagramModel;
+}
+
+export interface SerializedLinkModel extends SerializedBaseModel {
+	source: string | null;
+	sourcePort: string | null;
+	target: string | null;
+	targetPort: string | null;
+	points: SerializedBasePositionModel[];
+	labels: SerializedLabelModel[];
 }
 
 export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends BaseModel<G>
@@ -120,7 +129,7 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		this.renderedPaths = paths;
 	}
 
-	serialize() {
+	serialize(): SerializedLinkModel {
 		return {
 			...super.serialize(),
 			source: this.sourcePort ? this.sourcePort.getParent().getID() : null,

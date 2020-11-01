@@ -1,4 +1,4 @@
-import { BaseModel, BaseModelGenerics, BaseModelListener, BaseModelOptions } from './BaseModel';
+import { BaseModel, BaseModelGenerics, BaseModelListener, BaseModelOptions, SerializedBaseModel } from './BaseModel';
 import { BaseEntityEvent, DeserializeEvent } from './BaseEntity';
 import { Point, Rectangle } from '@piotrmitrega/geometry';
 import { ModelGeometryInterface } from '../core/ModelGeometryInterface';
@@ -14,6 +14,11 @@ export interface BasePositionModelOptions extends BaseModelOptions {
 export interface BasePositionModelGenerics extends BaseModelGenerics {
 	LISTENER: BasePositionModelListener;
 	OPTIONS: BasePositionModelOptions;
+}
+
+export interface SerializedBasePositionModel extends SerializedBaseModel {
+	x: number;
+	y: number;
 }
 
 export class BasePositionModel<G extends BasePositionModelGenerics = BasePositionModelGenerics> extends BaseModel<G>
@@ -45,7 +50,7 @@ export class BasePositionModel<G extends BasePositionModelGenerics = BasePositio
 		this.position = new Point(event.data.x, event.data.y);
 	}
 
-	serialize() {
+	serialize(): SerializedBasePositionModel {
 		return {
 			...super.serialize(),
 			x: this.position.x,

@@ -1,6 +1,5 @@
-import { DiagramEngine } from '../../DiagramEngine';
 import { LinkModel } from '../link/LinkModel';
-import { BaseModel, BaseModelGenerics, BaseModelOptions, DeserializeEvent } from '@piotrmitrega/react-canvas-core';
+import { BaseModel, BaseModelGenerics, BaseModelOptions, DeserializeEvent, SerializedBaseModel } from '@piotrmitrega/react-canvas-core';
 
 export interface LabelModelOptions extends BaseModelOptions {
 	offsetX?: number;
@@ -10,6 +9,11 @@ export interface LabelModelOptions extends BaseModelOptions {
 export interface LabelModelGenerics extends BaseModelGenerics {
 	PARENT: LinkModel;
 	OPTIONS: LabelModelOptions;
+}
+
+export interface SerializedLabelModel extends SerializedBaseModel {
+	offsetX: number;
+	offsetY: number;
 }
 
 export class LabelModel<G extends LabelModelGenerics = LabelModelGenerics> extends BaseModel<G> {

@@ -32,6 +32,12 @@ export interface DeserializeEvent<T extends BaseEntity = BaseEntity> {
 	getModel<T extends BaseModel>(id: string): Promise<T>;
 }
 
+export interface SerializedBaseEntity {
+	// TODO: Fix so that id is not optional (serializing layer issues)
+	id?: string,
+	locked?: boolean
+}
+
 export class BaseEntity<T extends BaseEntityGenerics = BaseEntityGenerics> extends BaseObserver<T['LISTENER']> {
 	protected options: T['OPTIONS'];
 
@@ -81,7 +87,7 @@ export class BaseEntity<T extends BaseEntityGenerics = BaseEntityGenerics> exten
 		this.options.locked = event.data.locked;
 	}
 
-	serialize() {
+	serialize(): SerializedBaseEntity {
 		return {
 			id: this.options.id,
 			locked: this.options.locked
