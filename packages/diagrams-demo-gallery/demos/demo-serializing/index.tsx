@@ -89,7 +89,7 @@ export default () => {
 					<DemoButton
 						onClick={() => {
 							action('Deserialize Graph (add)')(
-								model.deserializeLayers(engine, addJson)
+								model.deserializeLayersModels(engine, addJson)
 							);
 						}}>
 						Deserialize Graph (add)
@@ -97,7 +97,7 @@ export default () => {
 					<DemoButton
 						onClick={() => {
 							action('Deserialize Graph (remove)')(
-								model.deserializeLayers(engine, removeJson)
+								model.deserializeLayersModels(engine, removeJson)
 							);
 						}}>
 						Deserialize Graph (remove)

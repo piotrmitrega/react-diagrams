@@ -37,7 +37,7 @@ export abstract class LayerModel<G extends LayerModelGenerics = LayerModelGeneri
 	 */
 	abstract getChildModelFactoryBank(engine: G['ENGINE']): FactoryBank<AbstractModelFactory<BaseModel>>;
 
-	deserialize(event: DeserializeEvent<this>) {
+	deserializeModels(event: DeserializeEvent<this>) {
 		Object.keys(event.data).forEach(modelId => {
 			const model = event.data[modelId];
 

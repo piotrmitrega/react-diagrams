@@ -39,7 +39,7 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 		this.addLayer(new NodeLayerModel());
 	}
 
-	deserializeLayers(engine: DiagramEngine, model: SerializedDiagramModel) {
+	deserializeLayersModels(engine: DiagramEngine, model: SerializedDiagramModel) {
 		const models: {
 			[id: string]: BaseModel;
 		} = {};
@@ -73,11 +73,11 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 			}
 		};
 
-		this.getActiveNodeLayer().deserialize({
+		this.getActiveNodeLayer().deserializeModels({
 			...event,
 			data: nodes
 		});
-		this.getActiveLinkLayer().deserialize({
+		this.getActiveLinkLayer().deserializeModels({
 			...event,
 			data: links
 		});
