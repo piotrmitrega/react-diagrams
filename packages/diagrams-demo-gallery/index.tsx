@@ -19,11 +19,6 @@ setOptions({
 	addonPanelInRight: true
 });
 
-addDecorator((fn) => {
-	Toolkit.TESTING_UID = 0;
-	return fn();
-});
-
 import demo_simple from './demos/demo-simple';
 import demo_flow from './demos/demo-simple-flow';
 import demo_performance from './demos/demo-performance';
