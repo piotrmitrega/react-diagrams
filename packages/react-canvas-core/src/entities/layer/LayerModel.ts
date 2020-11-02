@@ -44,14 +44,22 @@ export abstract class LayerModel<G extends LayerModelGenerics = LayerModelGeneri
 			if (!model) {
 				this.removeModel(modelId);
 			} else {
-				const modelOb = this.getChildModelFactoryBank(event.engine).getFactory(model.type).generateModel({
-					initialConfig: model
-				});
-				modelOb.deserialize({
-					...event,
-					data: model
-				});
-				this.addModel(modelOb);
+				const existingModel = this.getModel(modelId) as BaseModel;
+				if (existingModel) {
+					existingModel.deserialize({
+						...event,
+						data: model
+					});
+				} else {
+					const modelOb = this.getChildModelFactoryBank(event.engine).getFactory(model.type).generateModel({
+						initialConfig: model
+					});
+					modelOb.deserialize({
+						...event,
+						data: model
+					});
+					this.addModel(modelOb);
+				}
 			}
 		});
 	}
