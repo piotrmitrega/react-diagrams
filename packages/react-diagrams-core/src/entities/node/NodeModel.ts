@@ -59,7 +59,7 @@ export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends 
 		super.deserialize(event);
 
 		_.forEach(event.data.ports, (port: any) => {
-			const existingPort = this.getPortFromID(port.getID());
+			const existingPort = this.getPortFromID(port.id);
 			if (existingPort) {
 				existingPort.deserialize({
 					...event,
