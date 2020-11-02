@@ -22,7 +22,7 @@ export interface NodeModelGenerics extends BasePositionModelGenerics {
 }
 
 export interface SerializedNodeModel extends SerializedBasePositionModel {
-	ports:  SerializedPortModel[]
+	ports: SerializedPortModel[]
 }
 
 export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends BasePositionModel<G> {
@@ -58,16 +58,23 @@ export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends 
 	deserialize(event: DeserializeEvent<this>) {
 		super.deserialize(event);
 
-		//deserialize ports
 		_.forEach(event.data.ports, (port: any) => {
-			let portOb = (event.engine as DiagramEngine).getFactoryForPort(port.type).generateModel({});
-			portOb.deserialize({
-				...event,
-				data: port
-			});
-			// the links need these
-			event.registerModel(portOb);
-			this.addPort(portOb);
+			const existingPort = this.getPortFromID(port.getID());
+			if (existingPort) {
+				existingPort.deserialize({
+					...event,
+					data: port
+				});
+			} else {
+				let createdPort = (event.engine as DiagramEngine).getFactoryForPort(port.type).generateModel({});
+				createdPort.deserialize({
+					...event,
+					data: port
+				});
+				// the links need these
+				event.registerModel(createdPort);
+				this.addPort(createdPort);
+			}
 		});
 	}
 

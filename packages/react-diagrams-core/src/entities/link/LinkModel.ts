@@ -97,14 +97,22 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 			return p;
 		});
 
-		//deserialize labels
 		_.forEach(event.data.labels || [], (label: any) => {
-			let labelOb = (event.engine as DiagramEngine).getFactoryForLabel(label.type).generateModel({});
-			labelOb.deserialize({
-				...event,
-				data: label
-			});
-			this.addLabel(labelOb);
+			const existingLabel = this.getLabel(label.getID());
+			if (existingLabel) {
+				existingLabel.deserialize({
+					...event,
+					data: label
+				});
+			} else {
+				let createdLabel = (event.engine as DiagramEngine).getFactoryForLabel(label.type).generateModel({});
+				createdLabel.deserialize({
+					...event,
+					data: label
+				});
+				this.addLabel(createdLabel);
+			}
+
 		});
 
 		// these happen async, so we use the promises for these (they need to be done like this without the async keyword
@@ -132,10 +140,18 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 	serialize(): SerializedLinkModel {
 		return {
 			...super.serialize(),
-			source: this.sourcePort ? this.sourcePort.getParent().getID() : null,
-			sourcePort: this.sourcePort ? this.sourcePort.getID() : null,
-			target: this.targetPort ? this.targetPort.getParent().getID() : null,
-			targetPort: this.targetPort ? this.targetPort.getID() : null,
+			source: this.sourcePort
+				? this.sourcePort.getParent().getID()
+				: null,
+			sourcePort: this.sourcePort
+				? this.sourcePort.getID()
+				: null,
+			target: this.targetPort
+				? this.targetPort.getParent().getID()
+				: null,
+			targetPort: this.targetPort
+				? this.targetPort.getID()
+				: null,
 			points: _.map(this.points, (point) => {
 				return point.serialize();
 			}),
@@ -268,6 +284,10 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 
 	getLabels() {
 		return this.labels;
+	}
+
+	getLabel(id: string) {
+		return this.getLabels().find(label => label.getID() === id);
 	}
 
 	setPoints(points: PointModel[]) {
