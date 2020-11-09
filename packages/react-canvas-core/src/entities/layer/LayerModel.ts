@@ -18,7 +18,7 @@ export interface LayerModelGenerics extends BaseModelGenerics {
 	ENGINE: CanvasEngine;
 }
 
-export type SerializedEntityRemoved = undefined;
+export type SerializedEntityRemoved = null;
 
 export type SerializedLayer = { [id: string]: SerializedBaseModel | SerializedEntityRemoved };
 
