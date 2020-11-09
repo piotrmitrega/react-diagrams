@@ -77,6 +77,7 @@ export class BaseModel<G extends BaseModelGenerics = BaseModelGenerics> extends 
 	deserialize(event: DeserializeEvent<this>) {
 		super.deserialize(event);
 		this.options.extras = event.data.extras;
+		this.options.selected = Boolean(event.data.selected);
 	}
 
 	getType(): string {
