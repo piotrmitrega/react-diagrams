@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import { LinkModel, SerializedLinkModel } from '../entities/link/LinkModel';
-import { NodeModel, SerializedNodeModel } from '../entities/node/NodeModel';
+import { LinkModel } from '../entities/link/LinkModel';
+import { NodeModel } from '../entities/node/NodeModel';
 import {
 	BaseEntityEvent,
 	BaseEntityListener,
@@ -8,7 +8,8 @@ import {
 	CanvasModel,
 	CanvasModelGenerics,
 	LayerModel,
-	DeserializeEvent, SerializedBaseEntity, SerializedLayer
+	SerializedBaseEntity,
+	SerializedLayer
 } from '@piotrmitrega/react-canvas-core';
 import { NodeLayerModel } from '../entities/node-layer/NodeLayerModel';
 import { LinkLayerModel } from '../entities/link-layer/LinkLayerModel';
