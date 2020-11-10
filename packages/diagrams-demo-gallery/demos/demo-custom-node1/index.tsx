@@ -1,10 +1,10 @@
 import createEngine, { DefaultNodeModel, DiagramModel, PortModelAlignment } from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
 // import the custom models
-import { DiamondNodeModel } from './DiamondNodeModel';
-import { DiamondNodeFactory } from './DiamondNodeFactory';
+import { DiamondNodeModel } from '../helpers/DiamondNodeModel';
+import { DiamondNodeFactory } from '../helpers/DiamondNodeFactory';
 import { SimplePortFactory } from './SimplePortFactory';
-import { DiamondPortModel } from './DiamondPortModel';
+import { DiamondPortModel } from '../helpers/DiamondPortModel';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
