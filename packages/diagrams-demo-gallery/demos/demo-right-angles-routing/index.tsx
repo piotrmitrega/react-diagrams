@@ -49,31 +49,39 @@ export default () => {
 	// add all to the main model
 	model.addAll(node1, node2, node3, node4, link1, link2);
 
+	const subscribeToEvents = () => {
+		// add a selection listener to each
+		model.getModels().forEach((item) => {
+			item.registerListener({
+				eventDidFire: (event) => action(event.function)(event)
+			});
+		});
 
-	// add a selection listener to each
-	model.getModels().forEach((item) => {
-		item.registerListener({
+		model.registerListener({
 			eventDidFire: (event) => action(event.function)(event)
 		});
-	});
-
-	model.registerListener({
-		eventDidFire: (event) => action(event.function)(event)
-	});
+	};
 
 	// load model into engine and render
 	engine.setModel(model);
 
+	let eventsSubscribed = false;
+
 	return (
 		<DemoWorkspaceWidget
-			buttons={
+			buttons={[
 				<DemoButton
 					onClick={() => {
 						action('Serialized Graph')(JSON.stringify(model.serialize(), null, 2));
 					}}>
 					Serialize Graph
+				</DemoButton>,
+				<DemoButton
+					onClick={subscribeToEvents}
+				>
+					Subscribe to events
 				</DemoButton>
-			}>
+			]}>
 			<DemoCanvasWidget>
 				<CanvasWidget engine={engine} />
 			</DemoCanvasWidget>
