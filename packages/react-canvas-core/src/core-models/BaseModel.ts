@@ -28,6 +28,7 @@ export interface BaseModelGenerics extends BaseEntityGenerics {
 
 export interface SerializedBaseModel extends SerializedBaseEntity {
 	type?: string,
+	selected?: boolean,
 	extras?: any
 }
 
@@ -70,6 +71,7 @@ export class BaseModel<G extends BaseModelGenerics = BaseModelGenerics> extends 
 		return {
 			...super.serialize(),
 			type: this.options.type,
+			selected: this.options.selected,
 			extras: this.options.extras
 		};
 	}
@@ -77,7 +79,7 @@ export class BaseModel<G extends BaseModelGenerics = BaseModelGenerics> extends 
 	deserialize(event: DeserializeEvent<this>) {
 		super.deserialize(event);
 		this.options.extras = event.data.extras;
-		this.options.selected = Boolean(event.data.selected);
+		this.options.selected = false;
 	}
 
 	getType(): string {
