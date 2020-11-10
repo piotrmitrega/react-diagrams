@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { debounce } from 'lodash'
 import { DiagramEngine, LinkWidget, PointModel } from '@piotrmitrega/react-diagrams-core';
 import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 import { DefaultLinkModel, DefaultLinkSegmentWidget } from '@piotrmitrega/react-diagrams-defaults';
 import { Point } from '@piotrmitrega/geometry';
 import { MouseEvent } from 'react';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
-
 export interface RightAngleLinkProps {
 	color?: string;
 	width?: number;
@@ -175,8 +175,10 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 			this.calculatePositions(points, event, index, 'y');
 		}
 		this.props.link.setFirstAndLastPathsDirection();
-		this.props.link.onDragged()
+		this.handleOnDraggedEvent();
 	}
+
+	handleOnDraggedEvent = debounce(() => this.props.link.onDragged(), 20);
 
 	handleMove = function (event: MouseEvent) {
 		this.draggingEvent(event, this.dragging_index);
