@@ -175,6 +175,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 			this.calculatePositions(points, event, index, 'y');
 		}
 		this.props.link.setFirstAndLastPathsDirection();
+		this.props.link.onDragged()
 	}
 
 	handleMove = function (event: MouseEvent) {

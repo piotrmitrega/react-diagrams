@@ -18,6 +18,8 @@ export interface LinkModelListener extends BaseModelListener {
 	sourcePortChanged?(event: BaseEntityEvent<LinkModel> & { port: null | PortModel }): void;
 
 	targetPortChanged?(event: BaseEntityEvent<LinkModel> & { port: null | PortModel }): void;
+
+	dragged?(event: BaseEntityEvent<LinkModel>): void
 }
 
 export interface LinkModelGenerics extends BaseModelGenerics {
@@ -314,6 +316,10 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 			this.points.splice(0, this.points.length - 2);
 		}
 	}
+
+	onDragged() {
+		this.fireEvent( {}, 'dragged');
+	};
 
 	addPoint<P extends PointModel>(pointModel: P, index = 1): P {
 		pointModel.setParent(this);
