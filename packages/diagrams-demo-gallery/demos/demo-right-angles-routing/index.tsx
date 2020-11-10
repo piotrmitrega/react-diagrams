@@ -9,7 +9,7 @@ import createEngine, {
 import * as React from 'react';
 import { DemoButton, DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
 import { action } from '@storybook/addon-actions';
-import { AbstractModelFactory, CanvasWidget } from '@piotrmitrega/react-canvas-core';
+import { AbstractModelFactory, CanvasWidget, DefaultState } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 // When new link is created by clicking on port the RightAngleLinkModel needs to be returned.
@@ -48,6 +48,18 @@ export default () => {
 
 	// add all to the main model
 	model.addAll(node1, node2, node3, node4, link1, link2);
+
+
+	// add a selection listener to each
+	model.getModels().forEach((item) => {
+		item.registerListener({
+			eventDidFire: (event) => action(event.function)(event)
+		});
+	});
+
+	model.registerListener({
+		eventDidFire: (event) => action(event.function)(event)
+	});
 
 	// load model into engine and render
 	engine.setModel(model);
