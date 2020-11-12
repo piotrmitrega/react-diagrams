@@ -6,6 +6,7 @@ import * as beautify from 'json-beautify';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 import json from './example';
+import { SubscribeToEventsButton } from '../helpers/SubscribeToEventsButton';
 
 export default () => {
 	//1) setup the diagram engine
@@ -82,6 +83,7 @@ export default () => {
 		<DemoWorkspaceWidget
 			buttons={
 				[
+					<SubscribeToEventsButton model={model} />,
 					<DemoButton
 						onClick={() => {
 							action('Serialized Graph')(beautify(model.serialize(), null, 2, 80));

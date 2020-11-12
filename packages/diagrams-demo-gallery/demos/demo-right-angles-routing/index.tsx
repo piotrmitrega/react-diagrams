@@ -1,6 +1,5 @@
 import createEngine, {
 	DiagramModel,
-	DefaultNodeModel,
 	DefaultPortModel,
 	RightAngleLinkFactory,
 	LinkModel,
@@ -9,10 +8,11 @@ import createEngine, {
 import * as React from 'react';
 import { DemoButton, DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
 import { action } from '@storybook/addon-actions';
-import { AbstractModelFactory, CanvasWidget, DefaultState } from '@piotrmitrega/react-canvas-core';
+import { AbstractModelFactory, CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 import { DiamondNodeModel } from '../helpers/DiamondNodeModel';
 import { DiamondNodeFactory } from '../helpers/DiamondNodeFactory';
+import { SubscribeToEventsButton } from '../helpers/SubscribeToEventsButton';
 
 // When new link is created by clicking on port the RightAngleLinkModel needs to be returned.
 export class RightAnglePortModel extends DefaultPortModel {
@@ -52,19 +52,6 @@ export default () => {
 	// add all to the main model
 	model.addAll(node1, node2, node3, node4);
 
-	const subscribeToEvents = () => {
-		// add a selection listener to each
-		model.getModels().forEach((item) => {
-			item.registerListener({
-				eventDidFire: (event) => action(event.function)(event)
-			});
-		});
-
-		model.registerListener({
-			eventDidFire: (event) => action(event.function)(event)
-		});
-	};
-
 	// load model into engine and render
 	engine.setModel(model);
 
@@ -79,11 +66,7 @@ export default () => {
 					}}>
 					Serialize Graph
 				</DemoButton>,
-				<DemoButton
-					onClick={subscribeToEvents}
-				>
-					Subscribe to events
-				</DemoButton>
+				<SubscribeToEventsButton model={model} />
 			]}>
 			<DemoCanvasWidget>
 				<CanvasWidget engine={engine} />
