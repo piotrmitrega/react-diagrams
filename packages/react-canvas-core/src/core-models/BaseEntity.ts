@@ -28,7 +28,9 @@ export type BaseEntityGenerics = {
 export interface DeserializeEvent<T extends BaseEntity = BaseEntity> {
 	engine: CanvasEngine;
 	data: ReturnType<T['serialize']>;
+
 	registerModel(model: BaseModel);
+
 	getModel<T extends BaseModel>(id: string): T;
 }
 
@@ -40,6 +42,7 @@ export interface SerializedBaseEntity {
 
 export class BaseEntity<T extends BaseEntityGenerics = BaseEntityGenerics> extends BaseObserver<T['LISTENER']> {
 	protected options: T['OPTIONS'];
+	protected isFiringEvents = true;
 
 	constructor(options: T['OPTIONS'] = {}) {
 		super();
@@ -82,6 +85,14 @@ export class BaseEntity<T extends BaseEntityGenerics = BaseEntityGenerics> exten
 		this.listeners = {};
 	}
 
+	stopFiringEvents() {
+		this.isFiringEvents = false;
+	}
+
+	resumeFiringEvents() {
+		this.isFiringEvents = true;
+	}
+
 	deserialize(event: DeserializeEvent<this>) {
 		this.options.id = event.data.id;
 		this.options.locked = event.data.locked;
@@ -94,7 +105,11 @@ export class BaseEntity<T extends BaseEntityGenerics = BaseEntityGenerics> exten
 		};
 	}
 
-	fireEvent<L extends Partial<BaseEntityEvent> & object>(event: L, k: keyof T['LISTENER']) {
+	fireEvent<L extends Partial<BaseEntityEvent> & object>(event: L, k: keyof T['LISTENER'], force?: boolean) {
+		if (!force && !this.isFiringEvents) {
+			return;
+		}
+
 		super.fireEvent(
 			{
 				entity: this,

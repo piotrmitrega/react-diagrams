@@ -86,6 +86,8 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 	}
 
 	deserialize(event: DeserializeEvent<this>) {
+		this.stopFiringEvents();
+
 		super.deserialize(event);
 		this.points = _.map(event.data.points || [], (point) => {
 			var p = new PointModel({
@@ -125,6 +127,8 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		if (event.data.source) {
 			this.setSourcePort(event.getModel(event.data.sourcePort));
 		}
+
+		this.resumeFiringEvents();
 	}
 
 	getRenderedPath(): SVGPathElement[] {

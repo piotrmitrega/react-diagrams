@@ -59,6 +59,8 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 	}
 
 	deserialize(event: DeserializeEvent<this>) {
+		this.stopFiringEvents();
+
 		super.deserialize(event);
 		this.reportedPosition = false;
 		this.options.name = event.data.name;
@@ -137,11 +139,13 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 		_.forEach(this.getLinks(), (link) => {
 			link.getPointForPort(this).setPosition(this.getCenter());
 		});
+
 		this.fireEvent(
 			{
 				entity: this
 			},
-			'reportInitialPosition'
+			'reportInitialPosition',
+			true
 		);
 	}
 
@@ -155,6 +159,8 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 		this.setPosition(coords.getTopLeft());
 		this.reportedPosition = true;
 		this.reportPosition();
+
+		this.resumeFiringEvents();
 	}
 
 	canLinkToPort(port: PortModel): boolean {

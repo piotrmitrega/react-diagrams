@@ -57,6 +57,8 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 			}
 		};
 
+		this.stopFiringEvents();
+
 		this.getActiveNodeLayer().deserializeModels({
 			...event,
 			data: nodes
@@ -65,6 +67,10 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 			...event,
 			data: links
 		});
+
+		engine.repaintCanvas();
+
+		this.resumeFiringEvents();
 	}
 
 	serialize(): SerializedDiagramModel {

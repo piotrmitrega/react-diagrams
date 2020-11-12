@@ -56,6 +56,8 @@ export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends 
 	}
 
 	deserialize(event: DeserializeEvent<this>) {
+		this.stopFiringEvents();
+
 		super.deserialize(event);
 
 		_.forEach(event.data.ports, (port: any) => {
@@ -76,6 +78,8 @@ export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends 
 				this.addPort(createdPort);
 			}
 		});
+
+		this.resumeFiringEvents();
 	}
 
 	serialize() {
