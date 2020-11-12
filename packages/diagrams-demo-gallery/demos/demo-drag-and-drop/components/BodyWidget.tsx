@@ -7,6 +7,9 @@ import { DefaultNodeModel } from '@piotrmitrega/react-diagrams';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../../helpers/DemoCanvasWidget';
 import styled from '@emotion/styled';
+import { DemoButton, DemoWorkspaceWidget } from '../../helpers/DemoWorkspaceWidget';
+import { action } from '@storybook/addon-actions';
+import * as beautify from 'json-beautify';
 
 export interface BodyWidgetProps {
 	app: Application;
@@ -75,9 +78,21 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 						onDragOver={(event) => {
 							event.preventDefault();
 						}}>
-						<DemoCanvasWidget>
-							<CanvasWidget engine={this.props.app.getDiagramEngine()} />
-						</DemoCanvasWidget>
+						<DemoWorkspaceWidget
+							buttons={
+								[
+									<DemoButton
+										onClick={() => {
+											action('Serialized Graph')(beautify(this.props.app.getDiagramEngine().getModel().serialize(), null, 2, 80));
+										}}>
+										Serialize Graph
+									</DemoButton>
+								]
+							}>
+							<DemoCanvasWidget>
+								<CanvasWidget engine={this.props.app.getDiagramEngine()} />
+							</DemoCanvasWidget>
+						</DemoWorkspaceWidget>
 					</S.Layer>
 				</S.Content>
 			</S.Body>

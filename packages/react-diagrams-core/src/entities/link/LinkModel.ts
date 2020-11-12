@@ -120,14 +120,10 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		// these happen async, so we use the promises for these (they need to be done like this without the async keyword
 		// because we need the deserailize method to finish for other methods while this happen
 		if (event.data.target) {
-			event.getModel(event.data.targetPort).then((model: PortModel) => {
-				this.setTargetPort(model);
-			});
+			this.setTargetPort(event.getModel(event.data.targetPort));
 		}
 		if (event.data.source) {
-			event.getModel(event.data.sourcePort).then((model: PortModel) => {
-				this.setSourcePort(model);
-			});
+			this.setSourcePort(event.getModel(event.data.sourcePort));
 		}
 	}
 
@@ -318,7 +314,7 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 	}
 
 	onDragged() {
-		this.fireEvent( {}, 'dragged');
+		this.fireEvent({}, 'dragged');
 	};
 
 	addPoint<P extends PointModel>(pointModel: P, index = 1): P {

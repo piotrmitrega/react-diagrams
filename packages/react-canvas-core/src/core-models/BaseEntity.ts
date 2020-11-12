@@ -29,7 +29,7 @@ export interface DeserializeEvent<T extends BaseEntity = BaseEntity> {
 	engine: CanvasEngine;
 	data: ReturnType<T['serialize']>;
 	registerModel(model: BaseModel);
-	getModel<T extends BaseModel>(id: string): Promise<T>;
+	getModel<T extends BaseModel>(id: string): T;
 }
 
 export interface SerializedBaseEntity {

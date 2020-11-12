@@ -1,14 +1,16 @@
-import createEngine, { DiagramModel, DefaultNodeModel } from '@piotrmitrega/react-diagrams';
+import createEngine, { DiagramModel, DefaultNodeModel, RightAngleLinkFactory } from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
 import { DemoButton, DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
 import { action } from '@storybook/addon-actions';
 import * as beautify from 'json-beautify';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
+import json from './example';
 
 export default () => {
 	//1) setup the diagram engine
 	var engine = createEngine();
+	engine.getLinkFactories().registerFactory(new RightAngleLinkFactory());
 
 	//2) setup the diagram model
 	var model = new DiagramModel();
@@ -89,7 +91,7 @@ export default () => {
 					<DemoButton
 						onClick={() => {
 							action('Deserialize Graph (add)')(
-								model.deserializeLayersModels(engine, addJson)
+								model.deserializeLayersModels(engine, JSON.parse(json))
 							);
 						}}>
 						Deserialize Graph (add)

@@ -44,12 +44,6 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 		const models: {
 			[id: string]: BaseModel;
 		} = {};
-		const promises: {
-			[id: string]: Promise<BaseModel>;
-		} = {};
-		const resolvers: {
-			[id: string]: (model: BaseModel) => any;
-		} = {};
 
 		const { links, nodes } = model;
 
@@ -57,20 +51,9 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 			engine: engine,
 			registerModel: (model: BaseModel) => {
 				models[model.getID()] = model;
-				if (resolvers[model.getID()]) {
-					resolvers[model.getID()](model);
-				}
 			},
-			getModel<T extends BaseModel>(id: string): Promise<T> {
-				if (models[id]) {
-					return Promise.resolve(models[id]) as Promise<T>;
-				}
-				if (!promises[id]) {
-					promises[id] = new Promise((resolve) => {
-						resolvers[id] = resolve;
-					});
-				}
-				return promises[id] as Promise<T>;
+			getModel<T extends BaseModel>(id: string): T {
+				return models[id] as T;
 			}
 		};
 
