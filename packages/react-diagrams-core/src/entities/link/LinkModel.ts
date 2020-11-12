@@ -88,8 +88,10 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 	deserialize(event: DeserializeEvent<this>) {
 		this.stopFiringEvents();
 
+		const { labels, points, source, sourcePort, target, targetPort } = event.data;
+
 		super.deserialize(event);
-		this.points = _.map(event.data.points || [], (point) => {
+		this.points = _.map(points || [], (point) => {
 			var p = new PointModel({
 				link: this,
 				position: new Point(point.x, point.y)
@@ -101,7 +103,7 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 			return p;
 		});
 
-		_.forEach(event.data.labels || [], (label: any) => {
+		_.forEach(labels || [], (label: any) => {
 			const existingLabel = this.getLabel(label.getID());
 			if (existingLabel) {
 				existingLabel.deserialize({
@@ -119,13 +121,13 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 
 		});
 
-		// these happen async, so we use the promises for these (they need to be done like this without the async keyword
-		// because we need the deserailize method to finish for other methods while this happen
-		if (event.data.target) {
-			this.setTargetPort(event.getModel(event.data.targetPort));
+		const nodes = (event.engine as DiagramEngine).getModel().getNodes();
+
+		if (target) {
+			this.setTargetPort(nodes.find(m => m.getID() === target).getPortFromID(targetPort) as PortModel);
 		}
-		if (event.data.source) {
-			this.setSourcePort(event.getModel(event.data.sourcePort));
+		if (source) {
+			this.setSourcePort(nodes.find(m => m.getID() === source).getPortFromID(sourcePort) as PortModel);
 		}
 
 		this.resumeFiringEvents();
