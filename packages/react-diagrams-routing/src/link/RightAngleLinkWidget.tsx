@@ -246,7 +246,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				hadToSwitch
 					? pointRight.getY()
 					: pointLeft.getY()
-				
+
 			);
 		}
 			// Render was called but link is not moved but user.
@@ -274,6 +274,8 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		// If there is existing link which has two points add one
 		// NOTE: It doesn't matter if check is for dy or dx
 		if (points.length === 2 && dy !== 0 && !this.state.canDrag) {
+			console.log("this weird situation");
+
 			this.props.link.addPoint(
 				new PointModel({
 					link: this.props.link,
