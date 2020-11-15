@@ -6,13 +6,13 @@ import createEngine, {
 	RightAngleLinkModel
 } from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
-import { DemoButton, DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
-import { action } from '@storybook/addon-actions';
+import { DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
 import { AbstractModelFactory, CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 import { DiamondNodeModel } from '../helpers/DiamondNodeModel';
 import { DiamondNodeFactory } from '../helpers/DiamondNodeFactory';
 import { SubscribeToEventsButton } from '../helpers/SubscribeToEventsButton';
+import { SerializeButton } from '../helpers/SerializeButton';
 
 // When new link is created by clicking on port the RightAngleLinkModel needs to be returned.
 export class RightAnglePortModel extends DefaultPortModel {
@@ -60,12 +60,7 @@ export default () => {
 	return (
 		<DemoWorkspaceWidget
 			buttons={[
-				<DemoButton
-					onClick={() => {
-						action('Serialized Graph')(JSON.stringify(model.serialize(), null, 2));
-					}}>
-					Serialize Graph
-				</DemoButton>,
+				<SerializeButton model={model} />,
 				<SubscribeToEventsButton model={model} />
 			]}>
 			<DemoCanvasWidget>
