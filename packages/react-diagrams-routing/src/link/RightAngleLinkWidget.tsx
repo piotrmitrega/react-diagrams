@@ -246,8 +246,9 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				hadToSwitch
 					? pointRight.getY()
 					: pointLeft.getY()
-
 			);
+
+			this.props.link.setFirstAndLastPathsDirection();
 		}
 			// Render was called but link is not moved but user.
 			// Node is moved and in this case fix coordinates to get 90° angle.
