@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-diagrams-demo",
-	"version": "1.1.10",
+	"version": "1.1.11",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"private": true,
@@ -25,7 +25,7 @@
 	"main": "./dist/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/react-diagrams": "^1.1.10"
+		"@piotrmitrega/react-diagrams": "^1.1.11"
 	},
 	"gitHead": "bb878657ba0c2f81764f32901fd96158a0f8352e"
 }
