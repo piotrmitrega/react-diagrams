@@ -44,8 +44,6 @@ export class DefaultLinkPointWidget extends React.Component<DefaultLinkPointWidg
 					onMouseEnter={() => {
 						this.setState({ selected: true });
 					}}
-					data-id={point.getID()}
-					data-linkid={point.getLink().getID()}
 					cx={point.getPosition().x}
 					cy={point.getPosition().y}
 					r={15}
