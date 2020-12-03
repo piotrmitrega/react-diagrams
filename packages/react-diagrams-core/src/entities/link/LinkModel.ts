@@ -1,7 +1,7 @@
 import { PortModel } from '../port/PortModel';
 import { PointModel } from './PointModel';
 import * as _ from 'lodash';
-import { LabelModel } from '../label/LabelModel';
+import { LabelModel, SerializedLabelModel } from '../label/LabelModel';
 import { DiagramEngine } from '../../DiagramEngine';
 import { DiagramModel } from '../../models/DiagramModel';
 import { Point, Polygon, Rectangle } from '@piotrmitrega/geometry';
@@ -11,18 +11,29 @@ import {
 	BaseModelGenerics,
 	BaseModelListener,
 	DeserializeEvent,
-	ModelGeometryInterface
+	ModelGeometryInterface, SerializedBaseModel, SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
 
 export interface LinkModelListener extends BaseModelListener {
 	sourcePortChanged?(event: BaseEntityEvent<LinkModel> & { port: null | PortModel }): void;
 
 	targetPortChanged?(event: BaseEntityEvent<LinkModel> & { port: null | PortModel }): void;
+
+	dragged?(event: BaseEntityEvent<LinkModel>): void
 }
 
 export interface LinkModelGenerics extends BaseModelGenerics {
 	LISTENER: LinkModelListener;
 	PARENT: DiagramModel;
+}
+
+export interface SerializedLinkModel extends SerializedBaseModel {
+	source: string | null;
+	sourcePort: string | null;
+	target: string | null;
+	targetPort: string | null;
+	points: SerializedBasePositionModel[];
+	labels: SerializedLabelModel[];
 }
 
 export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends BaseModel<G>
@@ -75,8 +86,12 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 	}
 
 	deserialize(event: DeserializeEvent<this>) {
+		this.stopFiringEvents();
+
+		const { labels, points, source, sourcePort, target, targetPort } = event.data;
+
 		super.deserialize(event);
-		this.points = _.map(event.data.points || [], (point) => {
+		this.points = _.map(points || [], (point) => {
 			var p = new PointModel({
 				link: this,
 				position: new Point(point.x, point.y)
@@ -88,28 +103,34 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 			return p;
 		});
 
-		//deserialize labels
-		_.forEach(event.data.labels || [], (label: any) => {
-			let labelOb = (event.engine as DiagramEngine).getFactoryForLabel(label.type).generateModel({});
-			labelOb.deserialize({
-				...event,
-				data: label
-			});
-			this.addLabel(labelOb);
+		_.forEach(labels || [], (label: any) => {
+			const existingLabel = this.getLabel(label.getID());
+			if (existingLabel) {
+				existingLabel.deserialize({
+					...event,
+					data: label
+				});
+			} else {
+				let createdLabel = (event.engine as DiagramEngine).getFactoryForLabel(label.type).generateModel({});
+				createdLabel.deserialize({
+					...event,
+					data: label
+				});
+				this.addLabel(createdLabel);
+			}
+
 		});
 
-		// these happen async, so we use the promises for these (they need to be done like this without the async keyword
-		// because we need the deserailize method to finish for other methods while this happen
-		if (event.data.target) {
-			event.getModel(event.data.targetPort).then((model: PortModel) => {
-				this.setTargetPort(model);
-			});
+		const nodes = (event.engine as DiagramEngine).getModel().getNodes();
+
+		if (target) {
+			this.setTargetPort(nodes.find(m => m.getID() === target).getPortFromID(targetPort) as PortModel);
 		}
-		if (event.data.source) {
-			event.getModel(event.data.sourcePort).then((model: PortModel) => {
-				this.setSourcePort(model);
-			});
+		if (source) {
+			this.setSourcePort(nodes.find(m => m.getID() === source).getPortFromID(sourcePort) as PortModel);
 		}
+
+		this.resumeFiringEvents();
 	}
 
 	getRenderedPath(): SVGPathElement[] {
@@ -120,13 +141,21 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		this.renderedPaths = paths;
 	}
 
-	serialize() {
+	serialize(): SerializedLinkModel {
 		return {
 			...super.serialize(),
-			source: this.sourcePort ? this.sourcePort.getParent().getID() : null,
-			sourcePort: this.sourcePort ? this.sourcePort.getID() : null,
-			target: this.targetPort ? this.targetPort.getParent().getID() : null,
-			targetPort: this.targetPort ? this.targetPort.getID() : null,
+			source: this.sourcePort
+				? this.sourcePort.getParent().getID()
+				: null,
+			sourcePort: this.sourcePort
+				? this.sourcePort.getID()
+				: null,
+			target: this.targetPort
+				? this.targetPort.getParent().getID()
+				: null,
+			targetPort: this.targetPort
+				? this.targetPort.getID()
+				: null,
 			points: _.map(this.points, (point) => {
 				return point.serialize();
 			}),
@@ -261,6 +290,10 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		return this.labels;
 	}
 
+	getLabel(id: string) {
+		return this.getLabels().find(label => label.getID() === id);
+	}
+
 	setPoints(points: PointModel[]) {
 		_.forEach(points, (point) => {
 			point.setParent(this);
@@ -285,6 +318,10 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 			this.points.splice(0, this.points.length - 2);
 		}
 	}
+
+	onDragged() {
+		this.fireEvent({}, 'dragged');
+	};
 
 	addPoint<P extends PointModel>(pointModel: P, index = 1): P {
 		pointModel.setParent(this);

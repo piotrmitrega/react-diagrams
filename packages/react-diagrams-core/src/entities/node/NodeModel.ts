@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { DiagramModel } from '../../models/DiagramModel';
-import { PortModel } from '../port/PortModel';
+import { PortModel, SerializedPortModel } from '../port/PortModel';
 import { LinkModel } from '../link/LinkModel';
 import { Point, Rectangle } from '@piotrmitrega/geometry';
 import {
@@ -8,7 +8,7 @@ import {
 	BaseModelListener,
 	BasePositionModel,
 	BasePositionModelGenerics,
-	DeserializeEvent
+	DeserializeEvent, SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
 import { DiagramEngine } from '../../DiagramEngine';
 
@@ -19,6 +19,10 @@ export interface NodeModelListener extends BaseModelListener {
 export interface NodeModelGenerics extends BasePositionModelGenerics {
 	LISTENER: NodeModelListener;
 	PARENT: DiagramModel;
+}
+
+export interface SerializedNodeModel extends SerializedBasePositionModel {
+	ports: SerializedPortModel[]
 }
 
 export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends BasePositionModel<G> {
@@ -52,19 +56,30 @@ export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends 
 	}
 
 	deserialize(event: DeserializeEvent<this>) {
+		this.stopFiringEvents();
+
 		super.deserialize(event);
 
-		//deserialize ports
 		_.forEach(event.data.ports, (port: any) => {
-			let portOb = (event.engine as DiagramEngine).getFactoryForPort(port.type).generateModel({});
-			portOb.deserialize({
-				...event,
-				data: port
-			});
-			// the links need these
-			event.registerModel(portOb);
-			this.addPort(portOb);
+			const existingPort = this.getPortFromID(port.id);
+			if (existingPort) {
+				existingPort.deserialize({
+					...event,
+					data: port
+				});
+			} else {
+				let createdPort = (event.engine as DiagramEngine).getFactoryForPort(port.type).generateModel({});
+				createdPort.deserialize({
+					...event,
+					data: port
+				});
+				// the links need these
+				event.registerModel(createdPort);
+				this.addPort(createdPort);
+			}
 		});
+
+		this.resumeFiringEvents();
 	}
 
 	serialize() {

@@ -1,12 +1,15 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { TrayWidget } from './TrayWidget';
-import { Application } from '../Application';
+import { Application, RightAnglePortModel } from '../Application';
 import { TrayItemWidget } from './TrayItemWidget';
-import { DefaultNodeModel } from '@piotrmitrega/react-diagrams';
-import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
+import { DefaultNodeModel, DefaultPortModel, LinkModel, RightAngleLinkModel } from '@piotrmitrega/react-diagrams';
+import { AbstractModelFactory, CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../../helpers/DemoCanvasWidget';
 import styled from '@emotion/styled';
+import { DemoButton, DemoWorkspaceWidget } from '../../helpers/DemoWorkspaceWidget';
+import { action } from '@storybook/addon-actions';
+import * as beautify from 'json-beautify';
 
 export interface BodyWidgetProps {
 	app: Application;
@@ -62,10 +65,10 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 							var node: DefaultNodeModel = null;
 							if (data.type === 'in') {
 								node = new DefaultNodeModel('Node ' + (nodesCount + 1), 'rgb(192,255,0)');
-								node.addInPort('In');
+								node.addPort(new RightAnglePortModel(true,'In'));
 							} else {
 								node = new DefaultNodeModel('Node ' + (nodesCount + 1), 'rgb(0,192,255)');
-								node.addOutPort('Out');
+								node.addPort(new RightAnglePortModel(false, 'Out'));
 							}
 							var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
 							node.setPosition(point);
@@ -75,9 +78,21 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 						onDragOver={(event) => {
 							event.preventDefault();
 						}}>
-						<DemoCanvasWidget>
-							<CanvasWidget engine={this.props.app.getDiagramEngine()} />
-						</DemoCanvasWidget>
+						<DemoWorkspaceWidget
+							buttons={
+								[
+									<DemoButton
+										onClick={() => {
+											action('Serialized Graph')(beautify(this.props.app.getDiagramEngine().getModel().serialize(), null, 2, 80));
+										}}>
+										Serialize Graph
+									</DemoButton>
+								]
+							}>
+							<DemoCanvasWidget>
+								<CanvasWidget engine={this.props.app.getDiagramEngine()} />
+							</DemoCanvasWidget>
+						</DemoWorkspaceWidget>
 					</S.Layer>
 				</S.Content>
 			</S.Body>

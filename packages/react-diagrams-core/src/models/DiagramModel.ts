@@ -8,10 +8,12 @@ import {
 	CanvasModel,
 	CanvasModelGenerics,
 	LayerModel,
-	DeserializeEvent
+	SerializedBaseEntity,
+	SerializedLayer
 } from '@piotrmitrega/react-canvas-core';
 import { NodeLayerModel } from '../entities/node-layer/NodeLayerModel';
 import { LinkLayerModel } from '../entities/link-layer/LinkLayerModel';
+import { DiagramEngine } from '../DiagramEngine';
 
 export interface DiagramListener extends BaseEntityListener {
 	nodesUpdated?(event: BaseEntityEvent & { node: NodeModel; isCreated: boolean }): void;
@@ -21,6 +23,11 @@ export interface DiagramListener extends BaseEntityListener {
 
 export interface DiagramModelGenerics extends CanvasModelGenerics {
 	LISTENER: DiagramListener;
+}
+
+export interface SerializedDiagramModel extends SerializedBaseEntity {
+	links: SerializedLayer;
+	nodes: SerializedLayer;
 }
 
 export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics> extends CanvasModel<G> {
@@ -33,9 +40,45 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 		this.addLayer(new NodeLayerModel());
 	}
 
-	deserialize(event: DeserializeEvent<this>) {
-		this.layers = [];
-		super.deserialize(event);
+	deserializeLayersModels(engine: DiagramEngine, model: SerializedDiagramModel) {
+		const models: {
+			[id: string]: BaseModel;
+		} = {};
+
+		const { links, nodes } = model;
+
+		const event = {
+			engine: engine,
+			registerModel: (model: BaseModel) => {
+				models[model.getID()] = model;
+			},
+			getModel<T extends BaseModel>(id: string): T {
+				return models[id] as T;
+			}
+		};
+
+		this.stopFiringEvents();
+
+		this.getActiveNodeLayer().deserializeModels({
+			...event,
+			data: nodes
+		});
+		this.getActiveLinkLayer().deserializeModels({
+			...event,
+			data: links
+		});
+
+		engine.repaintCanvas();
+
+		this.resumeFiringEvents();
+	}
+
+	serialize(): SerializedDiagramModel {
+		return {
+			...super.serialize(),
+			nodes: this.getActiveNodeLayer().serialize(),
+			links: this.getActiveLinkLayer().serialize()
+		};
 	}
 
 	addLayer(layer: LayerModel): void {
@@ -127,7 +170,10 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 
 	addNode(node: NodeModel): NodeModel {
 		this.getActiveNodeLayer().addModel(node);
-		this.fireEvent({ node, isCreated: true }, 'nodesUpdated');
+		this.fireEvent({
+			node,
+			isCreated: true
+		}, 'nodesUpdated');
 		return node;
 	}
 
@@ -136,7 +182,10 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 			return layer.removeModel(link);
 		});
 		if (removed) {
-			this.fireEvent({ link, isCreated: false }, 'linksUpdated');
+			this.fireEvent({
+				link,
+				isCreated: false
+			}, 'linksUpdated');
 		}
 	}
 
@@ -145,7 +194,10 @@ export class DiagramModel<G extends DiagramModelGenerics = DiagramModelGenerics>
 			return layer.removeModel(node);
 		});
 		if (removed) {
-			this.fireEvent({ node, isCreated: false }, 'nodesUpdated');
+			this.fireEvent({
+				node,
+				isCreated: false
+			}, 'nodesUpdated');
 		}
 	}
 

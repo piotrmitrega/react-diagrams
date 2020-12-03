@@ -4,12 +4,10 @@ import {
 	BaseEntityEvent,
 	BaseEntityGenerics,
 	BaseEntityListener,
-	BaseEntityOptions,
-	DeserializeEvent
+	BaseEntityOptions
 } from '../../core-models/BaseEntity';
 import { LayerModel } from '../layer/LayerModel';
 import { BaseModel } from '../../core-models/BaseModel';
-import { CanvasEngine } from '../../CanvasEngine';
 
 export interface DiagramListener extends BaseEntityListener {
 	offsetUpdated?(event: BaseEntityEvent<CanvasModel> & { offsetX: number; offsetY: number }): void;
@@ -73,7 +71,8 @@ export class CanvasModel<G extends CanvasModelGenerics = CanvasModelGenerics> ex
 	addLayer(layer: LayerModel) {
 		layer.setParent(this);
 		layer.registerListener({
-			entityRemoved: (event: BaseEntityEvent<BaseModel>): void => {}
+			entityRemoved: (event: BaseEntityEvent<BaseModel>): void => {
+			}
 		});
 		this.layers.push(layer);
 	}
@@ -103,72 +102,6 @@ export class CanvasModel<G extends CanvasModelGenerics = CanvasModelGenerics> ex
 		return this.options.gridSize * Math.floor((pos + this.options.gridSize / 2) / this.options.gridSize);
 	}
 
-	deserializeModel(data: ReturnType<this['serialize']>, engine: CanvasEngine) {
-		const models: {
-			[id: string]: BaseModel;
-		} = {};
-		const promises: {
-			[id: string]: Promise<BaseModel>;
-		} = {};
-		const resolvers: {
-			[id: string]: (model: BaseModel) => any;
-		} = {};
-
-		const event: DeserializeEvent = {
-			data: data,
-			engine: engine,
-			registerModel: (model: BaseModel) => {
-				models[model.getID()] = model;
-				if (resolvers[model.getID()]) {
-					resolvers[model.getID()](model);
-				}
-			},
-			getModel<T extends BaseModel>(id: string): Promise<T> {
-				if (models[id]) {
-					return Promise.resolve(models[id]) as Promise<T>;
-				}
-				if (!promises[id]) {
-					promises[id] = new Promise((resolve) => {
-						resolvers[id] = resolve;
-					});
-				}
-				return promises[id] as Promise<T>;
-			}
-		};
-		this.deserialize(event);
-	}
-
-	deserialize(event: DeserializeEvent<this>) {
-		super.deserialize(event);
-		this.options.offsetX = event.data.offsetX;
-		this.options.offsetY = event.data.offsetY;
-		this.options.zoom = event.data.zoom;
-		this.options.gridSize = event.data.gridSize;
-		_.forEach(event.data.layers, (layer) => {
-			const layerOb = event.engine.getFactoryForLayer(layer.type).generateModel({
-				initialConfig: layer
-			});
-			layerOb.deserialize({
-				...event,
-				data: layer
-			});
-			this.addLayer(layerOb);
-		});
-	}
-
-	serialize() {
-		return {
-			...super.serialize(),
-			offsetX: this.options.offsetX,
-			offsetY: this.options.offsetY,
-			zoom: this.options.zoom,
-			gridSize: this.options.gridSize,
-			layers: _.map(this.layers, (layer) => {
-				return layer.serialize();
-			})
-		};
-	}
-
 	setZoomLevel(zoom: number) {
 		this.options.zoom = zoom;
 		this.fireEvent({ zoom }, 'zoomUpdated');
@@ -177,7 +110,10 @@ export class CanvasModel<G extends CanvasModelGenerics = CanvasModelGenerics> ex
 	setOffset(offsetX: number, offsetY: number) {
 		this.options.offsetX = offsetX;
 		this.options.offsetY = offsetY;
-		this.fireEvent({ offsetX, offsetY }, 'offsetUpdated');
+		this.fireEvent({
+			offsetX,
+			offsetY
+		}, 'offsetUpdated');
 	}
 
 	setOffsetX(offsetX: number) {
