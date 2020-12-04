@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-diagrams-defaults",
-	"version": "1.1.12",
+	"version": "1.2.0",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
@@ -32,7 +32,7 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/react-diagrams-core": "^1.1.12"
+		"@piotrmitrega/react-diagrams-core": "^1.2.0"
 	},
 	"peerDependencies": {
 		"@emotion/core": "^10.*",
