@@ -13,6 +13,7 @@ export * from './entities/node-layer/NodeLayerModel';
 export * from './entities/node-layer/NodeLayerWidget';
 export * from './entities/node-layer/NodeLayerFactory';
 
+export * from './entities/node/MultiPortNodeModel';
 export * from './entities/node/NodeModel';
 export * from './entities/node/NodeWidget';
 export * from './entities/port/PortModel';

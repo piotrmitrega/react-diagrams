@@ -9,6 +9,8 @@ import { PortModel } from '../entities/port/PortModel';
 import { MouseEvent } from 'react';
 import { LinkModel } from '../entities/link/LinkModel';
 import { DiagramEngine } from '../DiagramEngine';
+import { MultiPortNodeModel } from '../entities/node/MultiPortNodeModel';
+import { Point } from '@piotrmitrega/geometry';
 
 export interface DragNewLinkStateOptions {
 	/**
@@ -77,6 +79,11 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 							this.engine.repaintCanvas();
 							return;
 						}
+					} else if (model instanceof MultiPortNodeModel) {
+						const clickPosition = new Point(event.event.clientX, event.event.clientY);
+						model.linkToClosestPort(this.link, clickPosition, this.port, this.engine);
+						this.engine.repaintCanvas();
+						return;
 					}
 
 					if (!this.config.allowLooseLinks) {
