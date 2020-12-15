@@ -11,7 +11,7 @@ export class MultiPortNodeModel<G extends NodeModelGenerics = NodeModelGenerics>
 
 	linkToClosestPort = (link: LinkModel, clickPosition: Point, sourcePort: PortModel, engine: DiagramEngine) => {
 
-		const nodeElement = document.querySelector(`.node[data-nodeid=${this.getID()}]`);
+		const nodeElement = document.querySelector(`.node[data-nodeid="${this.getID()}"]`);
 
 		const portDatas = Array.from(nodeElement.querySelectorAll('.port'))
 			.map((portElement) => {
