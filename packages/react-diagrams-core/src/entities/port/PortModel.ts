@@ -8,7 +8,8 @@ import {
 	BasePositionModel,
 	BasePositionModelGenerics,
 	BasePositionModelListener,
-	DeserializeEvent, SerializedBasePositionModel
+	DeserializeEvent,
+	SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
 
 export enum PortModelAlignment {
@@ -170,4 +171,35 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 	isLocked() {
 		return super.isLocked() || this.getParent().isLocked();
 	}
+
+	calculateNormalOffset = () => {
+		const nodeBox = this.getNode().getBoundingBox();
+		const points = nodeBox.getPoints();
+		const { x: portX, y: portY } = this.getPosition();
+
+		const pointsXCoordinates = points.map(point => point.x);
+		const pointsYCoordinates = points.map(point => point.y);
+
+		const minDistanceX = Math.min(
+			...pointsXCoordinates.map(x => Math.abs(x - portX))
+		);
+
+		const minDistanceY = Math.min(
+			...pointsYCoordinates.map(y => Math.abs(y - portY))
+		);
+
+		const isXAxis = minDistanceX < minDistanceY;
+
+		const direction = Math.sign(isXAxis
+			? portX - nodeBox.getOrigin().x
+			: portY - nodeBox.getOrigin().y
+		);
+
+		const translationValue = 20;
+
+		return new Point(
+			isXAxis ? direction * translationValue : 0,
+			isXAxis ? 0 : direction * translationValue
+		);
+	};
 }
