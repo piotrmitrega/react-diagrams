@@ -33,6 +33,10 @@ export class BasePositionModel<G extends BasePositionModelGenerics = BasePositio
 	setPosition(point: Point);
 	setPosition(x: number, y: number);
 	setPosition(x, y?) {
+		if (this.isLocked()) {
+			return;
+		}
+
 		if (typeof x === 'object') {
 			this.position = x;
 		} else if (typeof x) {

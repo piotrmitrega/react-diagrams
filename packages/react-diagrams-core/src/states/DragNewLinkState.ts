@@ -99,7 +99,6 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 	getPortFromMouseEvent(event: MouseEvent): PortModel | null {
 		const mouseElement = this.engine.getMouseElement(event);
 		if (mouseElement instanceof MultiPortNodeModel) {
-			console.log(mouseElement === this.port.getNode());
 			if (mouseElement === this.port.getNode()) {
 				return null;
 			}
@@ -130,25 +129,54 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 			if (mousePortModel) {
 				this.onPortMouseEnter(mousePortModel);
 				return;
+			} else {
+				this.onMouseMove(event.event);
 			}
+		} else if (!this.targetPort) {
+			this.onMouseMove(event.event);
 		}
-
-		this.onMouseMove(event.event);
 	}
 
 	onPortMouseLeave() {
 		//remove two points?
 		console.log('leaving', this.targetPort);
 		this.targetPort = null;
+		this.link.removePoint(this.link.getPoints()[this.link.getPoints().length - 2]);
+
 	}
 
 	onPortMouseEnter(port: PortModel) {
 		//add two points
 		console.log('entering', port);
 		this.targetPort = port;
+
+		const offset = port.calculateNormalOffset();
+
+		const offsetPosition = port.getPosition().clone();
+		offsetPosition.translate(offset.x, offset.y);
+		offsetPosition.translate(8, 8);
+
+		this.link.getLastPoint().setPosition(offsetPosition);
+
+		const portPosition = port.getPosition().clone();
+		portPosition.translate(8, 8);
+
+		this.engine.repaintCanvas();
+
+		const secondPoint = this.link.getPoints()[1];
+
+		requestAnimationFrame(() => {
+			const lastPointModel = this.link.generatePoint(portPosition.x, portPosition.y);
+			secondPoint.setLocked(true);
+			this.link.addPoint(lastPointModel, this.link.getPoints().length);
+			this.engine.repaintCanvas();
+			secondPoint.setLocked(false);
+		});
+
 	}
 
 	onMouseMove(event: MouseEvent) {
+		console.log('!!!!!');
 		const portPos = this.port.getPosition();
 
 		const zoomLevelPercentage = this.engine.getModel().getZoomLevel() / 100;
