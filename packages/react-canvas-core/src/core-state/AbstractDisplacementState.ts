@@ -2,11 +2,13 @@ import { State, StateOptions } from './State';
 import { Action, ActionEvent, InputType } from '../core-actions/Action';
 import { CanvasEngine } from '../CanvasEngine';
 
-export interface AbstractDisplacementStateEvent {
-	displacementX: number;
-	displacementY: number;
+export type VirtualDisplacement = {
 	virtualDisplacementX: number;
 	virtualDisplacementY: number;
+}
+export type AbstractDisplacementStateEvent = VirtualDisplacement & {
+	displacementX: number;
+	displacementY: number;
 	event: React.MouseEvent;
 }
 
@@ -47,9 +49,8 @@ export abstract class AbstractDisplacementState<E extends CanvasEngine = CanvasE
 					this.fireMouseMoved({
 						displacementX: event.clientX - this.initialX,
 						displacementY: event.clientY - this.initialY,
-						virtualDisplacementX: (event.clientX - this.initialX) / (this.engine.getModel().getZoomLevel() / 100.0),
-						virtualDisplacementY: (event.clientY - this.initialY) / (this.engine.getModel().getZoomLevel() / 100.0),
-						event: event
+						event: event,
+						...this.calculateVirtualDisplacement(event.clientX, event.clientY)
 					});
 				}
 			})
@@ -63,6 +64,13 @@ export abstract class AbstractDisplacementState<E extends CanvasEngine = CanvasE
 				}
 			})
 		);
+	}
+
+	calculateVirtualDisplacement(x: number, y: number): VirtualDisplacement {
+		return {
+			virtualDisplacementX: (x - this.initialX) / (this.engine.getModel().getZoomLevel() / 100.0),
+			virtualDisplacementY: (y - this.initialY) / (this.engine.getModel().getZoomLevel() / 100.0)
+		};
 	}
 
 	abstract fireMouseMoved(event: AbstractDisplacementStateEvent);
