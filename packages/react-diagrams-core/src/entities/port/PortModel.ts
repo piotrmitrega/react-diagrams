@@ -19,6 +19,8 @@ export enum PortModelAlignment {
 	RIGHT = 'right'
 }
 
+export const PORT_SIZE = 16;
+
 export interface PortModelListener extends BasePositionModelListener {
 	/**
 	 * fires when it first receives positional information

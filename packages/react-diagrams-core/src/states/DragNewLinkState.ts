@@ -5,7 +5,7 @@ import {
 	ActionEvent,
 	InputType
 } from '@piotrmitrega/react-canvas-core';
-import { PortModel } from '../entities/port/PortModel';
+import { PORT_SIZE, PortModel } from '../entities/port/PortModel';
 import { MouseEvent } from 'react';
 import { LinkModel } from '../entities/link/LinkModel';
 import { DiagramEngine } from '../DiagramEngine';
@@ -80,12 +80,12 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 							return;
 						}
 					}
-					// else if (model instanceof MultiPortNodeModel) {
-					// 	const clickPosition = new Point(event.event.clientX, event.event.clientY);
-					// 	model.linkToClosestPort(this.link, clickPosition, this.port, this.engine);
-					// 	this.engine.repaintCanvas();
-					// 	return;
-					// }
+					else if (model instanceof MultiPortNodeModel) {
+						this.link.setTargetPort(this.targetPort);
+						this.targetPort = null;
+						this.engine.repaintCanvas();
+						return;
+					}
 
 					if (!this.config.allowLooseLinks) {
 						this.link.remove();
@@ -138,33 +138,30 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 	}
 
 	onPortMouseLeave() {
-		//remove two points?
-		console.log('leaving', this.targetPort);
 		this.targetPort = null;
 		this.link.removePoint(this.link.getPoints()[this.link.getPoints().length - 2]);
-
 	}
 
 	onPortMouseEnter(port: PortModel) {
-		//add two points
-		console.log('entering', port);
 		this.targetPort = port;
 
 		const offset = port.calculateNormalOffset();
 
 		const offsetPosition = port.getPosition().clone();
 		offsetPosition.translate(offset.x, offset.y);
-		offsetPosition.translate(8, 8);
+		offsetPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
 
 		this.link.getLastPoint().setPosition(offsetPosition);
 
 		const portPosition = port.getPosition().clone();
-		portPosition.translate(8, 8);
+		portPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
 
 		this.engine.repaintCanvas();
 
 		const secondPoint = this.link.getPoints()[1];
 
+		// TODO: It would be probably better to move some stuff from link widget
+		// here so we don't have to wait for rerender
 		requestAnimationFrame(() => {
 			const lastPointModel = this.link.generatePoint(portPosition.x, portPosition.y);
 			secondPoint.setLocked(true);
@@ -176,7 +173,6 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 	}
 
 	onMouseMove(event: MouseEvent) {
-		console.log('!!!!!');
 		const portPos = this.port.getPosition();
 
 		const zoomLevelPercentage = this.engine.getModel().getZoomLevel() / 100;
