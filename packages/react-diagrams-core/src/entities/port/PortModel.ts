@@ -167,7 +167,7 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 	}
 
 	canLinkToPort(port: PortModel): boolean {
-		return true;
+		return port !== this;
 	}
 
 	isLocked() {
