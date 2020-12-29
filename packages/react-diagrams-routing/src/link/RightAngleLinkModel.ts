@@ -13,15 +13,14 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 			type: RightAngleLinkFactory.NAME,
 			...options
 		});
+
 		this.points.push(new PointModel({
 			link: this
 		}));
 
-		console.log(this.points.length)
 		this.lastHoverIndexOfPath = 0;
 		this._lastPathXdirection = false;
 		this._firstPathXdirection = false;
-		console.log(this)
 	}
 
 	setFirstAndLastPathsDirection() {
@@ -35,8 +34,29 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 				this._lastPathXdirection = dx > dy;
 			}
 		}
+	}
 
-		console.log('first', this._firstPathXdirection, 'last', this._lastPathXdirection);
+	adjustMiddlePoint(index: number) {
+		if (index === 0 || index > this.getPoints().length - 1) {
+			throw new Error(
+				`Point at index: ${index} is not a middle point. Points count: ${this.getPoints().length}`
+			);
+		}
+
+		const previousPoint = this.getPoints()[index - 1];
+		const nextPoint = this.getPoints()[index + 1];
+
+		if (previousPoint.getX() > nextPoint.getX()) {
+			this.getPoints()[index].setPosition(
+				previousPoint.getX(),
+				nextPoint.getY()
+			);
+		} else {
+			this.getPoints()[index].setPosition(
+				nextPoint.getX(),
+				previousPoint.getY()
+			);
+		}
 	}
 
 	// @ts-ignore

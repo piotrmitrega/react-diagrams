@@ -49,14 +49,11 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 						return;
 					}
 					this.link = this.port.createLinkModel();
-console.log(this.link)
 					// if no link is given, just eject the state
 					if (!this.link) {
 						this.eject();
 						return;
 					}
-					// this.link.addPoint(this.link.generatePoint(this.link.getFirstPoint().getX(), this.link.getFirstPoint().getY()));
-
 					this.link.setSelected(true);
 					this.link.setSourcePort(this.port);
 					this.engine.getModel().addLink(this.link);
@@ -70,33 +67,43 @@ console.log(this.link)
 				type: InputType.MOUSE_UP,
 				fire: (event: ActionEvent<MouseEvent>) => {
 					const model = this.engine.getMouseElement(event.event);
-					// check to see if we connected to a new port
+
 					if (model instanceof PortModel) {
 						if (this.port.canLinkToPort(model)) {
-							this.link.setTargetPort(model);
-							model.reportPosition();
-							this.engine.repaintCanvas();
-							return;
+							this.connectToPort(model);
 						} else {
-							this.link.remove();
-							this.engine.repaintCanvas();
-							return;
+							this.removeLink();
 						}
+						return;
 					}
-					else if (model instanceof MultiPortNodeModel) {
-						this.link.setTargetPort(this.targetPort);
-						this.targetPort = null;
-						this.engine.repaintCanvas();
+
+					if (model instanceof MultiPortNodeModel) {
+						this.connectToPort(this.targetPort);
 						return;
 					}
 
 					if (!this.config.allowLooseLinks) {
-						this.link.remove();
-						this.engine.repaintCanvas();
+						this.removeLink();
 					}
 				}
 			})
 		);
+	}
+
+	connectToPort(port: PortModel) {
+		this.link.setTargetPort(port);
+		this.link.setSelected(false);
+
+		port.reportPosition();
+
+		this.targetPort = null;
+
+		this.engine.repaintCanvas();
+	}
+
+	removeLink() {
+		this.link.remove();
+		this.engine.repaintCanvas();
 	}
 
 	getPortFromMouseEvent(event: MouseEvent): PortModel | null {
@@ -144,9 +151,7 @@ console.log(this.link)
 		this.link.removePoint(this.link.getPoints()[this.link.getPoints().length - 2]);
 	}
 
-	onPortMouseEnter(port: PortModel) {
-		this.targetPort = port;
-
+	moveLastPointToPortOffsetPosition(port: PortModel) {
 		const offset = port.calculateNormalOffset();
 
 		const offsetPosition = port.getPosition().clone();
@@ -154,51 +159,31 @@ console.log(this.link)
 		offsetPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
 
 		this.link.getLastPoint().setPosition(offsetPosition);
+	}
 
+	addPointAtPort(port: PortModel) {
 		const portPosition = port.getPosition().clone();
 		portPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
 
-		this.engine.repaintCanvas();
+		const lastPointModel = this.link.generatePoint(portPosition.x, portPosition.y);
 
-		const secondPoint = this.link.getPoints()[2];
+		this.link.addPoint(lastPointModel, this.link.getPoints().length);
+	}
 
+	onPortMouseEnter(port: PortModel) {
+		this.targetPort = port;
 
+		this.moveLastPointToPortOffsetPosition(port);
+		this.addPointAtPort(port);
 
-		// TODO: It would be probably better to move some stuff from link widget
-		// here so we don't have to wait for rerender
-		// requestAnimationFrame(() => {
-			const lastPointModel = this.link.generatePoint(portPosition.x, portPosition.y);
-			// secondPoint.setLocked(true);
-			this.link.addPoint(lastPointModel, this.link.getPoints().length);
-
-		let pointLeft = this.link.getPoints()[0];
-		let pointRight = this.link.getPoints()[2];
-		let hadToSwitch = false;
-		if (pointLeft.getX() > pointRight.getX()) {
-			pointLeft = this.link.getPoints()[2];
-			pointRight = this.link.getPoints()[0];
-			hadToSwitch = true;
+		if (this.link instanceof RightAngleLinkModel) {
+			(this.link as RightAngleLinkModel).adjustMiddlePoint(1);
 		}
-		this.link.getPoints()[1].setPosition(
-			!hadToSwitch
-				? pointRight.getX()
-				: pointLeft.getX(),
-			hadToSwitch
-				? pointRight.getY()
-				: pointLeft.getY()
-		);
-
-
 
 		this.engine.repaintCanvas();
-
-		// secondPoint.setLocked(false);
-		// });
-
 	}
 
 	onMouseMove(event: MouseEvent) {
-
 		const portPos = this.port.getPosition();
 
 		const zoomLevelPercentage = this.engine.getModel().getZoomLevel() / 100;
@@ -214,25 +199,9 @@ console.log(this.link)
 
 		this.link.getLastPoint().setPosition(linkNextX, linkNextY);
 
-		let pointLeft = this.link.getPoints()[0];
-		let pointRight = this.link.getPoints()[this.link.getPoints().length - 1];
-		let hadToSwitch = false;
-		if (pointLeft.getX() > pointRight.getX()) {
-			pointLeft = this.link.getPoints()[this.link.getPoints().length - 1];
-			pointRight = this.link.getPoints()[0];
-			hadToSwitch = true;
+		if (this.link instanceof RightAngleLinkModel) {
+			(this.link as RightAngleLinkModel).adjustMiddlePoint(1);
 		}
-		this.link.getPoints()[1].setPosition(
-			!hadToSwitch
-				? pointRight.getX()
-				: pointLeft.getX(),
-			hadToSwitch
-				? pointRight.getY()
-				: pointLeft.getY()
-		);
-
-
-		// (this.link as unknown as RightAngleLinkModel).setFirstAndLastPathsDirection();
 
 		this.engine.repaintCanvas();
 	}
