@@ -11,7 +11,9 @@ import {
 	BaseModelGenerics,
 	BaseModelListener,
 	DeserializeEvent,
-	ModelGeometryInterface, SerializedBaseModel, SerializedBasePositionModel
+	ModelGeometryInterface,
+	SerializedBaseModel,
+	SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
 
 export interface LinkModelListener extends BaseModelListener {
@@ -317,6 +319,9 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		if (this.points.length > 2) {
 			this.points.splice(0, this.points.length - 2);
 		}
+	}
+
+	onLastPointDragged() {
 	}
 
 	onDragged() {

@@ -36,6 +36,10 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 		}
 	}
 
+	onLastPointDragged() {
+		this.adjustMiddlePoint(1);
+	}
+
 	adjustMiddlePoint(index: number) {
 		if (index === 0 || index > this.getPoints().length - 1) {
 			throw new Error(

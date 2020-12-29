@@ -10,7 +10,6 @@ import { MouseEvent } from 'react';
 import { LinkModel } from '../entities/link/LinkModel';
 import { DiagramEngine } from '../DiagramEngine';
 import { MultiPortNodeModel } from '../entities/node/MultiPortNodeModel';
-import { RightAngleLinkModel } from '@piotrmitrega/react-diagrams-routing';
 
 export interface DragNewLinkStateOptions {
 	/**
@@ -176,9 +175,7 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 		this.moveLastPointToPortOffsetPosition(port);
 		this.addPointAtPort(port);
 
-		if (this.link instanceof RightAngleLinkModel) {
-			(this.link as RightAngleLinkModel).adjustMiddlePoint(1);
-		}
+		this.link.onLastPointDragged();
 
 		this.engine.repaintCanvas();
 	}
@@ -198,10 +195,7 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 		const linkNextY = portPos.y - engineOffsetY + (initialYRelative - portPos.y) + virtualDisplacementY;
 
 		this.link.getLastPoint().setPosition(linkNextX, linkNextY);
-
-		if (this.link instanceof RightAngleLinkModel) {
-			(this.link as RightAngleLinkModel).adjustMiddlePoint(1);
-		}
+		this.link.onLastPointDragged();
 
 		this.engine.repaintCanvas();
 	}
