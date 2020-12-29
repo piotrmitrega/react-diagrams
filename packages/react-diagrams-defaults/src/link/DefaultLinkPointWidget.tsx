@@ -26,6 +26,12 @@ export class DefaultLinkPointWidget extends React.Component<DefaultLinkPointWidg
 		};
 	}
 
+	getPointIndex = () => {
+		return this.props.point.getLink().getPoints().findIndex(
+			(p) => p.getID() === this.props.point.getID()
+		);
+	};
+
 	render() {
 		const { point } = this.props;
 		return (
@@ -36,6 +42,12 @@ export class DefaultLinkPointWidget extends React.Component<DefaultLinkPointWidg
 					r={5}
 					fill={this.state.selected || this.props.point.isSelected() ? this.props.colorSelected : this.props.color}
 				/>
+				<text
+					x={point.getPosition().x}
+					y={point.getPosition().y}
+				>
+					{this.getPointIndex()}
+				</text>
 				<S.PointTop
 					className="point"
 					onMouseLeave={() => {
