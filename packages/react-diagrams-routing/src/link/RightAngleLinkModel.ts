@@ -7,14 +7,21 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 	lastHoverIndexOfPath: number;
 	private _lastPathXdirection: boolean;
 	private _firstPathXdirection: boolean;
+
 	constructor(options: DefaultLinkModelOptions = {}) {
 		super({
 			type: RightAngleLinkFactory.NAME,
 			...options
 		});
+		this.points.push(new PointModel({
+			link: this
+		}));
+
+		console.log(this.points.length)
 		this.lastHoverIndexOfPath = 0;
 		this._lastPathXdirection = false;
 		this._firstPathXdirection = false;
+		console.log(this)
 	}
 
 	setFirstAndLastPathsDirection() {
@@ -28,6 +35,8 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 				this._lastPathXdirection = dx > dy;
 			}
 		}
+
+		console.log('first', this._firstPathXdirection, 'last', this._lastPathXdirection);
 	}
 
 	// @ts-ignore
@@ -51,6 +60,7 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 	getLastPathXdirection(): boolean {
 		return this._lastPathXdirection;
 	}
+
 	getFirstPathXdirection(): boolean {
 		return this._firstPathXdirection;
 	}

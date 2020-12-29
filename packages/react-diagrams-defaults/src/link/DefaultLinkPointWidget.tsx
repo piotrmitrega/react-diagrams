@@ -29,7 +29,7 @@ export class DefaultLinkPointWidget extends React.Component<DefaultLinkPointWidg
 	render() {
 		const { point } = this.props;
 		return (
-			<g>
+			<g id={this.props.point.getID()}>
 				<circle
 					cx={point.getPosition().x}
 					cy={point.getPosition().y}

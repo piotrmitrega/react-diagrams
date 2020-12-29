@@ -10,6 +10,7 @@ import { MouseEvent } from 'react';
 import { LinkModel } from '../entities/link/LinkModel';
 import { DiagramEngine } from '../DiagramEngine';
 import { MultiPortNodeModel } from '../entities/node/MultiPortNodeModel';
+import { RightAngleLinkModel } from '@piotrmitrega/react-diagrams-routing';
 
 export interface DragNewLinkStateOptions {
 	/**
@@ -48,12 +49,14 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 						return;
 					}
 					this.link = this.port.createLinkModel();
-
+console.log(this.link)
 					// if no link is given, just eject the state
 					if (!this.link) {
 						this.eject();
 						return;
 					}
+					// this.link.addPoint(this.link.generatePoint(this.link.getFirstPoint().getX(), this.link.getFirstPoint().getY()));
+
 					this.link.setSelected(true);
 					this.link.setSourcePort(this.port);
 					this.engine.getModel().addLink(this.link);
@@ -113,7 +116,6 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 		return null;
 	}
 
-
 	/**
 	 * Calculates the link's far-end point position on mouse move.
 	 * In order to be as precise as possible the mouse initialXRelative & initialYRelative are taken into account as well
@@ -158,21 +160,45 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 
 		this.engine.repaintCanvas();
 
-		const secondPoint = this.link.getPoints()[1];
+		const secondPoint = this.link.getPoints()[2];
+
+
 
 		// TODO: It would be probably better to move some stuff from link widget
 		// here so we don't have to wait for rerender
-		requestAnimationFrame(() => {
+		// requestAnimationFrame(() => {
 			const lastPointModel = this.link.generatePoint(portPosition.x, portPosition.y);
-			secondPoint.setLocked(true);
+			// secondPoint.setLocked(true);
 			this.link.addPoint(lastPointModel, this.link.getPoints().length);
-			this.engine.repaintCanvas();
-			secondPoint.setLocked(false);
-		});
+
+		let pointLeft = this.link.getPoints()[0];
+		let pointRight = this.link.getPoints()[2];
+		let hadToSwitch = false;
+		if (pointLeft.getX() > pointRight.getX()) {
+			pointLeft = this.link.getPoints()[2];
+			pointRight = this.link.getPoints()[0];
+			hadToSwitch = true;
+		}
+		this.link.getPoints()[1].setPosition(
+			!hadToSwitch
+				? pointRight.getX()
+				: pointLeft.getX(),
+			hadToSwitch
+				? pointRight.getY()
+				: pointLeft.getY()
+		);
+
+
+
+		this.engine.repaintCanvas();
+
+		// secondPoint.setLocked(false);
+		// });
 
 	}
 
 	onMouseMove(event: MouseEvent) {
+
 		const portPos = this.port.getPosition();
 
 		const zoomLevelPercentage = this.engine.getModel().getZoomLevel() / 100;
@@ -187,6 +213,27 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 		const linkNextY = portPos.y - engineOffsetY + (initialYRelative - portPos.y) + virtualDisplacementY;
 
 		this.link.getLastPoint().setPosition(linkNextX, linkNextY);
+
+		let pointLeft = this.link.getPoints()[0];
+		let pointRight = this.link.getPoints()[this.link.getPoints().length - 1];
+		let hadToSwitch = false;
+		if (pointLeft.getX() > pointRight.getX()) {
+			pointLeft = this.link.getPoints()[this.link.getPoints().length - 1];
+			pointRight = this.link.getPoints()[0];
+			hadToSwitch = true;
+		}
+		this.link.getPoints()[1].setPosition(
+			!hadToSwitch
+				? pointRight.getX()
+				: pointLeft.getX(),
+			hadToSwitch
+				? pointRight.getY()
+				: pointLeft.getY()
+		);
+
+
+		// (this.link as unknown as RightAngleLinkModel).setFirstAndLastPathsDirection();
+
 		this.engine.repaintCanvas();
 	}
 }

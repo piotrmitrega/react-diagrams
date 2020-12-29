@@ -225,35 +225,37 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		let dy = Math.abs(points[0].getY() - points[points.length - 1].getY());
 
 		// When new link add middle point to get everywhere 90° angle
-		if (this.props.link.getTargetPort() === null && points.length === 2) {
-			this.props.link.addPoint(
-				new PointModel({
-					link: this.props.link,
-					position: new Point(pointLeft.getX(), Math.max(pointLeft.getY(), pointRight.getY()))
-				}),
-				1
-			);
-		}
+		// if (this.props.link.getTargetPort() === null && points.length === 2) {
+		// 	console.log('add midpitn')
+		// 	this.props.link.addPoint(
+		// 		new PointModel({
+		// 			link: this.props.link,
+		// 			position: new Point(pointLeft.getX(), Math.max(pointLeft.getY(), pointRight.getY()))
+		// 		}),
+		// 		1
+		// 	);
+		// }
 
-			// When new link is moving and not connected to target port move with middle point
-			// TODO: @DanielLazarLDAPPS This will be better to update in DragNewLinkState
-		//  in function fireMouseMoved to avoid calling this unexpectedly e.g. after Deserialize
-		else if (this.props.link.getTargetPort() === null && this.props.link.getSourcePort() !== null) {
-			points[1].setPosition(
-				!hadToSwitch
-					? pointRight.getX()
-					: pointLeft.getX(),
-				hadToSwitch
-					? pointRight.getY()
-					: pointLeft.getY()
-			);
+		// 	// When new link is moving and not connected to target port move with middle point
+		// 	// TODO: @DanielLazarLDAPPS This will be better to update in DragNewLinkState
+		// //  in function fireMouseMoved to avoid calling this unexpectedly e.g. after Deserialize
+		// else if (this.props.link.getTargetPort() === null && this.props.link.getSourcePort() !== null) {
+		// 	points[1].setPosition(
+		// 		!hadToSwitch
+		// 			? pointRight.getX()
+		// 			: pointLeft.getX(),
+		// 		hadToSwitch
+		// 			? pointRight.getY()
+		// 			: pointLeft.getY()
+		// 	);
+		//
+		// 	this.props.link.setFirstAndLastPathsDirection();
+		// }
 
-			this.props.link.setFirstAndLastPathsDirection();
-		}
 			// Render was called but link is not moved but user.
 			// Node is moved and in this case fix coordinates to get 90° angle.
 		// For loop just for first and last path
-		else if (!this.state.canDrag && points.length > 2) {
+		 if (this.props.link.getTargetPort() !== null && !this.state.canDrag && points.length > 2) {
 			// Those points and its position only will be moved
 			for (let i = 1; i < points.length; i += points.length - 2) {
 				if (i - 1 === 0) {
