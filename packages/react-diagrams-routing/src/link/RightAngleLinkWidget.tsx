@@ -169,6 +169,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		let dx = Math.abs(points[index].getX() - points[index + 1].getX());
 		let dy = Math.abs(points[index].getY() - points[index + 1].getY());
 
+		console.log("drag?")
 		// moving with y direction
 		if (dx === 0) {
 			this.calculatePositions(points, event, index, 'x');
@@ -300,8 +301,10 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 								this.dragging_index = j;
 								// Register mouse move event to track mouse position
 								// On mouse up these events are unregistered check "this.handleUp"
-								window.addEventListener('mousemove', this.handleMove);
-								window.addEventListener('mouseup', this.handleUp);
+								if(this.props.link.getTargetPort()) {
+									window.addEventListener('mousemove', this.handleMove);
+									window.addEventListener('mouseup', this.handleUp);
+								}
 							}
 						},
 						onMouseEnter: (event: MouseEvent) => {
