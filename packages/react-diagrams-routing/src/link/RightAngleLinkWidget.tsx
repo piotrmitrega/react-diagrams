@@ -177,7 +177,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		} else if (dy === 0) {
 			this.calculatePositions(points, event, index, 'y');
 		}
-		this.props.link.setFirstAndLastPathsDirection();
+		this.props.link.calculateDirections();
 		this.handleOnDraggedEvent();
 	}
 
@@ -219,6 +219,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		// Node is moved and in this case fix coordinates to get 90° angle.
 		// For loop just for first and last path
 		if (this.props.link.getTargetPort() !== null && !this.state.canDrag && points.length > 2) {
+			console.log("This crap")
 			// Those points and its position only will be moved
 			for (let i = 1; i < points.length; i += points.length - 2) {
 				if (i - 1 === 0) {

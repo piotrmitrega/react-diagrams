@@ -128,3 +128,5 @@ export default class PathFinding {
 		return PF.Util.compressPath(pathCoords);
 	}
 }
+
+export { PathFinding}
