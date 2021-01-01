@@ -28,7 +28,20 @@ export class RightAngleLinkPathDirections {
 		}
 	};
 
-	isDirectionChangedAfterPoint(pointIndex: number) {
+	isDirectionChangedBeforePoint = (pointIndex: number): boolean => {
+		if (pointIndex === 0 || pointIndex > this.points.length - 1) {
+			throw new Error(`Point out of bounds: ${pointIndex}. Points count: ${this.points.length}`);
+		}
+
+		const directionIndex = pointIndex - 1;
+		const directionAtPoint = this.directions[pointIndex - 1];
+
+		return this.directions
+			.slice(0, directionIndex)
+			.some(previousDirection => previousDirection !== directionAtPoint);
+	}
+
+	isDirectionChangedAfterPoint = (pointIndex: number): boolean => {
 		if (pointIndex === 0 || pointIndex > this.points.length - 1) {
 			throw new Error(`Point out of bounds: ${pointIndex}. Points count: ${this.points.length}`);
 		}
@@ -41,11 +54,15 @@ export class RightAngleLinkPathDirections {
 			.some(nextDirection => nextDirection !== directionAtPoint);
 	}
 
-	getLastPathDirection(): Direction {
+	getPathDirection = (pointIndex: number): Direction => {
+		return this.directions[pointIndex - 1];
+	}
+
+	getLastPathDirection = (): Direction => {
 		return this.directions[this.directions.length - 1];
 	}
 
-	getFirstPathDirection(): Direction {
+	getFirstPathDirection = (): Direction  => {
 		return this.directions[0];
 	}
 }

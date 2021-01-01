@@ -1,9 +1,9 @@
 import { DiagramEngine, PathModel, PortModel } from '@piotrmitrega/react-diagrams-core';
 import { AbstractModelFactory, GenerateModelEvent } from '@piotrmitrega/react-canvas-core';
 import PathFinding from '../engine/PathFinding';
-import { PathFindingLinkFactory } from '..';
-import { RightAngleLinkFactory } from '..';
+import { PathFindingLinkFactory, RightAngleLinkFactory } from '..';
 import { Point } from '@piotrmitrega/geometry';
+import { Direction, RightAngleLinkPathDirections } from '../link/RightAngleLinkPathDirections';
 
 export class RightAnglePathFactory extends AbstractModelFactory<PathModel, DiagramEngine> {
 	private pathFinding: PathFinding;
@@ -36,6 +36,41 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 		return points.map(p => new Point(p[0], p[1]));
 	}
 
+	alignPoint(referencePoint: Point, targetPoint: Point, direction: Direction): Point {
+		return direction === Direction.X
+			? new Point(targetPoint.x, referencePoint.y)
+			: new Point(referencePoint.x, targetPoint.y);
+	};
+
+	//align coordinates of pathfinding path to match first and last point
+	alignPath(path: Point[]): Point[] {
+		const directions = new RightAngleLinkPathDirections(path);
+		const alignedPath = [path[path.length - 1]];
+
+		let turnedLastTime = false;
+
+		for (let i = path.length - 2; i >= 1; i--) {
+			if (directions.isDirectionChangedBeforePoint(i)) {
+				const direction = directions.getPathDirection(i + 1);
+
+				alignedPath.push(this.alignPoint(path[i + 1], path[i], direction));
+			} else {
+				const direction = directions.getPathDirection(i);
+
+				if (turnedLastTime) {
+					alignedPath.push(this.alignPoint(path[0], path[i], direction));
+				} else {
+					turnedLastTime = true;
+					alignedPath.push(this.alignPoint(path[0], path[i + 1], direction));
+				}
+			}
+		}
+
+		alignedPath.push(path[0]);
+
+		return alignedPath.reverse();
+	}
+
 	generateModel(event: GenerateModelEvent): PathModel {
 		const sourcePort: PortModel = event.initialConfig.sourcePort;
 		const targetPort: PortModel = event.initialConfig.targetPort;
@@ -45,11 +80,16 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 		const lastPoint = targetPort.getCenter();
 
 		const calculatedPath = this.findPath(firstPoint, portOffsetPoint);
-
-		const points = [
+		const pathToAlign = [
 			firstPoint,
 			...calculatedPath,
-			portOffsetPoint,
+			portOffsetPoint
+		];
+
+		const alignedPath = this.alignPath(pathToAlign);
+
+		const points = [
+			...alignedPath,
 			lastPoint
 		];
 
