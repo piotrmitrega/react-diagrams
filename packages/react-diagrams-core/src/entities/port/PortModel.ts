@@ -163,6 +163,8 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 		this.reportedPosition = true;
 		this.reportPosition();
 
+		console.log(this.width, this.height);
+
 		this.resumeFiringEvents();
 	}
 
@@ -204,4 +206,21 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 			isXAxis ? 0 : direction * translationValue
 		);
 	};
+
+	getOffsetPosition = (): Point => {
+		const offset = this.calculateNormalOffset();
+
+		const offsetPosition = this.getPosition().clone();
+		offsetPosition.translate(offset.x, offset.y);
+		offsetPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
+
+		return offsetPosition;
+	}
+
+	getCenterPosition = () => {
+		const portPosition = this.getPosition().clone();
+		portPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
+
+		return portPosition;
+	}
 }

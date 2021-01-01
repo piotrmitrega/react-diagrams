@@ -2,18 +2,20 @@ import { NodeModel } from './entities/node/NodeModel';
 import { PortModel } from './entities/port/PortModel';
 import { LinkModel } from './entities/link/LinkModel';
 import { LabelModel } from './entities/label/LabelModel';
-import { Point, Rectangle, Polygon } from '@piotrmitrega/geometry';
+import { Point, Polygon, Rectangle } from '@piotrmitrega/geometry';
 import { MouseEvent } from 'react';
 import {
 	AbstractModelFactory,
 	AbstractReactFactory,
 	BaseModel,
 	CanvasEngine,
+	CanvasEngineListener,
+	CanvasEngineOptions,
 	FactoryBank,
 	Toolkit
 } from '@piotrmitrega/react-canvas-core';
-import { CanvasEngineListener, CanvasEngineOptions } from '@piotrmitrega/react-canvas-core';
 import { DiagramModel } from './models/DiagramModel';
+import { PathModel } from './entities/path/PathModel';
 
 /**
  * Passed as a parameter to the DiagramWidget
@@ -23,6 +25,7 @@ export class DiagramEngine extends CanvasEngine<CanvasEngineListener, DiagramMod
 	protected linkFactories: FactoryBank<AbstractReactFactory<LinkModel, DiagramEngine>>;
 	protected portFactories: FactoryBank<AbstractModelFactory<PortModel, DiagramEngine>>;
 	protected labelFactories: FactoryBank<AbstractReactFactory<LabelModel, DiagramEngine>>;
+	protected pathFactories: FactoryBank<AbstractModelFactory<PathModel, DiagramEngine>>;
 
 	maxNumberPointsPerLink: number;
 
@@ -35,6 +38,7 @@ export class DiagramEngine extends CanvasEngine<CanvasEngineListener, DiagramMod
 		this.linkFactories = new FactoryBank();
 		this.portFactories = new FactoryBank();
 		this.labelFactories = new FactoryBank();
+		this.pathFactories = new FactoryBank();
 
 		const setup = (factory: FactoryBank) => {
 			factory.registerListener({
@@ -51,6 +55,7 @@ export class DiagramEngine extends CanvasEngine<CanvasEngineListener, DiagramMod
 		setup(this.linkFactories);
 		setup(this.portFactories);
 		setup(this.labelFactories);
+		setup(this.pathFactories);
 	}
 
 	/**
@@ -106,32 +111,39 @@ export class DiagramEngine extends CanvasEngine<CanvasEngineListener, DiagramMod
 		return this.portFactories;
 	}
 
+	getPathFactories() {
+		return this.pathFactories;
+	}
+
 	getFactoryForNode<F extends AbstractReactFactory<NodeModel, DiagramEngine>>(node: NodeModel | string) {
-		if (typeof node === 'string') {
-			return this.nodeFactories.getFactory(node);
-		}
-		return this.nodeFactories.getFactory(node.getType());
+		const type = typeof node === 'string' ? node : node.getType();
+
+		return this.nodeFactories.getFactory(type);
 	}
 
 	getFactoryForLink<F extends AbstractReactFactory<LinkModel, DiagramEngine>>(link: LinkModel | string) {
-		if (typeof link === 'string') {
-			return this.linkFactories.getFactory<F>(link);
-		}
-		return this.linkFactories.getFactory<F>(link.getType());
+		const type = typeof link === 'string' ? link : link.getType();
+
+		return this.linkFactories.getFactory<F>(type);
 	}
 
 	getFactoryForLabel<F extends AbstractReactFactory<LabelModel, DiagramEngine>>(label: LabelModel) {
-		if (typeof label === 'string') {
-			return this.labelFactories.getFactory(label);
-		}
-		return this.labelFactories.getFactory(label.getType());
+		const type = typeof label === 'string' ? label : label.getType();
+
+		return this.labelFactories.getFactory(type);
 	}
 
 	getFactoryForPort<F extends AbstractModelFactory<PortModel, DiagramEngine>>(port: PortModel) {
-		if (typeof port === 'string') {
-			return this.portFactories.getFactory<F>(port);
-		}
-		return this.portFactories.getFactory<F>(port.getType());
+		const type = typeof port === 'string' ? port : port.getType();
+
+		return this.portFactories.getFactory<F>(type);
+	}
+
+	getPathFactoryForLink<F extends AbstractModelFactory<PathModel, DiagramEngine>>(link: LinkModel) {
+		const type = typeof link === 'string' ? link : link.getType();
+
+		return this.pathFactories.getFactory<F>(type)
+			|| this.pathFactories.getFactory<F>('default');
 	}
 
 	generateWidgetForLink(link: LinkModel): JSX.Element {
@@ -157,10 +169,10 @@ export class DiagramEngine extends CanvasEngine<CanvasEngineListener, DiagramMod
 		if (selector === null) {
 			throw new Error(
 				'Cannot find Node Port element with nodeID: [' +
-					port.getParent().getID() +
-					'] and name: [' +
-					port.getName() +
-					']'
+				port.getParent().getID() +
+				'] and name: [' +
+				port.getName() +
+				']'
 			);
 		}
 		return selector;

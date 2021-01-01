@@ -265,7 +265,7 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 		}
 	};
 
-	generateDynamicPathPoints(pathCoords: number[][]) {
+	generateDynamicPathPoints(pathCoords: number[][]): number[][] {
 		let path = Path();
 		console.log(pathCoords)
 		path = path.moveto(pathCoords[0][0] * this.ROUTING_SCALING_FACTOR, pathCoords[0][1] * this.ROUTING_SCALING_FACTOR);

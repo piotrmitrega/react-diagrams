@@ -79,7 +79,7 @@ export class PathFindingLinkWidget extends React.Component<PathFindingLinkWidget
 		var paths = [];
 
 		// first step: calculate a direct path between the points being linked
-		const directPathCoords = this.pathFinding.calculateDirectPath(_.first(points), _.last(points));
+		const directPathCoords = this.pathFinding.calculateDirectPath(_.first(points).getPosition(), _.last(points).getPosition());
 
 		const routingMatrix = this.props.factory.getRoutingMatrix();
 		// now we need to extract, from the routing matrix, the very first walkable points
