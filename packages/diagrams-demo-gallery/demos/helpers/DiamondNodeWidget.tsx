@@ -77,6 +77,26 @@ export class DiamondNodeWidget extends React.Component<DiamondNodeWidgetProps> {
 				</PortWidget>
 				<PortWidget
 					style={{
+						top: - 8,
+						left: -8,
+						position: 'absolute'
+					}}
+					port={this.props.node.getPort(PortModelAlignment.TOP_LEFT)}
+					engine={this.props.engine}>
+					<S.Port />
+				</PortWidget>
+				<PortWidget
+					style={{
+						top: - 8,
+						right: -8,
+						position: 'absolute'
+					}}
+					port={this.props.node.getPort(PortModelAlignment.TOP_RIGHT)}
+					engine={this.props.engine}>
+					<S.Port />
+				</PortWidget>
+				<PortWidget
+					style={{
 						left: this.props.size / 2 - 8,
 						top: -8,
 						position: 'absolute'
@@ -102,6 +122,26 @@ export class DiamondNodeWidget extends React.Component<DiamondNodeWidgetProps> {
 						position: 'absolute'
 					}}
 					port={this.props.node.getPort(PortModelAlignment.BOTTOM)}
+					engine={this.props.engine}>
+					<S.Port />
+				</PortWidget>
+				<PortWidget
+					style={{
+						left: - 8,
+						top: this.props.size - 8,
+						position: 'absolute'
+					}}
+					port={this.props.node.getPort(PortModelAlignment.BOTTOM_LEFT)}
+					engine={this.props.engine}>
+					<S.Port />
+				</PortWidget>
+				<PortWidget
+					style={{
+						right: - 8,
+						top: this.props.size - 8,
+						position: 'absolute'
+					}}
+					port={this.props.node.getPort(PortModelAlignment.BOTTOM_RIGHT)}
 					engine={this.props.engine}>
 					<S.Port />
 				</PortWidget>

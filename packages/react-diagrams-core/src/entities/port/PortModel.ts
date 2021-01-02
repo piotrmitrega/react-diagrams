@@ -14,8 +14,12 @@ import {
 
 export enum PortModelAlignment {
 	TOP = 'top',
+	TOP_LEFT = 'top-left',
+	TOP_RIGHT = 'top-right',
 	LEFT = 'left',
 	BOTTOM = 'bottom',
+	BOTTOM_LEFT = 'bottom-left',
+	BOTTOM_RIGHT = 'bottom-right',
 	RIGHT = 'right'
 }
 
@@ -213,12 +217,12 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 		offsetPosition.translate(this.width / 2, this.height / 2);
 
 		return offsetPosition;
-	}
+	};
 
 	getCenterPosition = () => {
 		const portPosition = this.getPosition().clone();
 		portPosition.translate(this.width / 2, this.height / 2);
 
 		return portPosition;
-	}
+	};
 }
