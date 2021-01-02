@@ -19,8 +19,6 @@ export enum PortModelAlignment {
 	RIGHT = 'right'
 }
 
-export const PORT_SIZE = 16;
-
 export interface PortModelListener extends BasePositionModelListener {
 	/**
 	 * fires when it first receives positional information
@@ -212,14 +210,14 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 
 		const offsetPosition = this.getPosition().clone();
 		offsetPosition.translate(offset.x, offset.y);
-		offsetPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
+		offsetPosition.translate(this.width / 2, this.height / 2);
 
 		return offsetPosition;
 	}
 
 	getCenterPosition = () => {
 		const portPosition = this.getPosition().clone();
-		portPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
+		portPosition.translate(this.width / 2, this.height / 2);
 
 		return portPosition;
 	}
