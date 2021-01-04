@@ -21,17 +21,24 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 			startPoint,
 			endPoint
 		);
-
-		const routingMatrix = this.pathFindingFactory.getRoutingMatrix();
-		const smartLink = this.pathFinding.calculateLinkStartEndCoords(routingMatrix, directPathCoords);
-		const { start, end, pathToStart, pathToEnd } = smartLink;
-
-		const simplifiedPath = this.pathFinding.calculateDynamicPath(routingMatrix, start, end, pathToStart, pathToEnd);
-		const points = this.pathFindingFactory.generateDynamicPathPoints(simplifiedPath);
-		// remove first point since it's known
-		points.splice(0, 1);
-		// we know the last point and for some reason it is duplicated, that's why removing 2
-		points.splice(points.length - 2, 2);
+		//
+		// console.log('direct', startPoint, endPoint, directPathCoords)
+		// const routingMatrix = this.pathFindingFactory.getRoutingMatrix();
+		// console.log('routing', routingMatrix);
+		// console.log('routing with direct path', this.pathFindingFactory.drawOnMatrix(routingMatrix, directPathCoords));
+		//
+		// const smartLink = this.pathFinding.calculateLinkStartEndCoords(routingMatrix, directPathCoords);
+		// const { start, end, pathToStart, pathToEnd } = smartLink;
+		//
+		// console.log(smartLink)
+		// const simplifiedPath = this.pathFinding.calculateDynamicPath(routingMatrix, start, end, pathToStart, pathToEnd);
+		// // const simplifiedPath = this.pathFinding.calculateDynamicPath(routingMatrix, start, end, [[]], [[]]);
+		// console.log('routing with simple path', this.pathFindingFactory.drawOnMatrix(routingMatrix, simplifiedPath));
+		const points = this.pathFindingFactory.generateDynamicPathPoints(directPathCoords);
+		// // remove first point since it's known
+		// points.splice(0, 1);
+		// // we know the last point and for some reason it is duplicated, that's why removing 2
+		// points.splice(points.length - 2, 2);
 
 		return points.map(p => new Point(p[0], p[1]));
 	}
@@ -75,7 +82,7 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 		const sourcePort: PortModel = event.initialConfig.sourcePort;
 		const targetPort: PortModel = event.initialConfig.targetPort;
 
-		const firstPoint = sourcePort.getCenter();
+		const firstPoint = sourcePort.getOffsetPosition();
 		const portOffsetPoint = targetPort.getOffsetPosition();
 		const lastPoint = targetPort.getCenter();
 
@@ -89,6 +96,7 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 		const alignedPath = this.alignPath(pathToAlign);
 
 		const points = [
+			sourcePort.getCenter(),
 			...alignedPath,
 			lastPoint
 		];

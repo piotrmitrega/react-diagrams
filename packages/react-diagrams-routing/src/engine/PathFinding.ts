@@ -1,4 +1,5 @@
 import * as PF from 'pathfinding';
+import { DiagonalMovement } from 'pathfinding';
 import { PathFindingLinkFactory } from '../link/PathFindingLinkFactory';
 import { Point } from '@piotrmitrega/geometry';
 
@@ -8,14 +9,20 @@ is individually represented. Using the factor below, we combine values in order
 to achieve the best trade-off between accuracy and performance.
 */
 
-const pathFinderInstance = new PF.JumpPointFinder({
+const pathFinderInstance = new PF.BiAStarFinder({
 	heuristic: PF.Heuristic.manhattan,
-	diagonalMovement: PF.DiagonalMovement.Never
+	diagonalMovement: DiagonalMovement.Never,
+	weight: 5
 });
+// const pathFinderInstance = new PF.JumpPointFinder({
+// 	heuristic: PF.Heuristic.manhattan,
+// 	diagonalMovement: PF.DiagonalMovement.Never
+// });
 
 export default class PathFinding {
 	instance: any;
 	factory: PathFindingLinkFactory;
+	routingGrid: PF.Grid;
 
 	constructor(factory: PathFindingLinkFactory) {
 		this.instance = pathFinderInstance;
@@ -27,16 +34,31 @@ export default class PathFinding {
 	 * finds a direct path from point A to B.
 	 */
 	calculateDirectPath(from: Point, to: Point): number[][] {
-		const matrix = this.factory.getCanvasMatrix();
+		const matrix = this.factory.getRoutingMatrix();
 		const grid = new PF.Grid(matrix);
 
-		return pathFinderInstance.findPath(
+		console.log(this.factory.drawOnMatrix(matrix, [
+			[this.factory.translateRoutingX(Math.floor(from.x / this.factory.ROUTING_SCALING_FACTOR)),
+				this.factory.translateRoutingY(Math.floor(from.y / this.factory.ROUTING_SCALING_FACTOR))],
+			[this.factory.translateRoutingX(Math.floor(to.x / this.factory.ROUTING_SCALING_FACTOR)),
+				this.factory.translateRoutingY(Math.floor(to.y / this.factory.ROUTING_SCALING_FACTOR))]
+		]));
+
+		const path = pathFinderInstance.findPath(
 			this.factory.translateRoutingX(Math.floor(from.x / this.factory.ROUTING_SCALING_FACTOR)),
 			this.factory.translateRoutingY(Math.floor(from.y / this.factory.ROUTING_SCALING_FACTOR)),
 			this.factory.translateRoutingX(Math.floor(to.x / this.factory.ROUTING_SCALING_FACTOR)),
 			this.factory.translateRoutingY(Math.floor(to.y / this.factory.ROUTING_SCALING_FACTOR)),
 			grid
 		);
+
+		const mappedPath = path.map((coords) => [
+			this.factory.translateRoutingX(coords[0], true),
+			this.factory.translateRoutingY(coords[1], true)
+		]);
+		// console.log(path, mappedPath)
+		return PF.Util.compressPath(mappedPath);
+		// return mappedPath;
 	}
 
 	/**
@@ -97,6 +119,21 @@ export default class PathFinding {
 		};
 	}
 
+	//
+	// calc(		routingMatrix: number[][],
+	// 				 start: {
+	// 					 x: number;
+	// 					 y: number;
+	// 				 },
+	// 				 end: {
+	// 					 x: number;
+	// 					 y: number;
+	// 				 },
+	// ) {
+	// 	const grid = new PF.Grid(routingMatrix);
+	// 	const dynamicPath = pathFinderInstance.findPath(start.x, start.y, end.x, end.y, grid);
+	//
+	// }
 	/**
 	 * Puts everything together: merges the paths from/to the centre of the ports,
 	 * with the path calculated around other elements.
@@ -116,17 +153,38 @@ export default class PathFinding {
 	) {
 		// generate the path based on the matrix with obstacles
 		const grid = new PF.Grid(routingMatrix);
+
+		// for (let y = 0; y < grid.height; y++) {
+		// 	for (let x  = 0; x < grid.width; x++) {
+		// 		grid.setWalkableAt(x,y, !Boolean(routingMatrix[y][x]));
+		// 	}
+		// }
+
+		console.log(grid);
+		console.log(start, end);
 		const dynamicPath = pathFinderInstance.findPath(start.x, start.y, end.x, end.y, grid);
 
+		console.log(grid.isWalkableAt(start.x, start.y));
+		console.log(grid.isWalkableAt(end.x, end.y));
+
+		console.log('didi', dynamicPath);
+		console.log(this.factory.drawOnMatrix(routingMatrix, dynamicPath));
+
 		// aggregate everything to have the calculated path ready for rendering
-		const pathCoords = pathToStart
-			.concat(dynamicPath, pathToEnd)
-			.map((coords) => [
-				this.factory.translateRoutingX(coords[0], true),
-				this.factory.translateRoutingY(coords[1], true)
-			]);
-		return PF.Util.compressPath(pathCoords);
+		const pathCoords =
+			// pathToStart
+			// .concat(dynamicPath, pathToEnd)
+			[start, end]
+				.map((coords) => [
+					this.factory.translateRoutingX(coords[0], true),
+					this.factory.translateRoutingY(coords[1], true)
+				]);
+		// return PF.Util.compressPath(pathCoords);
+		console.log('didi2', pathCoords);
+
+		return pathCoords;
+		// return PF.Util.compressPath(pathCoords);
 	}
 }
 
-export { PathFinding}
+export { PathFinding };

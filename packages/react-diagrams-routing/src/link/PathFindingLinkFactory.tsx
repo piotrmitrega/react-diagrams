@@ -15,7 +15,7 @@ import {
 } from '@piotrmitrega/react-canvas-core';
 
 export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkModel> {
-	ROUTING_SCALING_FACTOR: number = 10;
+	ROUTING_SCALING_FACTOR: number = 5;
 
 	// calculated only when smart routing is active
 	canvasMatrix: number[][] = [];
@@ -98,14 +98,17 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 
 		return this.canvasMatrix;
 	}
+
 	calculateCanvasMatrix() {
+		const r = this.calculateMatrixDimensions();
 		const {
 			width: canvasWidth,
 			hAdjustmentFactor,
 			height: canvasHeight,
 			vAdjustmentFactor
-		} = this.calculateMatrixDimensions();
+		} = r;
 
+		console.log('dimensions result: ', r)
 		this.hAdjustmentFactor = hAdjustmentFactor;
 		this.vAdjustmentFactor = vAdjustmentFactor;
 
@@ -138,6 +141,7 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 
 		return this.routingMatrix;
 	}
+
 	calculateRoutingMatrix(): void {
 		const matrix = _.cloneDeep(this.getCanvasMatrix());
 
@@ -149,6 +153,27 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 		this.routingMatrix = matrix;
 	}
 
+	drawOnMatrix(input: number[][], path: number[][]): number[][] {
+		const matrix = _.cloneDeep(input);
+
+		for (let i = 0; i < path.length; i++) {
+			console.log(i, path[i])
+			this.markMatrixPoint(matrix, this.translateRoutingX(path[i][0]), this.translateRoutingY(path[i][1]), 2);
+		}
+
+		return matrix;
+	}
+
+	drawOnMatrixRaw(input: number[][], path: number[][]): number[][] {
+		const matrix = _.cloneDeep(input);
+
+		for (let i = 0; i < path.length; i++) {
+			this.markMatrixPoint(matrix, path[i][0], path[i][1], 2);
+		}
+
+		return matrix;
+	}
+
 	/**
 	 * The routing matrix does not have negative indexes, but elements could be negatively positioned.
 	 * We use the functions below to translate back and forth between these coordinates, relying on the
@@ -157,6 +182,7 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 	translateRoutingX(x: number, reverse: boolean = false) {
 		return x + this.hAdjustmentFactor * (reverse ? -1 : 1);
 	}
+
 	translateRoutingY(y: number, reverse: boolean = false) {
 		return y + this.vAdjustmentFactor * (reverse ? -1 : 1);
 	}
@@ -228,6 +254,8 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 			const startY = Math.floor(node.getY() / this.ROUTING_SCALING_FACTOR);
 			const endY = Math.ceil((node.getY() + node.height) / this.ROUTING_SCALING_FACTOR);
 
+			console.log('node', startX, endX, startY, endY);
+
 			for (let x = startX - 1; x <= endX + 1; x++) {
 				for (let y = startY - 1; y < endY + 1; y++) {
 					this.markMatrixPoint(matrix, this.translateRoutingX(x), this.translateRoutingY(y));
@@ -259,15 +287,17 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 			});
 	};
 
-	markMatrixPoint = (matrix: number[][], x: number, y: number) => {
+	markMatrixPoint = (matrix: number[][], x: number, y: number, value = 1) => {
 		if (matrix[y] !== undefined && matrix[y][x] !== undefined) {
-			matrix[y][x] = 1;
+			matrix[y][x] = value;
+		} else {
+			console.error(x,y, matrix)
 		}
 	};
 
 	generateDynamicPathPoints(pathCoords: number[][]): number[][] {
 		let path = Path();
-		console.log(pathCoords)
+		console.log(pathCoords);
 		path = path.moveto(pathCoords[0][0] * this.ROUTING_SCALING_FACTOR, pathCoords[0][1] * this.ROUTING_SCALING_FACTOR);
 		pathCoords.slice(1).forEach((coords) => {
 			path = path.lineto(coords[0] * this.ROUTING_SCALING_FACTOR, coords[1] * this.ROUTING_SCALING_FACTOR);
