@@ -9,10 +9,10 @@ is individually represented. Using the factor below, we combine values in order
 to achieve the best trade-off between accuracy and performance.
 */
 
-const pathFinderInstance = new PF.BiAStarFinder({
-	heuristic: PF.Heuristic.manhattan,
+const pathFinderInstance = new PF.BiBestFirstFinder({
 	diagonalMovement: DiagonalMovement.Never,
-	weight: 5
+	avoidStaircase: true,
+	turnPenalty: 1,
 });
 // const pathFinderInstance = new PF.JumpPointFinder({
 // 	heuristic: PF.Heuristic.manhattan,
@@ -37,12 +37,12 @@ export default class PathFinding {
 		const matrix = this.factory.getRoutingMatrix();
 		const grid = new PF.Grid(matrix);
 
-		console.log(this.factory.drawOnMatrix(matrix, [
-			[this.factory.translateRoutingX(Math.floor(from.x / this.factory.ROUTING_SCALING_FACTOR)),
-				this.factory.translateRoutingY(Math.floor(from.y / this.factory.ROUTING_SCALING_FACTOR))],
-			[this.factory.translateRoutingX(Math.floor(to.x / this.factory.ROUTING_SCALING_FACTOR)),
-				this.factory.translateRoutingY(Math.floor(to.y / this.factory.ROUTING_SCALING_FACTOR))]
-		]));
+		// console.log(this.factory.drawOnMatrix(matrix, [
+		// 	[this.factory.translateRoutingX(Math.floor(from.x / this.factory.ROUTING_SCALING_FACTOR)),
+		// 		this.factory.translateRoutingY(Math.floor(from.y / this.factory.ROUTING_SCALING_FACTOR))],
+		// 	[this.factory.translateRoutingX(Math.floor(to.x / this.factory.ROUTING_SCALING_FACTOR)),
+		// 		this.factory.translateRoutingY(Math.floor(to.y / this.factory.ROUTING_SCALING_FACTOR))]
+		// ]));
 
 		const path = pathFinderInstance.findPath(
 			this.factory.translateRoutingX(Math.floor(from.x / this.factory.ROUTING_SCALING_FACTOR)),

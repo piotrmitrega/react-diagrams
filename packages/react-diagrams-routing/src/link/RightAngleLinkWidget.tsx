@@ -94,7 +94,6 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 	}
 
 	calculatePositions(points: PointModel[], event: MouseEvent, index: number, coordinate: string) {
-		console.log("!!!")
 		// If path is first or last add another point to keep node port on its position
 		if (index === 0) {
 			let point = new PointModel({

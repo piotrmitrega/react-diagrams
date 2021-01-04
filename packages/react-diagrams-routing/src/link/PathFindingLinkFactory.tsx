@@ -15,7 +15,7 @@ import {
 } from '@piotrmitrega/react-canvas-core';
 
 export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkModel> {
-	ROUTING_SCALING_FACTOR: number = 5;
+	ROUTING_SCALING_FACTOR: number = 1;
 
 	// calculated only when smart routing is active
 	canvasMatrix: number[][] = [];
@@ -249,10 +249,10 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 	 */
 	markNodes = (matrix: number[][]): void => {
 		_.values(this.engine.getModel().getNodes()).forEach((node) => {
-			const startX = Math.floor(node.getX() / this.ROUTING_SCALING_FACTOR);
-			const endX = Math.ceil((node.getX() + node.width) / this.ROUTING_SCALING_FACTOR);
-			const startY = Math.floor(node.getY() / this.ROUTING_SCALING_FACTOR);
-			const endY = Math.ceil((node.getY() + node.height) / this.ROUTING_SCALING_FACTOR);
+			const startX = Math.floor((node.getX() - 15) / this.ROUTING_SCALING_FACTOR);
+			const endX = Math.ceil((node.getX() + 15 + node.width) / this.ROUTING_SCALING_FACTOR);
+			const startY = Math.floor((node.getY()  - 15)/ this.ROUTING_SCALING_FACTOR);
+			const endY = Math.ceil((node.getY() + 15 +  node.height) / this.ROUTING_SCALING_FACTOR);
 
 			console.log('node', startX, endX, startY, endY);
 
@@ -291,7 +291,7 @@ export class PathFindingLinkFactory extends DefaultLinkFactory<PathFindingLinkMo
 		if (matrix[y] !== undefined && matrix[y][x] !== undefined) {
 			matrix[y][x] = value;
 		} else {
-			console.error(x,y, matrix)
+			// console.error(x,y, matrix)
 		}
 	};
 

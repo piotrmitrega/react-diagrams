@@ -36,9 +36,9 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 		// console.log('routing with simple path', this.pathFindingFactory.drawOnMatrix(routingMatrix, simplifiedPath));
 		const points = this.pathFindingFactory.generateDynamicPathPoints(directPathCoords);
 		// // remove first point since it's known
-		// points.splice(0, 1);
+		points.splice(0, 1);
 		// // we know the last point and for some reason it is duplicated, that's why removing 2
-		// points.splice(points.length - 2, 2);
+		points.splice(points.length - 1, 1);
 
 		return points.map(p => new Point(p[0], p[1]));
 	}
