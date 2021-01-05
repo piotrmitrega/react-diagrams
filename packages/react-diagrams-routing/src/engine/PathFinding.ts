@@ -12,7 +12,7 @@ to achieve the best trade-off between accuracy and performance.
 const pathFinderInstance = new PF.BiBestFirstFinder({
 	diagonalMovement: DiagonalMovement.Never,
 	avoidStaircase: true,
-	turnPenalty: 1,
+	turnPenalty: 5,
 });
 // const pathFinderInstance = new PF.JumpPointFinder({
 // 	heuristic: PF.Heuristic.manhattan,
