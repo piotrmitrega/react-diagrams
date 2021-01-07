@@ -28,10 +28,6 @@ export interface SerializedNodeModel extends SerializedBasePositionModel {
 export class NodeModel<G extends NodeModelGenerics = NodeModelGenerics> extends BasePositionModel<G> {
 	protected ports: { [s: string]: PortModel };
 
-	// calculated post rendering so routing can be done correctly
-	width: number;
-	height: number;
-
 	constructor(options: G['OPTIONS']) {
 		super(options);
 		this.ports = {};

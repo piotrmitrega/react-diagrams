@@ -24,6 +24,8 @@ export interface SerializedBasePositionModel extends SerializedBaseModel {
 export class BasePositionModel<G extends BasePositionModelGenerics = BasePositionModelGenerics> extends BaseModel<G>
 	implements ModelGeometryInterface {
 	protected position: Point;
+	protected width = 0;
+	protected height = 0;
 
 	constructor(options: G['OPTIONS']) {
 		super(options);
@@ -72,5 +74,13 @@ export class BasePositionModel<G extends BasePositionModelGenerics = BasePositio
 
 	getY() {
 		return this.position.y;
+	}
+
+	getWidth() {
+		return this.width;
+	}
+
+	getHeight() {
+		return this.height;
 	}
 }

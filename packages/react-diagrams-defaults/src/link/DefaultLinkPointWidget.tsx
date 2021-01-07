@@ -35,7 +35,7 @@ export class DefaultLinkPointWidget extends React.Component<DefaultLinkPointWidg
 	render() {
 		const { point } = this.props;
 		return (
-			<g id={this.props.point.getID()}>
+			<g id={this.props.point.getID()} title={this.props.point.getPosition().toSVG()}>
 				<circle
 					cx={point.getPosition().x}
 					cy={point.getPosition().y}

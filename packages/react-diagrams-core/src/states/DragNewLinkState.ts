@@ -176,6 +176,7 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 
 		this.link.setPath(newPath);
 
+		console.log(this.link.getPoints().map(p => p.getPosition()))
 		this.engine.repaintCanvas();
 	}
 

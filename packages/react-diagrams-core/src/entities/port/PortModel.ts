@@ -54,9 +54,6 @@ export const PORT_OFFSET_VALUE = 20;
 export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends BasePositionModel<G> {
 	links: { [id: string]: LinkModel };
 
-	// calculated post rendering so routing can be done correctly
-	width: number;
-	height: number;
 	reportedPosition: boolean;
 
 	constructor(options: G['OPTIONS']) {
@@ -166,8 +163,6 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 		this.setPosition(coords.getTopLeft());
 		this.reportedPosition = true;
 		this.reportPosition();
-
-		console.log(this.width, this.height);
 
 		this.resumeFiringEvents();
 	}
