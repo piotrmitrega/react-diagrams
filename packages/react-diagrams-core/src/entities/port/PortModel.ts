@@ -49,6 +49,8 @@ export interface SerializedPortModel extends SerializedBasePositionModel {
 	links: string[];
 }
 
+export const PORT_OFFSET_VALUE = 20;
+
 export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends BasePositionModel<G> {
 	links: { [id: string]: LinkModel };
 
@@ -201,11 +203,9 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 			: portY - nodeBox.getOrigin().y
 		);
 
-		const translationValue = 20;
-
 		return new Point(
-			isXAxis ? direction * translationValue : 0,
-			isXAxis ? 0 : direction * translationValue
+			isXAxis ? direction * PORT_OFFSET_VALUE : 0,
+			isXAxis ? 0 : direction * PORT_OFFSET_VALUE
 		);
 	};
 
