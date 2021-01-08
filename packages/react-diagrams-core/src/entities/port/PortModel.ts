@@ -141,7 +141,7 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 
 	reportPosition() {
 		_.forEach(this.getLinks(), (link) => {
-			link.getPointForPort(this).setPosition(this.getCenter());
+			link.getPointForPort(this).setPosition(this.getOffsetPosition());
 		});
 
 		this.fireEvent(
@@ -207,17 +207,9 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 	getOffsetPosition = (): Point => {
 		const offset = this.calculateNormalOffset();
 
-		const offsetPosition = this.getPosition().clone();
+		const offsetPosition = this.getCenter();
 		offsetPosition.translate(offset.x, offset.y);
-		offsetPosition.translate(this.width / 2, this.height / 2);
 
 		return offsetPosition;
-	};
-
-	getCenterPosition = () => {
-		const portPosition = this.getPosition().clone();
-		portPosition.translate(this.width / 2, this.height / 2);
-
-		return portPosition;
 	};
 }

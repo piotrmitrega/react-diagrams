@@ -31,10 +31,10 @@ export default () => {
 	const model = new DiagramModel();
 
 	const positions = [
-		// [340, 350],
+		[340, 350],
 		[240, 80],
-		// [540, 180],
-		// [95,185],
+		[540, 180],
+		[95,185],
 		[304,190]
 	];
 

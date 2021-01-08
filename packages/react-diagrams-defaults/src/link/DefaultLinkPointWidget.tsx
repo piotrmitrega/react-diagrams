@@ -14,7 +14,7 @@ export interface DefaultLinkPointWidgetState {
 
 namespace S {
 	export const PointTop = styled.circle`
-		pointer-events: all;
+		pointer-events: none;
 	`;
 }
 

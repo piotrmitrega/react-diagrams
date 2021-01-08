@@ -56,16 +56,7 @@ export class RightAngleLinkModel extends DefaultLinkModel {
 		}
 	}
 
-	// @ts-ignore
 	addPoint<P extends PointModel>(pointModel: P, index: number = 1): P {
-		// @ts-ignore
-		const previousPoint = this.points[index - 1];
-		const nextPoint = this.points[index];
-
-		previousPoint && console.log('previous:', previousPoint.getPosition().toSVG());
-		console.log('added:', pointModel.getPosition().toSVG());
-		nextPoint && console.log('next:', nextPoint.getPosition().toSVG());
-
 		super.addPoint(pointModel, index);
 		this.calculateDirections();
 		return pointModel;

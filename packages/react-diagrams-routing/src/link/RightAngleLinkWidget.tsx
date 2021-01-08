@@ -119,7 +119,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				[index + 1]: points[index + 1].getPosition(),
 				[index - 1]: points[index - 1].getPosition()
 			};
-			if (Math.abs(_points[index - 1][coordinate] - _points[index + 1][coordinate]) < 5) {
+			if (Math.abs(_points[index - 1][coordinate] - _points[index + 1][coordinate]) < 6) {
 				_points[index - 2][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				_points[index + 1][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				points[index - 2].setPosition(_points[index - 2]);
@@ -140,7 +140,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				[index + 1]: points[index + 1].getPosition(),
 				[index]: points[index].getPosition()
 			};
-			if (Math.abs(_points[index + 1][coordinate] - _points[index + 2][coordinate]) < 5) {
+			if (Math.abs(_points[index + 1][coordinate] - _points[index + 2][coordinate]) < 6) {
 				_points[index][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				_points[index + 3][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				points[index].setPosition(_points[index]);

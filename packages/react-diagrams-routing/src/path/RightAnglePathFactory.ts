@@ -79,7 +79,7 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 	removePointsInBetween(path: Point[]) {
 		const toRemove = [];
 
-		for (let i = 0; i < path.length - 2; i += path.length - 3) {
+		for (let i = 0; i < path.length - 1; i += path.length - 3) {
 			try {
 				const points = [
 					path[i],
@@ -113,11 +113,9 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 		}
 
 		const result = [...path];
-		console.log(result);
 		toRemove.reverse().forEach(index => {
 			result.splice(index, 1);
 		});
-		console.log(result);
 
 		return result;
 	}
@@ -134,14 +132,17 @@ export class RightAnglePathFactory extends AbstractModelFactory<PathModel, Diagr
 			grid
 		);
 
+		// replace start and end point since they might get a bit of offset due to
+		// converting to pathfinding coordinates and being rescaled
 		const fullPath = [
-			sourcePort.getCenter(),
-			...calculatedPath,
-			targetPort.getCenter()
-		];
+			sourcePort.getOffsetPosition(),
+			...calculatedPath.slice(1, calculatedPath.length - 1),
+			targetPort.getOffsetPosition()
+		]
+
 		this.alignPath(fullPath);
 
-		const sanitizedPath = this.removePointsInBetween(fullPath);
+		const sanitizedPath = fullPath;//this.removePointsInBetween(calculatedPath);
 
 		console.log('sanitized', sanitizedPath.map(p => p.toSVG()));
 

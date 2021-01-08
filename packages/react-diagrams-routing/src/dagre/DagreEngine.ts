@@ -33,7 +33,7 @@ export class DagreEngine {
 
 		// set nodes
 		_.forEach(model.getNodes(), (node) => {
-			g.setNode(node.getID(), { width: node.width, height: node.height });
+			g.setNode(node.getID(), { width: node.getWidth(), height: node.getHeight() });
 		});
 
 		_.forEach(model.getLinks(), (link) => {
