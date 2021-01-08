@@ -10,7 +10,7 @@ import {
 	DefaultNodeFactory,
 	DefaultPortFactory
 } from '@piotrmitrega/react-diagrams-defaults';
-import { PathFindingLinkFactory } from '@piotrmitrega/react-diagrams-routing';
+import { DefaultPathFactory, RightAnglePathFactory } from '@piotrmitrega/react-diagrams-routing';
 import { SelectionBoxLayerFactory, CanvasEngineOptions } from '@piotrmitrega/react-canvas-core';
 
 export * from '@piotrmitrega/react-diagrams-core';
@@ -31,9 +31,10 @@ export default (options: CanvasEngineOptions = {}): DiagramEngine => {
 	engine.getLabelFactories().registerFactory(new DefaultLabelFactory());
 	engine.getNodeFactories().registerFactory(new DefaultNodeFactory()); // i cant figure out why
 	engine.getLinkFactories().registerFactory(new DefaultLinkFactory());
-	engine.getLinkFactories().registerFactory(new PathFindingLinkFactory());
 	engine.getPortFactories().registerFactory(new DefaultPortFactory());
 
+	engine.getPathFactories().registerFactory(new DefaultPathFactory());
+	engine.getPathFactories().registerFactory(new RightAnglePathFactory());
 	// register the default interaction behaviours
 	engine.getStateMachine().pushState(new DefaultDiagramState());
 	return engine;

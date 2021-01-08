@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { MouseEvent } from 'react';
 import { debounce } from 'lodash';
 import { DiagramEngine, LinkWidget, PointModel } from '@piotrmitrega/react-diagrams-core';
 import { RightAngleLinkFactory } from './RightAngleLinkFactory';
-import { DefaultLinkModel, DefaultLinkPointWidget, DefaultLinkSegmentWidget } from '@piotrmitrega/react-diagrams-defaults';
+import { DefaultLinkPointWidget, DefaultLinkSegmentWidget } from '@piotrmitrega/react-diagrams-defaults';
 import { Point } from '@piotrmitrega/geometry';
-import { MouseEvent } from 'react';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
+import { LinkArrow } from './LinkArrow';
 
 export interface RightAngleLinkProps {
 	color?: string;
@@ -119,7 +120,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				[index + 1]: points[index + 1].getPosition(),
 				[index - 1]: points[index - 1].getPosition()
 			};
-			if (Math.abs(_points[index - 1][coordinate] - _points[index + 1][coordinate]) < 5) {
+			if (Math.abs(_points[index - 1][coordinate] - _points[index + 1][coordinate]) < 6) {
 				_points[index - 2][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				_points[index + 1][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				points[index - 2].setPosition(_points[index - 2]);
@@ -140,7 +141,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 				[index + 1]: points[index + 1].getPosition(),
 				[index]: points[index].getPosition()
 			};
-			if (Math.abs(_points[index + 1][coordinate] - _points[index + 2][coordinate]) < 5) {
+			if (Math.abs(_points[index + 1][coordinate] - _points[index + 2][coordinate]) < 6) {
 				_points[index][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				_points[index + 3][coordinate] = this.props.diagramEngine.getRelativeMousePoint(event)[coordinate];
 				points[index].setPosition(_points[index]);
@@ -175,7 +176,7 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		} else if (dy === 0) {
 			this.calculatePositions(points, event, index, 'y');
 		}
-		this.props.link.setFirstAndLastPathsDirection();
+		this.props.link.calculateDirections();
 		this.handleOnDraggedEvent();
 	}
 
@@ -195,8 +196,8 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		window.removeEventListener('mouseup', this.handleUp);
 	}.bind(this);
 
-	generatePoint(point: PointModel, index:number): JSX.Element {
-		const colors = ['#ff0000','#00ff00','#0000ff','#330000','#003300','#000033'];
+	generatePoint(point: PointModel, index: number): JSX.Element {
+		const colors = ['#ff0000', '#00ff00', '#0000ff', '#330000', '#003300', '#000033'];
 
 		return (
 			<DefaultLinkPointWidget
@@ -213,47 +214,10 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		let points = this.props.link.getPoints();
 		let paths = [];
 
-		// Get points based on link orientation
-		let pointLeft = points[0];
-		let pointRight = points[points.length - 1];
-		let hadToSwitch = false;
-		if (pointLeft.getX() > pointRight.getX()) {
-			pointLeft = points[points.length - 1];
-			pointRight = points[0];
-			hadToSwitch = true;
-		}
-		let dy = Math.abs(points[0].getY() - points[points.length - 1].getY());
-
-		// When new link add middle point to get everywhere 90° angle
-		if (this.props.link.getTargetPort() === null && points.length === 2) {
-			this.props.link.addPoint(
-				new PointModel({
-					link: this.props.link,
-					position: new Point(pointLeft.getX(), Math.max(pointLeft.getY(), pointRight.getY()))
-				}),
-				1
-			);
-		}
-
-			// When new link is moving and not connected to target port move with middle point
-			// TODO: @DanielLazarLDAPPS This will be better to update in DragNewLinkState
-		//  in function fireMouseMoved to avoid calling this unexpectedly e.g. after Deserialize
-		else if (this.props.link.getTargetPort() === null && this.props.link.getSourcePort() !== null) {
-			points[1].setPosition(
-				!hadToSwitch
-					? pointRight.getX()
-					: pointLeft.getX(),
-				hadToSwitch
-					? pointRight.getY()
-					: pointLeft.getY()
-			);
-
-			this.props.link.setFirstAndLastPathsDirection();
-		}
-			// Render was called but link is not moved but user.
-			// Node is moved and in this case fix coordinates to get 90° angle.
+		// Render was called but link is not moved but user.
+		// Node is moved and in this case fix coordinates to get 90° angle.
 		// For loop just for first and last path
-		else if (!this.state.canDrag && points.length > 2) {
+		if (this.props.link.getTargetPort() !== null && !this.state.canDrag && points.length > 2) {
 			// Those points and its position only will be moved
 			for (let i = 1; i < points.length; i += points.length - 2) {
 				if (i - 1 === 0) {
@@ -272,19 +236,6 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 			}
 		}
 
-		// If there is existing link which has two points add one
-		// NOTE: It doesn't matter if check is for dy or dx
-		if (points.length === 2 && dy !== 0 && !this.state.canDrag) {
-			console.log("this weird situation");
-
-			this.props.link.addPoint(
-				new PointModel({
-					link: this.props.link,
-					position: new Point(pointLeft.getX(), pointRight.getY())
-				})
-			);
-		}
-
 		for (let j = 0; j < points.length - 1; j++) {
 			paths.push(
 				this.generateLink(
@@ -298,8 +249,10 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 								this.dragging_index = j;
 								// Register mouse move event to track mouse position
 								// On mouse up these events are unregistered check "this.handleUp"
-								window.addEventListener('mousemove', this.handleMove);
-								window.addEventListener('mouseup', this.handleUp);
+								if (this.props.link.getTargetPort()) {
+									window.addEventListener('mousemove', this.handleMove);
+									window.addEventListener('mouseup', this.handleUp);
+								}
 							}
 						},
 						onMouseEnter: (event: MouseEvent) => {
@@ -312,10 +265,19 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 			);
 		}
 
-		//render the circles
-		for (let i = 0; i < points.length; i++) {
-			paths.push(this.generatePoint(points[i], i));
+		if (this.props.link.getTargetPort()) {
+			paths.push(
+				<LinkArrow
+					point={this.props.link.getLastPoint().getPosition()}
+					previousPoint={this.props.link.getTargetPort().getCenter()}
+				/>
+			);
 		}
+
+		//render the circles
+		// for (let i = 0; i < points.length; i++) {
+		// 	paths.push(this.generatePoint(points[i], i));
+		// }
 
 		this.refPaths = [];
 		return <g data-default-link-test={this.props.link.getOptions().testName}>{paths}</g>;

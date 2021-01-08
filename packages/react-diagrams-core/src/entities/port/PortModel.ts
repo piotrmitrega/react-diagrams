@@ -14,8 +14,12 @@ import {
 
 export enum PortModelAlignment {
 	TOP = 'top',
+	TOP_LEFT = 'top-left',
+	TOP_RIGHT = 'top-right',
 	LEFT = 'left',
 	BOTTOM = 'bottom',
+	BOTTOM_LEFT = 'bottom-left',
+	BOTTOM_RIGHT = 'bottom-right',
 	RIGHT = 'right'
 }
 
@@ -47,12 +51,11 @@ export interface SerializedPortModel extends SerializedBasePositionModel {
 	links: string[];
 }
 
+export const PORT_OFFSET_VALUE = 20;
+
 export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends BasePositionModel<G> {
 	links: { [id: string]: LinkModel };
 
-	// calculated post rendering so routing can be done correctly
-	width: number;
-	height: number;
 	reportedPosition: boolean;
 
 	constructor(options: G['OPTIONS']) {
@@ -140,7 +143,7 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 
 	reportPosition() {
 		_.forEach(this.getLinks(), (link) => {
-			link.getPointForPort(this).setPosition(this.getCenter());
+			link.getPointForPort(this).setPosition(this.getOffsetPosition());
 		});
 
 		this.fireEvent(
@@ -167,7 +170,7 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 	}
 
 	canLinkToPort(port: PortModel): boolean {
-		return true;
+		return port !== this;
 	}
 
 	isLocked() {
@@ -197,11 +200,18 @@ export class PortModel<G extends PortModelGenerics = PortModelGenerics> extends 
 			: portY - nodeBox.getOrigin().y
 		);
 
-		const translationValue = 20;
-
 		return new Point(
-			isXAxis ? direction * translationValue : 0,
-			isXAxis ? 0 : direction * translationValue
+			isXAxis ? direction * PORT_OFFSET_VALUE : 0,
+			isXAxis ? 0 : direction * PORT_OFFSET_VALUE
 		);
+	};
+
+	getOffsetPosition = (): Point => {
+		const offset = this.calculateNormalOffset();
+
+		const offsetPosition = this.getCenter();
+		offsetPosition.translate(offset.x, offset.y);
+
+		return offsetPosition;
 	};
 }

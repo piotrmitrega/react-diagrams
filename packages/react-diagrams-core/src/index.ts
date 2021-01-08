@@ -19,6 +19,8 @@ export * from './entities/node/NodeWidget';
 export * from './entities/port/PortModel';
 export * from './entities/port/PortWidget';
 
+export * from './entities/path/PathModel';
+
 export * from './states/DefaultDiagramState';
 export * from './states/DragDiagramItemsState';
 export * from './states/DragNewLinkState';

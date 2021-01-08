@@ -2,57 +2,82 @@ import { DefaultLinkModel, DefaultLinkModelOptions } from '@piotrmitrega/react-d
 import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 import { PointModel } from '@piotrmitrega/react-diagrams-core';
 import { DeserializeEvent } from '@piotrmitrega/react-canvas-core';
+import { RightAngleLinkPathDirections } from './RightAngleLinkPathDirections';
 
 export class RightAngleLinkModel extends DefaultLinkModel {
 	lastHoverIndexOfPath: number;
-	private _lastPathXdirection: boolean;
-	private _firstPathXdirection: boolean;
+	directions: RightAngleLinkPathDirections;
+
 	constructor(options: DefaultLinkModelOptions = {}) {
 		super({
 			type: RightAngleLinkFactory.NAME,
 			...options
 		});
+
+		this.points.push(new PointModel({
+			link: this
+		}));
+
 		this.lastHoverIndexOfPath = 0;
-		this._lastPathXdirection = false;
-		this._firstPathXdirection = false;
+		this.calculateDirections();
 	}
 
-	setFirstAndLastPathsDirection() {
-		let points = this.getPoints();
-		for (let i = 1; i < points.length; i += points.length - 2) {
-			let dx = Math.abs(points[i].getX() - points[i - 1].getX());
-			let dy = Math.abs(points[i].getY() - points[i - 1].getY());
-			if (i - 1 === 0) {
-				this._firstPathXdirection = dx > dy;
-			} else {
-				this._lastPathXdirection = dx > dy;
-			}
+	calculateDirections() {
+		this.directions = new RightAngleLinkPathDirections(
+			this.points.map((p) => p.getPosition())
+		);
+	}
+
+	onLastPointDragged() {
+		this.adjustMiddlePoint(1);
+		this.calculateDirections();
+	}
+
+	adjustMiddlePoint(index: number) {
+		if (index === 0 || index > this.getPoints().length - 1) {
+			throw new Error(
+				`Point at index: ${index} is not a middle point. Points count: ${this.getPoints().length}`
+			);
+		}
+
+		const previousPoint = this.getPoints()[index - 1];
+		const nextPoint = this.getPoints()[index + 1];
+
+		if (previousPoint.getX() > nextPoint.getX()) {
+			this.getPoints()[index].setPosition(
+				previousPoint.getX(),
+				nextPoint.getY()
+			);
+		} else {
+			this.getPoints()[index].setPosition(
+				nextPoint.getX(),
+				previousPoint.getY()
+			);
 		}
 	}
 
-	// @ts-ignore
 	addPoint<P extends PointModel>(pointModel: P, index: number = 1): P {
-		// @ts-ignore
 		super.addPoint(pointModel, index);
-		this.setFirstAndLastPathsDirection();
+		this.calculateDirections();
 		return pointModel;
+	}
+
+	setPoints(points: PointModel[]) {
+		super.setPoints(points);
+		this.calculateDirections();
 	}
 
 	deserialize(event: DeserializeEvent<this>) {
 		super.deserialize(event);
-		this.setFirstAndLastPathsDirection();
-	}
-
-	setManuallyFirstAndLastPathsDirection(first, last) {
-		this._firstPathXdirection = first;
-		this._lastPathXdirection = last;
+		this.calculateDirections();
 	}
 
 	getLastPathXdirection(): boolean {
-		return this._lastPathXdirection;
+		return Boolean(this.directions.getLastPathDirection());
 	}
+
 	getFirstPathXdirection(): boolean {
-		return this._firstPathXdirection;
+		return Boolean(this.directions.getFirstPathDirection());
 	}
 
 	setWidth(width: number) {

@@ -10,6 +10,7 @@ import { MouseEvent } from 'react';
 import { LinkModel } from '../entities/link/LinkModel';
 import { DiagramEngine } from '../DiagramEngine';
 import { MultiPortNodeModel } from '../entities/node/MultiPortNodeModel';
+import { PathModel } from '..';
 
 export interface DragNewLinkStateOptions {
 	/**
@@ -28,6 +29,7 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 	link: LinkModel;
 	targetPort: PortModel;
 	config: DragNewLinkStateOptions;
+	previousPath: PathModel;
 
 	constructor(options: DragNewLinkStateOptions = {}) {
 		super({ name: 'drag-new-link' });
@@ -48,7 +50,6 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 						return;
 					}
 					this.link = this.port.createLinkModel();
-
 					// if no link is given, just eject the state
 					if (!this.link) {
 						this.eject();
@@ -67,33 +68,43 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 				type: InputType.MOUSE_UP,
 				fire: (event: ActionEvent<MouseEvent>) => {
 					const model = this.engine.getMouseElement(event.event);
-					// check to see if we connected to a new port
+
 					if (model instanceof PortModel) {
 						if (this.port.canLinkToPort(model)) {
-							this.link.setTargetPort(model);
-							model.reportPosition();
-							this.engine.repaintCanvas();
-							return;
+							this.connectToPort(model);
 						} else {
-							this.link.remove();
-							this.engine.repaintCanvas();
-							return;
+							this.removeLink();
 						}
+						return;
 					}
-					else if (model instanceof MultiPortNodeModel) {
-						this.link.setTargetPort(this.targetPort);
-						this.targetPort = null;
-						this.engine.repaintCanvas();
+
+					if (model instanceof MultiPortNodeModel) {
+						this.connectToPort(this.targetPort);
 						return;
 					}
 
 					if (!this.config.allowLooseLinks) {
-						this.link.remove();
-						this.engine.repaintCanvas();
+						this.removeLink();
 					}
 				}
 			})
 		);
+	}
+
+	connectToPort(port: PortModel) {
+		this.link.setTargetPort(port);
+		this.link.setSelected(false);
+
+		port.reportPosition();
+
+		this.targetPort = null;
+
+		this.engine.repaintCanvas();
+	}
+
+	removeLink() {
+		this.link.remove();
+		this.engine.repaintCanvas();
 	}
 
 	getPortFromMouseEvent(event: MouseEvent): PortModel | null {
@@ -113,6 +124,13 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 		return null;
 	}
 
+	savePreviousPath() {
+		const positions = this.link.getPoints().map(
+			pointModel => pointModel.getPosition()
+		);
+
+		this.previousPath = new PathModel({ points: positions });
+	}
 
 	/**
 	 * Calculates the link's far-end point position on mouse move.
@@ -139,37 +157,25 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 
 	onPortMouseLeave() {
 		this.targetPort = null;
-		this.link.removePoint(this.link.getPoints()[this.link.getPoints().length - 2]);
+		this.link.setPath(this.previousPath);
 	}
 
 	onPortMouseEnter(port: PortModel) {
 		this.targetPort = port;
 
-		const offset = port.calculateNormalOffset();
-
-		const offsetPosition = port.getPosition().clone();
-		offsetPosition.translate(offset.x, offset.y);
-		offsetPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
-
-		this.link.getLastPoint().setPosition(offsetPosition);
-
-		const portPosition = port.getPosition().clone();
-		portPosition.translate(PORT_SIZE / 2, PORT_SIZE / 2);
-
-		this.engine.repaintCanvas();
-
-		const secondPoint = this.link.getPoints()[1];
-
-		// TODO: It would be probably better to move some stuff from link widget
-		// here so we don't have to wait for rerender
-		requestAnimationFrame(() => {
-			const lastPointModel = this.link.generatePoint(portPosition.x, portPosition.y);
-			secondPoint.setLocked(true);
-			this.link.addPoint(lastPointModel, this.link.getPoints().length);
-			this.engine.repaintCanvas();
-			secondPoint.setLocked(false);
+		const factory = this.engine.getPathFactoryForLink(this.link);
+		const newPath = factory.generateModel({
+			initialConfig: {
+				sourcePort: this.port,
+				targetPort: this.targetPort
+			}
 		});
 
+		this.savePreviousPath();
+
+		this.link.setPath(newPath);
+
+		this.engine.repaintCanvas();
 	}
 
 	onMouseMove(event: MouseEvent) {
@@ -187,6 +193,8 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
 		const linkNextY = portPos.y - engineOffsetY + (initialYRelative - portPos.y) + virtualDisplacementY;
 
 		this.link.getLastPoint().setPosition(linkNextX, linkNextY);
+		this.link.onLastPointDragged();
+
 		this.engine.repaintCanvas();
 	}
 }

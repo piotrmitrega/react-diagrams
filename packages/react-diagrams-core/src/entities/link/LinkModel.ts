@@ -11,8 +11,11 @@ import {
 	BaseModelGenerics,
 	BaseModelListener,
 	DeserializeEvent,
-	ModelGeometryInterface, SerializedBaseModel, SerializedBasePositionModel
+	ModelGeometryInterface,
+	SerializedBaseModel,
+	SerializedBasePositionModel
 } from '@piotrmitrega/react-canvas-core';
+import { PathModel } from '../..';
 
 export interface LinkModelListener extends BaseModelListener {
 	sourcePortChanged?(event: BaseEntityEvent<LinkModel> & { port: null | PortModel }): void;
@@ -294,6 +297,14 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		return this.getLabels().find(label => label.getID() === id);
 	}
 
+	setPath(path: PathModel) {
+		const pointModels = path.getPoints().map(
+			point => this.generatePoint(point.x, point.y)
+		);
+
+		this.setPoints(pointModels);
+	}
+
 	setPoints(points: PointModel[]) {
 		_.forEach(points, (point) => {
 			point.setParent(this);
@@ -317,6 +328,9 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics> extends 
 		if (this.points.length > 2) {
 			this.points.splice(0, this.points.length - 2);
 		}
+	}
+
+	onLastPointDragged() {
 	}
 
 	onDragged() {

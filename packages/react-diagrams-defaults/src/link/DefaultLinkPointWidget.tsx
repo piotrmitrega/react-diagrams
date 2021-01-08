@@ -14,7 +14,7 @@ export interface DefaultLinkPointWidgetState {
 
 namespace S {
 	export const PointTop = styled.circle`
-		pointer-events: all;
+		pointer-events: none;
 	`;
 }
 
@@ -26,16 +26,28 @@ export class DefaultLinkPointWidget extends React.Component<DefaultLinkPointWidg
 		};
 	}
 
+	getPointIndex = () => {
+		return this.props.point.getLink().getPoints().findIndex(
+			(p) => p.getID() === this.props.point.getID()
+		);
+	};
+
 	render() {
 		const { point } = this.props;
 		return (
-			<g>
+			<g id={this.props.point.getID()} title={this.props.point.getPosition().toSVG()}>
 				<circle
 					cx={point.getPosition().x}
 					cy={point.getPosition().y}
 					r={5}
 					fill={this.state.selected || this.props.point.isSelected() ? this.props.colorSelected : this.props.color}
 				/>
+				<text
+					x={point.getPosition().x}
+					y={point.getPosition().y}
+				>
+					{this.getPointIndex()}
+				</text>
 				<S.PointTop
 					className="point"
 					onMouseLeave={() => {
