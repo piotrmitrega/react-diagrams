@@ -6,6 +6,7 @@ import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 import { DefaultLinkPointWidget, DefaultLinkSegmentWidget } from '@piotrmitrega/react-diagrams-defaults';
 import { Point } from '@piotrmitrega/geometry';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
+import { LinkArrow } from './LinkArrow';
 
 export interface RightAngleLinkProps {
 	color?: string;
@@ -218,7 +219,6 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 		// Node is moved and in this case fix coordinates to get 90° angle.
 		// For loop just for first and last path
 		if (this.props.link.getTargetPort() !== null && !this.state.canDrag && points.length > 2) {
-			console.log("This crap")
 			// Those points and its position only will be moved
 			for (let i = 1; i < points.length; i += points.length - 2) {
 				if (i - 1 === 0) {
@@ -266,10 +266,19 @@ export class RightAngleLinkWidget extends React.Component<RightAngleLinkProps, R
 			);
 		}
 
-		//render the circles
-		for (let i = 0; i < points.length; i++) {
-			paths.push(this.generatePoint(points[i], i));
+		if (this.props.link.getTargetPort()) {
+			paths.push(
+				<LinkArrow
+					point={this.props.link.getLastPoint().getPosition()}
+					previousPoint={this.props.link.getTargetPort().getCenter()}
+				/>
+			);
 		}
+
+		//render the circles
+		// for (let i = 0; i < points.length; i++) {
+		// 	paths.push(this.generatePoint(points[i], i));
+		// }
 
 		this.refPaths = [];
 		return <g data-default-link-test={this.props.link.getOptions().testName}>{paths}</g>;
