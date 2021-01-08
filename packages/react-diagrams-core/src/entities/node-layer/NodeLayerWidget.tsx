@@ -7,22 +7,26 @@ import { NodeLayerModel } from './NodeLayerModel';
 import { DiagramEngine } from '../../DiagramEngine';
 
 export interface NodeLayerWidgetProps {
-	layer: NodeLayerModel;
-	engine: DiagramEngine;
+  layer: NodeLayerModel;
+  engine: DiagramEngine;
 }
 
 namespace S {
-	export const Container = styled.div``;
+  export const Container = styled.div``;
 }
 
 export class NodeLayerWidget extends React.Component<NodeLayerWidgetProps> {
-	render() {
-		return (
-			<>
-				{_.map(this.props.layer.getNodes(), (node: NodeModel) => {
-					return <NodeWidget key={node.getID()} diagramEngine={this.props.engine} node={node} />;
-				})}
-			</>
-		);
-	}
+  render() {
+    return (
+      <>
+        {_.map(this.props.layer.getNodes(), (node: NodeModel) => (
+          <NodeWidget
+            diagramEngine={this.props.engine}
+            key={node.getID()}
+            node={node}
+          />
+        ))}
+      </>
+    );
+  }
 }

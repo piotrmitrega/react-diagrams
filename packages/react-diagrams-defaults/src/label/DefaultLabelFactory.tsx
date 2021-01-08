@@ -7,16 +7,19 @@ import { DiagramEngine } from '@piotrmitrega/react-diagrams-core';
 /**
  * @author Dylan Vorster
  */
-export class DefaultLabelFactory extends AbstractReactFactory<DefaultLabelModel, DiagramEngine> {
-	constructor() {
-		super('default');
-	}
+export class DefaultLabelFactory extends AbstractReactFactory<
+  DefaultLabelModel,
+  DiagramEngine
+> {
+  constructor() {
+    super('default');
+  }
 
-	generateReactWidget(event): JSX.Element {
-		return <DefaultLabelWidget model={event.model} />;
-	}
+  generateReactWidget(event): JSX.Element {
+    return <DefaultLabelWidget model={event.model} />;
+  }
 
-	generateModel(event): DefaultLabelModel {
-		return new DefaultLabelModel();
-	}
+  generateModel(event): DefaultLabelModel {
+    return new DefaultLabelModel();
+  }
 }

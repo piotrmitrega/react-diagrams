@@ -1,49 +1,50 @@
 import { LinkModel } from './LinkModel';
 import {
-	BaseModelListener,
-	BasePositionModel,
-	BasePositionModelGenerics,
-	BasePositionModelOptions
+  BaseModelListener,
+  BasePositionModel,
+  BasePositionModelGenerics,
+  BasePositionModelOptions,
 } from '@piotrmitrega/react-canvas-core';
 
-export interface PointModelOptions extends Omit<BasePositionModelOptions, 'type'> {
-	link: LinkModel;
+export interface PointModelOptions
+  extends Omit<BasePositionModelOptions, 'type'> {
+  link: LinkModel;
 }
 
 export interface PointModelGenerics {
-	PARENT: LinkModel;
-	OPTIONS: PointModelOptions;
-	LISTENER: BaseModelListener;
+  PARENT: LinkModel;
+  OPTIONS: PointModelOptions;
+  LISTENER: BaseModelListener;
 }
 
-export class PointModel<G extends PointModelGenerics = PointModelGenerics> extends BasePositionModel<
-	G & BasePositionModelGenerics
-> {
-	constructor(options: G['OPTIONS']) {
-		super({
-			...options,
-			type: 'point'
-		});
-		this.parent = options.link;
-	}
+export class PointModel<
+  G extends PointModelGenerics = PointModelGenerics
+> extends BasePositionModel<G & BasePositionModelGenerics> {
+  constructor(options: G['OPTIONS']) {
+    super({
+      ...options,
+      type: 'point',
+    });
+    this.parent = options.link;
+  }
 
-	isConnectedToPort(): boolean {
-		return this.parent.getPortForPoint(this) !== null;
-	}
+  isConnectedToPort(): boolean {
+    return this.parent.getPortForPoint(this) !== null;
+  }
 
-	getLink(): LinkModel {
-		return this.getParent();
-	}
+  getLink(): LinkModel {
+    return this.getParent();
+  }
 
-	remove() {
-		//clear references
-		if (this.parent) {
-			this.parent.removePoint(this);
-		}
-		super.remove();
-	}
+  remove() {
+    //clear references
+    if (this.parent) {
+      this.parent.removePoint(this);
+    }
+    super.remove();
+  }
 
-	isLocked() {
-		return super.isLocked() || this.getParent().isLocked();
-	}
+  isLocked() {
+    return super.isLocked() || this.getParent().isLocked();
+  }
 }

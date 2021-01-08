@@ -13,32 +13,44 @@ to achieve the best trade-off between accuracy and performance.
 export const Grid = PF.Grid;
 
 const pathFinderInstance = new PF.BestFirstFinder({
-	diagonalMovement: DiagonalMovement.Never,
-	avoidStaircase: true,
-	turnPenalty: 5
+  diagonalMovement: DiagonalMovement.Never,
+  avoidStaircase: true,
+  turnPenalty: 5,
 });
 
 export class PathFinding {
-	instance: any;
+  instance: any;
 
-	constructor() {
-		this.instance = pathFinderInstance;
-	}
+  constructor() {
+    this.instance = pathFinderInstance;
+  }
 
-	calculateDirectPath(from: Point, to: Point, gridModel: GridModel): number[][] {
-		const path = pathFinderInstance.findPath(
-			gridModel.translateRoutingX(Math.floor(from.x / GridFactory.SCALING_FACTOR)),
-			gridModel.translateRoutingY(Math.floor(from.y / GridFactory.SCALING_FACTOR)),
-			gridModel.translateRoutingX(Math.floor(to.x / GridFactory.SCALING_FACTOR)),
-			gridModel.translateRoutingY(Math.floor(to.y / GridFactory.SCALING_FACTOR)),
-			gridModel.getOptions().grid
-		);
+  calculateDirectPath(
+    from: Point,
+    to: Point,
+    gridModel: GridModel,
+  ): number[][] {
+    const path = pathFinderInstance.findPath(
+      gridModel.translateRoutingX(
+        Math.floor(from.x / GridFactory.SCALING_FACTOR),
+      ),
+      gridModel.translateRoutingY(
+        Math.floor(from.y / GridFactory.SCALING_FACTOR),
+      ),
+      gridModel.translateRoutingX(
+        Math.floor(to.x / GridFactory.SCALING_FACTOR),
+      ),
+      gridModel.translateRoutingY(
+        Math.floor(to.y / GridFactory.SCALING_FACTOR),
+      ),
+      gridModel.getOptions().grid,
+    );
 
-		const mappedPath = path.map((coords) => [
-			gridModel.translateRoutingX(coords[0], true),
-			gridModel.translateRoutingY(coords[1], true)
-		]);
+    const mappedPath = path.map((coords) => [
+      gridModel.translateRoutingX(coords[0], true),
+      gridModel.translateRoutingY(coords[1], true),
+    ]);
 
-		return PF.Util.compressPath(mappedPath);
-	}
+    return PF.Util.compressPath(mappedPath);
+  }
 }

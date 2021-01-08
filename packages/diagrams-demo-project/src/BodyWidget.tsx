@@ -3,11 +3,13 @@ import { DiagramEngine } from '@piotrmitrega/react-diagrams';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 
 export interface BodyWidgetProps {
-	engine: DiagramEngine;
+  engine: DiagramEngine;
 }
 
 export class BodyWidget extends React.Component<BodyWidgetProps> {
-	render() {
-		return <CanvasWidget className="diagram-container" engine={this.props.engine} />;
-	}
+  render() {
+    return (
+      <CanvasWidget className="diagram-container" engine={this.props.engine} />
+    );
+  }
 }

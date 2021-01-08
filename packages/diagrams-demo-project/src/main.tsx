@@ -1,7 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './main.css';
-import createEngine, { DefaultLinkModel, DiagramModel } from '@piotrmitrega/react-diagrams';
+import createEngine, {
+  DefaultLinkModel,
+  DiagramModel,
+} from '@piotrmitrega/react-diagrams';
 import { JSCustomNodeFactory } from './custom-node-js/JSCustomNodeFactory';
 import { TSCustomNodeFactory } from './custom-node-ts/TSCustomNodeFactory';
 import { JSCustomNodeModel } from './custom-node-js/JSCustomNodeModel';
@@ -39,5 +42,8 @@ model.addAll(node1, node2, link1);
 engine.setModel(model);
 
 document.addEventListener('DOMContentLoaded', () => {
-	ReactDOM.render(<BodyWidget engine={engine} />, document.querySelector('#application'));
+  ReactDOM.render(
+    <BodyWidget engine={engine} />,
+    document.querySelector('#application'),
+  );
 });

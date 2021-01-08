@@ -6,29 +6,29 @@ import { FactoryBank } from './FactoryBank';
  * Gets registered with the engine, and is used to generate models
  */
 export abstract class AbstractFactory<E extends CanvasEngine = CanvasEngine> {
-	/**
-	 * Couples the factory with the models it generates
-	 */
-	protected type: string;
-	/**
-	 * The engine gets injected when the factory is registered
-	 */
-	protected engine: E;
-	protected bank: FactoryBank;
+  /**
+   * Couples the factory with the models it generates
+   */
+  protected type: string;
+  /**
+   * The engine gets injected when the factory is registered
+   */
+  protected engine: E;
+  protected bank: FactoryBank;
 
-	constructor(type: string) {
-		this.type = type;
-	}
+  constructor(type: string) {
+    this.type = type;
+  }
 
-	setDiagramEngine(engine: E) {
-		this.engine = engine;
-	}
+  setDiagramEngine(engine: E) {
+    this.engine = engine;
+  }
 
-	setFactoryBank(bank: FactoryBank) {
-		this.bank = bank;
-	}
+  setFactoryBank(bank: FactoryBank) {
+    this.bank = bank;
+  }
 
-	getType(): string {
-		return this.type;
-	}
+  getType(): string {
+    return this.type;
+  }
 }
