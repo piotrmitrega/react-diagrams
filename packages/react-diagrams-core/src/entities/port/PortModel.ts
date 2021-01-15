@@ -35,6 +35,7 @@ export interface PortModelListener extends BasePositionModelListener {
 export interface PortModelOptions extends BaseModelOptions {
   alignment?: PortModelAlignment;
   maximumLinks?: number;
+  portOffsetValue?: number;
   name: string;
 }
 
@@ -51,7 +52,9 @@ export interface SerializedPortModel extends SerializedBasePositionModel {
   links: string[];
 }
 
-export const PORT_OFFSET_VALUE = 20;
+const defaultOptions = {
+  portOffsetValue: 20,
+};
 
 export class PortModel<
   G extends PortModelGenerics = PortModelGenerics
@@ -61,7 +64,10 @@ export class PortModel<
   reportedPosition: boolean;
 
   constructor(options: G['OPTIONS']) {
-    super(options);
+    super({
+      ...defaultOptions,
+      ...options,
+    });
     this.links = {};
     this.reportedPosition = false;
   }
@@ -202,9 +208,11 @@ export class PortModel<
       isXAxis ? portX - nodeBox.getOrigin().x : portY - nodeBox.getOrigin().y,
     );
 
+    const { portOffsetValue } = this.options;
+
     return new Point(
-      isXAxis ? direction * PORT_OFFSET_VALUE : 0,
-      isXAxis ? 0 : direction * PORT_OFFSET_VALUE,
+      isXAxis ? direction * portOffsetValue : 0,
+      isXAxis ? 0 : direction * portOffsetValue,
     );
   };
 

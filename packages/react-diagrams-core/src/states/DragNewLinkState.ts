@@ -5,7 +5,7 @@ import {
   ActionEvent,
   InputType,
 } from '@piotrmitrega/react-canvas-core';
-import { PORT_SIZE, PortModel } from '../entities/port/PortModel';
+import { PortModel } from '../entities/port/PortModel';
 import { MouseEvent } from 'react';
 import { LinkModel } from '../entities/link/LinkModel';
 import { DiagramEngine } from '../DiagramEngine';
