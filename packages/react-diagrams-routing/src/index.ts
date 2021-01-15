@@ -8,4 +8,3 @@ export * from './path/GridFactory';
 export * from './path/GridModel';
 
 export * from './engine/PathFinding';
-export * from './dagre/DagreEngine';
