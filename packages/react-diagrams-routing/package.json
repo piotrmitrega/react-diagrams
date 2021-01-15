@@ -39,7 +39,6 @@
 		"@types/pathfinding": "^0.0.4"
 	},
 	"peerDependencies": {
-		"dagre": "^0.8.4",
 		"lodash": "4.*",
 		"pathfinding": "^0.4.18",
 		"paths-js": "^0.4.9",
