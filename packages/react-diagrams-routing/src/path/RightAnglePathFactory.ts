@@ -8,7 +8,7 @@ import {
   GenerateModelEvent,
 } from '@piotrmitrega/react-canvas-core';
 import { PathFinding } from '../engine/PathFinding';
-import { RightAngleLinkFactory } from '..';
+import { getRightAnglePoint, RightAngleLinkFactory } from '..';
 import { Point } from '@piotrmitrega/geometry';
 import {
   Direction,
@@ -38,30 +38,47 @@ export class RightAnglePathFactory extends AbstractModelFactory<
     this.gridFactory.setDiagramEngine(engine);
   }
 
-  findPath(startPoint: Point, endPoint: Point, grid: GridModel): Point[] {
-    const directPathCoords = this.pathFinding.calculateDirectPath(
-      startPoint,
-      endPoint,
-      grid,
+  getFallbackPathCoords = (startPoint: Point, endPoint: Point) => {
+    const middlePoint = getRightAnglePoint(startPoint, endPoint);
+
+    return [startPoint, middlePoint, endPoint].map((point) => [
+      point.x,
+      point.y,
+    ]);
+  };
+
+  findPath(startPoint: Point, endPoint: Point, grid: GridModel): number[][] {
+    const directPathCoords = [];
+    this.pathFinding.calculateDirectPath(startPoint, endPoint, grid);
+
+    if (!directPathCoords || !directPathCoords.length) {
+      const fallbackPathCoords = this.getFallbackPathCoords(
+        startPoint,
+        endPoint,
+      );
+
+      return this.generateDynamicPathPoints(fallbackPathCoords);
+    }
+
+    return this.generateDynamicPathPoints(
+      directPathCoords,
+      GridFactory.SCALING_FACTOR,
     );
-
-    const points = this.generateDynamicPathPoints(directPathCoords);
-
-    return points.map((p) => new Point(p[0], p[1]));
   }
 
-  generateDynamicPathPoints(pathCoords: number[][]): number[][] {
+  generateDynamicPathPoints(
+    pathCoords: number[][],
+    scalingFactor = 1,
+  ): number[][] {
     let path = Path();
     path = path.moveto(
-      pathCoords[0][0] * GridFactory.SCALING_FACTOR,
-      pathCoords[0][1] * GridFactory.SCALING_FACTOR,
+      pathCoords[0][0] * scalingFactor,
+      pathCoords[0][1] * scalingFactor,
     );
     pathCoords.slice(1).forEach((coords) => {
-      path = path.lineto(
-        coords[0] * GridFactory.SCALING_FACTOR,
-        coords[1] * GridFactory.SCALING_FACTOR,
-      );
+      path = path.lineto(coords[0] * scalingFactor, coords[1] * scalingFactor);
     });
+
     return path.points();
   }
 
@@ -149,7 +166,9 @@ export class RightAnglePathFactory extends AbstractModelFactory<
     // converting to pathfinding coordinates and being rescaled
     const fullPath = [
       sourcePort.getOffsetPosition(),
-      ...calculatedPath.slice(1, calculatedPath.length - 1),
+      ...calculatedPath
+        .slice(1, calculatedPath.length - 1)
+        .map((p) => new Point(p[0], p[1])),
       targetPort.getOffsetPosition(),
     ];
 
