@@ -48,8 +48,11 @@ export class RightAnglePathFactory extends AbstractModelFactory<
   };
 
   findPath(startPoint: Point, endPoint: Point, grid: GridModel): number[][] {
-    const directPathCoords = [];
-    this.pathFinding.calculateDirectPath(startPoint, endPoint, grid);
+    const directPathCoords = this.pathFinding.calculateDirectPath(
+      startPoint,
+      endPoint,
+      grid,
+    );
 
     if (!directPathCoords || !directPathCoords.length) {
       const fallbackPathCoords = this.getFallbackPathCoords(
@@ -110,46 +113,6 @@ export class RightAnglePathFactory extends AbstractModelFactory<
     }
   }
 
-  removePointsInBetween(path: Point[]) {
-    const toRemove = [];
-
-    for (let i = 0; i < path.length - 1; i += path.length - 3) {
-      try {
-        const points = [path[i], path[i + 1], path[i + 2]];
-
-        const xPositions = points.map((point) => point.x);
-        const yPositions = points.map((point) => point.y);
-
-        if (xPositions.every((x) => x === xPositions[0])) {
-          if (
-            (points[1].y > points[0].y && points[2].y < points[0].y) ||
-            (points[1].y < points[0].y && points[2].y > points[0].y)
-          ) {
-            toRemove.push(i);
-          }
-        }
-
-        if (yPositions.every((y) => y === yPositions[0])) {
-          if (
-            (points[1].x > points[0].x && points[2].x < points[0].x) ||
-            (points[1].x < points[0].x && points[2].x > points[0].x)
-          ) {
-            toRemove.push(i);
-          }
-        }
-      } catch (e) {
-        console.log(i, path, length, e);
-      }
-    }
-
-    const result = [...path];
-    toRemove.reverse().forEach((index) => {
-      result.splice(index, 1);
-    });
-
-    return result;
-  }
-
   generateModel(event: GenerateModelEvent): PathModel {
     const sourcePort: PortModel = event.initialConfig.sourcePort;
     const targetPort: PortModel = event.initialConfig.targetPort;
@@ -164,11 +127,13 @@ export class RightAnglePathFactory extends AbstractModelFactory<
 
     // replace start and end point since they might get a bit of offset due to
     // converting to pathfinding coordinates and being rescaled
+    const calculatedPathPoints = calculatedPath
+      .slice(1, calculatedPath.length - 1)
+      .map((p) => new Point(p[0], p[1]));
+
     const fullPath = [
       sourcePort.getOffsetPosition(),
-      ...calculatedPath
-        .slice(1, calculatedPath.length - 1)
-        .map((p) => new Point(p[0], p[1])),
+      ...calculatedPathPoints,
       targetPort.getOffsetPosition(),
     ];
 
