@@ -6,6 +6,12 @@ import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 import { PointModel } from '@piotrmitrega/react-diagrams-core';
 import { DeserializeEvent } from '@piotrmitrega/react-canvas-core';
 import { RightAngleLinkPathDirections } from './RightAngleLinkPathDirections';
+import { Point } from '@piotrmitrega/geometry';
+
+export const getRightAnglePoint = (point1: Point, point2: Point) =>
+  point1.x > point2.x
+    ? new Point(point1.x, point2.y)
+    : new Point(point2.x, point1.y);
 
 export class RightAngleLinkModel extends DefaultLinkModel {
   lastHoverIndexOfPath: number;
@@ -50,17 +56,12 @@ export class RightAngleLinkModel extends DefaultLinkModel {
     const previousPoint = this.getPoints()[index - 1];
     const nextPoint = this.getPoints()[index + 1];
 
-    if (previousPoint.getX() > nextPoint.getX()) {
-      this.getPoints()[index].setPosition(
-        previousPoint.getX(),
-        nextPoint.getY(),
-      );
-    } else {
-      this.getPoints()[index].setPosition(
-        nextPoint.getX(),
-        previousPoint.getY(),
-      );
-    }
+    const middlePosition = getRightAnglePoint(
+      previousPoint.getPosition(),
+      nextPoint.getPosition(),
+    );
+
+    this.getPoints()[index].setPosition(middlePosition);
   }
 
   addPoint<P extends PointModel>(pointModel: P, index = 1): P {
