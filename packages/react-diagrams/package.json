@@ -1,6 +1,6 @@
 {
 	"name": "@piotrmitrega/react-diagrams",
-	"version": "1.2.10",
+	"version": "1.2.11",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"private": true,
@@ -32,9 +32,9 @@
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
 	"dependencies": {
-		"@piotrmitrega/react-diagrams-core": "^1.2.10",
-		"@piotrmitrega/react-diagrams-defaults": "^1.2.10",
-		"@piotrmitrega/react-diagrams-routing": "^1.2.10"
+		"@piotrmitrega/react-diagrams-core": "^1.2.11",
+		"@piotrmitrega/react-diagrams-defaults": "^1.2.11",
+		"@piotrmitrega/react-diagrams-routing": "^1.2.11"
 	},
 	"gitHead": "1c3b68f03bffa2be82018890ac3bf6da62d644c8"
 }
