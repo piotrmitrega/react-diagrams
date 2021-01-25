@@ -31,8 +31,8 @@ export interface PortModelListener extends BasePositionModelListener {
 }
 
 export interface PortModelOptions extends BaseModelOptions {
-  alignment: PortModelAlignment;
   name: string;
+  alignment?: PortModelAlignment;
   maximumLinks?: number;
   portOffsetValue?: number;
 }
@@ -204,6 +204,8 @@ export class PortModel<
       case PortModelAlignment.TOP_RIGHT:
         return new Point(0, -portOffsetValue);
     }
+
+    return new Point(0, 0);
   };
 
   getOffsetPosition = (): Point => {
