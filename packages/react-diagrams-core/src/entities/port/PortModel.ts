@@ -23,8 +23,6 @@ export enum PortModelAlignment {
   RIGHT = 'right',
 }
 
-export const PORT_SIZE = 16;
-
 export interface PortModelListener extends BasePositionModelListener {
   /**
    * fires when it first receives positional information
@@ -33,10 +31,10 @@ export interface PortModelListener extends BasePositionModelListener {
 }
 
 export interface PortModelOptions extends BaseModelOptions {
-  alignment?: PortModelAlignment;
+  alignment: PortModelAlignment;
+  name: string;
   maximumLinks?: number;
   portOffsetValue?: number;
-  name: string;
 }
 
 export interface PortModelGenerics extends BasePositionModelGenerics {
@@ -187,33 +185,25 @@ export class PortModel<
   }
 
   calculateNormalOffset = () => {
-    const nodeBox = this.getNode().getBoundingBox();
-    const points = nodeBox.getPoints();
-    const { x: portX, y: portY } = this.getPosition();
+    const { alignment, portOffsetValue } = this.options;
 
-    const pointsXCoordinates = points.map((point) => point.x);
-    const pointsYCoordinates = points.map((point) => point.y);
+    switch (alignment) {
+      case PortModelAlignment.BOTTOM:
+      case PortModelAlignment.BOTTOM_LEFT:
+      case PortModelAlignment.BOTTOM_RIGHT:
+        return new Point(0, portOffsetValue);
 
-    const minDistanceX = Math.min(
-      ...pointsXCoordinates.map((x) => Math.abs(x - portX)),
-    );
+      case PortModelAlignment.LEFT:
+        return new Point(-portOffsetValue, 0);
 
-    const minDistanceY = Math.min(
-      ...pointsYCoordinates.map((y) => Math.abs(y - portY)),
-    );
+      case PortModelAlignment.RIGHT:
+        return new Point(portOffsetValue, 0);
 
-    const isXAxis = minDistanceX < minDistanceY;
-
-    const direction = Math.sign(
-      isXAxis ? portX - nodeBox.getOrigin().x : portY - nodeBox.getOrigin().y,
-    );
-
-    const { portOffsetValue } = this.options;
-
-    return new Point(
-      isXAxis ? direction * portOffsetValue : 0,
-      isXAxis ? 0 : direction * portOffsetValue,
-    );
+      case PortModelAlignment.TOP:
+      case PortModelAlignment.TOP_LEFT:
+      case PortModelAlignment.TOP_RIGHT:
+        return new Point(0, -portOffsetValue);
+    }
   };
 
   getOffsetPosition = (): Point => {
