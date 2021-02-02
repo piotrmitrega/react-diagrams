@@ -1,13 +1,12 @@
 import { NodeModel } from '../node/NodeModel';
 import { LinkModel } from '../link/LinkModel';
 import * as _ from 'lodash';
-import { Point, Rectangle } from '@piotrmitrega/geometry';
+import { Point } from '@piotrmitrega/geometry';
 import {
-  BaseEntityEvent,
   BaseModelOptions,
   BasePositionModel,
   BasePositionModelGenerics,
-  BasePositionModelListener,
+  BasePositionModelOptions,
   DeserializeEvent,
   SerializedBasePositionModel,
 } from '@piotrmitrega/react-canvas-core';
@@ -23,7 +22,7 @@ export enum PortModelAlignment {
   RIGHT = 'right',
 }
 
-export interface PortModelOptions extends BaseModelOptions {
+export interface PortModelOptions extends BasePositionModelOptions {
   name: string;
   alignment?: PortModelAlignment;
   maximumLinks?: number;
@@ -99,14 +98,6 @@ export class PortModel<
 
   getName(): string {
     return this.options.name;
-  }
-
-  getMaximumLinks(): number {
-    return this.options.maximumLinks;
-  }
-
-  setMaximumLinks(maximumLinks: number) {
-    this.options.maximumLinks = maximumLinks;
   }
 
   removeLink(link: LinkModel) {

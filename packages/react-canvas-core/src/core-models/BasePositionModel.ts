@@ -27,6 +27,8 @@ export interface BasePositionModelGenerics extends BaseModelGenerics {
 export interface SerializedBasePositionModel extends SerializedBaseModel {
   x: number;
   y: number;
+  width: number;
+  height: number;
 }
 
 export class BasePositionModel<
@@ -73,6 +75,8 @@ export class BasePositionModel<
       ...super.serialize(),
       x: this.position.x,
       y: this.position.y,
+      width: this.width,
+      height: this.height,
     };
   }
 

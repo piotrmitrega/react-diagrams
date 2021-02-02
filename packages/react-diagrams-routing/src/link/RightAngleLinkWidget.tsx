@@ -108,18 +108,18 @@ export class RightAngleLinkWidget extends React.Component<
   ) {
     // If path is first or last add another point to keep node port on its position
     if (index === 0) {
-      const point = new PointModel({
-        link: this.props.link,
-        position: new Point(points[index].getX(), points[index].getY()),
-      });
+      const point = this.props.link.generatePoint(
+        points[index].getX(),
+        points[index].getY(),
+      );
       this.props.link.addPoint(point, index);
       this.dragging_index++;
       return;
     } else if (index === points.length - 2) {
-      const point = new PointModel({
-        link: this.props.link,
-        position: new Point(points[index + 1].getX(), points[index + 1].getY()),
-      });
+      const point = this.props.link.generatePoint(
+        points[index + 1].getX(),
+        points[index + 1].getY(),
+      );
       this.props.link.addPoint(point, index + 1);
       return;
     }

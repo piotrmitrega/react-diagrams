@@ -33,6 +33,8 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
         in: !!options,
         name: name,
         label: label,
+        width: 15,
+        height: 15,
       };
     }
     options = options as DefaultPortModelOptions;
