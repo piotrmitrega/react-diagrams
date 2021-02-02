@@ -14,9 +14,9 @@ export interface BasePositionModelListener extends BaseModelListener {
 }
 
 export interface BasePositionModelOptions extends BaseModelOptions {
+  width: number;
+  height: number;
   position?: Point;
-  width?: number;
-  height?: number;
 }
 
 export interface BasePositionModelGenerics extends BaseModelGenerics {
@@ -40,9 +40,9 @@ export class BasePositionModel<
 
   constructor(options: G['OPTIONS']) {
     super(options);
+    this.width = options.width;
+    this.height = options.height;
     this.position = options.position || new Point(0, 0);
-    this.width = options.width || 0;
-    this.height = options.height || 0;
   }
 
   setPosition(point: Point);

@@ -365,6 +365,8 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
     return new PointModel({
       link: this,
       position: new Point(x, y),
+      width: 0,
+      height: 0,
     });
   }
 }
