@@ -12,7 +12,7 @@ to achieve the best trade-off between accuracy and performance.
 
 export const Grid = PF.Grid;
 
-const pathFinderInstance = new PF.BestFirstFinder({
+const pathFinderInstance = new PF.AStarFinder({
   diagonalMovement: DiagonalMovement.Never,
   avoidStaircase: true,
   turnPenalty: 5,
