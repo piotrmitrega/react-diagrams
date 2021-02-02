@@ -36,6 +36,8 @@ export class DefaultNodeModel extends NodeModel<DefaultNodeModelGenerics> {
       type: 'default',
       name: 'Untitled',
       color: 'rgb(0,192,255)',
+      width: 56,
+      height: 43,
       ...options,
     });
     this.portsOut = [];

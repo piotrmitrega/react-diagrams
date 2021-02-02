@@ -23,13 +23,6 @@ export enum PortModelAlignment {
   RIGHT = 'right',
 }
 
-export interface PortModelListener extends BasePositionModelListener {
-  /**
-   * fires when it first receives positional information
-   */
-  reportInitialPosition?: (event: BaseEntityEvent<PortModel>) => void;
-}
-
 export interface PortModelOptions extends BaseModelOptions {
   name: string;
   alignment?: PortModelAlignment;
@@ -40,7 +33,6 @@ export interface PortModelOptions extends BaseModelOptions {
 export interface PortModelGenerics extends BasePositionModelGenerics {
   OPTIONS: PortModelOptions;
   PARENT: NodeModel;
-  LISTENER: PortModelListener;
 }
 
 export interface SerializedPortModel extends SerializedBasePositionModel {
@@ -59,22 +51,18 @@ export class PortModel<
 > extends BasePositionModel<G> {
   links: { [id: string]: LinkModel };
 
-  reportedPosition: boolean;
-
   constructor(options: G['OPTIONS']) {
     super({
       ...defaultOptions,
       ...options,
     });
     this.links = {};
-    this.reportedPosition = false;
   }
 
   deserialize(event: DeserializeEvent<this>) {
     this.stopFiringEvents();
 
     super.deserialize(event);
-    this.reportedPosition = false;
     this.options.name = event.data.name;
     this.options.alignment = event.data.alignment;
   }
@@ -145,35 +133,11 @@ export class PortModel<
     return null;
   }
 
-  reportPosition() {
-    _.forEach(this.getLinks(), (link) => {
-      link.getPointForPort(this).setPosition(this.getOffsetPosition());
-    });
-
-    this.fireEvent(
-      {
-        entity: this,
-      },
-      'reportInitialPosition',
-      true,
-    );
-  }
-
   getCenter(): Point {
     return new Point(
       this.getX() + this.width / 2,
       this.getY() + this.height / 2,
     );
-  }
-
-  updateCoords(coords: Rectangle) {
-    this.width = coords.getWidth();
-    this.height = coords.getHeight();
-    this.setPosition(coords.getTopLeft());
-    this.reportedPosition = true;
-    this.reportPosition();
-
-    this.resumeFiringEvents();
   }
 
   canLinkToPort(port: PortModel): boolean {

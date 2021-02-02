@@ -1,11 +1,13 @@
-import { LinkModel, PortModel, DefaultLinkModel, PortModelAlignment, RightAngleLinkModel } from '@piotrmitrega/react-diagrams';
+import { LinkModel, PortModel, PortModelAlignment, RightAngleLinkModel } from '@piotrmitrega/react-diagrams';
 
 export class DiamondPortModel extends PortModel {
 	constructor(alignment: PortModelAlignment) {
 		super({
 			type: 'diamond',
 			name: alignment,
-			alignment: alignment
+			alignment: alignment,
+			width: 16,
+			height: 16,
 		});
 	}
 

@@ -68,17 +68,11 @@ export class NodeWidget extends React.Component<NodeProps> {
   }
 
   componentDidMount(): void {
-    // @ts-ignore
     this.ob = new ResizeObserver((entities) => {
-      const bounds = entities[0].contentRect;
-      this.props.node.updateDimensions({
-        width: bounds.width,
-        height: bounds.height,
-      });
-
       //now mark the links as dirty
       _.forEach(this.props.node.getPorts(), (port) => {
-        port.updateCoords(this.props.diagramEngine.getPortCoords(port));
+      	const rect = this.props.diagramEngine.getPortCoords(port);
+      	port.setPosition(rect.getTopLeft())
       });
     });
     this.ob.observe(this.ref.current);

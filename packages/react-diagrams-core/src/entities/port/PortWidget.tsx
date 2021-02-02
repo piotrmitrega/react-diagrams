@@ -19,32 +19,10 @@ export class PortWidget extends React.Component<PortProps> {
     super(props);
     this.ref = React.createRef();
   }
-  //
-  // report() {
-  // 	this.props.port.updateCoords(this.props.engine.getPortCoords(this.props.port, this.ref.current));
-  // }
 
   componentWillUnmount(): void {
     this.engineListenerHandle && this.engineListenerHandle.deregister();
   }
-
-  // componentDidUpdate(prevProps: Readonly<PortProps>, prevState, snapshot?: any): void {
-  // 	if (!this.props.port.reportedPosition) {
-  // 		this.report();
-  // 	}
-  // }
-
-  // componentDidMount(): void {
-
-  // 	this.engineListenerHandle = this.props.engine.registerListener({
-  // 		canvasReady: () => {
-  // 			this.report();
-  // 		}
-  // 	});
-  // 	if (this.props.engine.getCanvas()) {
-  // 		this.report();
-  // 	}
-  // }
 
   getExtraProps() {
     if (Toolkit.TESTING) {

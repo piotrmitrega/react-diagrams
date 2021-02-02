@@ -15,6 +15,8 @@ export interface BasePositionModelListener extends BaseModelListener {
 
 export interface BasePositionModelOptions extends BaseModelOptions {
   position?: Point;
+  width?: number;
+  height?: number;
 }
 
 export interface BasePositionModelGenerics extends BaseModelGenerics {
@@ -33,12 +35,14 @@ export class BasePositionModel<
   extends BaseModel<G>
   implements ModelGeometryInterface {
   protected position: Point;
-  protected width = 0;
-  protected height = 0;
+  protected width;
+  protected height;
 
   constructor(options: G['OPTIONS']) {
     super(options);
     this.position = options.position || new Point(0, 0);
+    this.width = options.width || 0;
+    this.height = options.height || 0;
   }
 
   setPosition(point: Point);
@@ -47,7 +51,6 @@ export class BasePositionModel<
     if (this.isLocked()) {
       return;
     }
-
     if (typeof x === 'object') {
       this.position = x;
     } else if (typeof x) {

@@ -34,8 +34,6 @@ export class NodeModel<
   constructor(options: G['OPTIONS']) {
     super(options);
     this.ports = {};
-    this.width = 0;
-    this.height = 0;
   }
 
   getBoundingBox(): Rectangle {
@@ -149,10 +147,5 @@ export class NodeModel<
     port.setParent(this);
     this.ports[port.getName()] = port;
     return port;
-  }
-
-  updateDimensions({ width, height }: { width: number; height: number }) {
-    this.width = width;
-    this.height = height;
   }
 }

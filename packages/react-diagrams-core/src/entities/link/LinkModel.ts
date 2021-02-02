@@ -270,7 +270,9 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
     if (this.sourcePort !== null) {
       this.sourcePort.removeLink(this);
     }
+    this.points[0].setPosition(port.getOffsetPosition());
     this.sourcePort = port;
+
     this.fireEvent({ port }, 'sourcePortChanged');
   }
 

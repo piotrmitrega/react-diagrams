@@ -10,6 +10,8 @@ export class DiamondNodeModel extends MultiPortNodeModel {
 	constructor() {
 		super({
 			type: 'diamond',
+			width: 50,
+			height: 50,
 		});
 
 		this.addPort(new DiamondPortModel(PortModelAlignment.TOP));
