@@ -33,7 +33,6 @@
 	"typings": "./dist/@types/index",
 	"dependencies": {
 		"@piotrmitrega/react-diagrams-core": "^1.2.13",
-		"@piotrmitrega/react-diagrams-defaults": "^1.2.13",
 		"@piotrmitrega/react-diagrams-routing": "^1.2.13"
 	},
 	"gitHead": "1c3b68f03bffa2be82018890ac3bf6da62d644c8"

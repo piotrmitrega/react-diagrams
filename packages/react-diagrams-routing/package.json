@@ -35,7 +35,6 @@
 	"dependencies": {
 		"@piotrmitrega/geometry": "^1.2.13",
 		"@piotrmitrega/react-diagrams-core": "^1.2.13",
-		"@piotrmitrega/react-diagrams-defaults": "^1.2.13",
 		"@types/pathfinding": "^0.0.4"
 	},
 	"peerDependencies": {

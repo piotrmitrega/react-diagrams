@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { PointModel } from '@piotrmitrega/react-diagrams-core';
+import { PointModel } from './PointModel';
 import styled from '@emotion/styled';
 
-export interface DefaultLinkPointWidgetProps {
+export interface PointWidgetProps {
   point: PointModel;
   color?: string;
   colorSelected: string;
 }
 
-export interface DefaultLinkPointWidgetState {
+export interface PointWidgetState {
   selected: boolean;
 }
 
@@ -18,9 +18,9 @@ namespace S {
   `;
 }
 
-export class DefaultLinkPointWidget extends React.Component<
-  DefaultLinkPointWidgetProps,
-  DefaultLinkPointWidgetState
+export class PointWidget extends React.Component<
+  PointWidgetProps,
+  PointWidgetState
 > {
   constructor(props) {
     super(props);

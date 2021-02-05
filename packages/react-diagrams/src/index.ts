@@ -5,12 +5,6 @@ import {
   NodeLayerFactory,
 } from '@piotrmitrega/react-diagrams-core';
 import {
-  DefaultLabelFactory,
-  DefaultLinkFactory,
-  DefaultNodeFactory,
-  DefaultPortFactory,
-} from '@piotrmitrega/react-diagrams-defaults';
-import {
   DefaultPathFactory,
   RightAnglePathFactory,
 } from '@piotrmitrega/react-diagrams-routing';
@@ -20,7 +14,6 @@ import {
 } from '@piotrmitrega/react-canvas-core';
 
 export * from '@piotrmitrega/react-diagrams-core';
-export * from '@piotrmitrega/react-diagrams-defaults';
 export * from '@piotrmitrega/react-diagrams-routing';
 
 /**
