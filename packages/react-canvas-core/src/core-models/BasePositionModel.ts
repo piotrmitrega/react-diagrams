@@ -14,6 +14,8 @@ export interface BasePositionModelListener extends BaseModelListener {
 }
 
 export interface BasePositionModelOptions extends BaseModelOptions {
+  width: number;
+  height: number;
   position?: Point;
 }
 
@@ -25,6 +27,8 @@ export interface BasePositionModelGenerics extends BaseModelGenerics {
 export interface SerializedBasePositionModel extends SerializedBaseModel {
   x: number;
   y: number;
+  width: number;
+  height: number;
 }
 
 export class BasePositionModel<
@@ -33,11 +37,13 @@ export class BasePositionModel<
   extends BaseModel<G>
   implements ModelGeometryInterface {
   protected position: Point;
-  protected width = 0;
-  protected height = 0;
+  protected width;
+  protected height;
 
   constructor(options: G['OPTIONS']) {
     super(options);
+    this.width = options.width;
+    this.height = options.height;
     this.position = options.position || new Point(0, 0);
   }
 
@@ -47,7 +53,6 @@ export class BasePositionModel<
     if (this.isLocked()) {
       return;
     }
-
     if (typeof x === 'object') {
       this.position = x;
     } else if (typeof x) {
@@ -70,6 +75,8 @@ export class BasePositionModel<
       ...super.serialize(),
       x: this.position.x,
       y: this.position.y,
+      width: this.width,
+      height: this.height,
     };
   }
 

@@ -57,8 +57,8 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
           }
           this.link.setSelected(true);
           this.link.setSourcePort(this.port);
+
           this.engine.getModel().addLink(this.link);
-          this.port.reportPosition();
         },
       }),
     );
@@ -94,8 +94,6 @@ export class DragNewLinkState extends AbstractDisplacementState<DiagramEngine> {
   connectToPort(port: PortModel) {
     this.link.setTargetPort(port);
     this.link.setSelected(false);
-
-    port.reportPosition();
 
     this.targetPort = null;
 

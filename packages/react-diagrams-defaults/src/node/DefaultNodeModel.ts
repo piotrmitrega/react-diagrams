@@ -36,6 +36,8 @@ export class DefaultNodeModel extends NodeModel<DefaultNodeModelGenerics> {
       type: 'default',
       name: 'Untitled',
       color: 'rgb(0,192,255)',
+      width: 56,
+      height: 43,
       ...options,
     });
     this.portsOut = [];
@@ -77,6 +79,8 @@ export class DefaultNodeModel extends NodeModel<DefaultNodeModelGenerics> {
       name: label,
       label: label,
       alignment: PortModelAlignment.LEFT,
+      width: 15,
+      height: 15,
     });
     if (!after) {
       this.portsIn.splice(0, 0, p);
@@ -90,6 +94,8 @@ export class DefaultNodeModel extends NodeModel<DefaultNodeModelGenerics> {
       name: label,
       label: label,
       alignment: PortModelAlignment.RIGHT,
+      width: 15,
+      height: 15,
     });
     if (!after) {
       this.portsOut.splice(0, 0, p);

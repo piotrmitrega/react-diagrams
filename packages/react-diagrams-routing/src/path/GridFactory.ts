@@ -175,6 +175,7 @@ export class GridFactory extends AbstractModelFactory<
       targetPort.getNode(),
       GridFactory.NODE_GRID_OFFSET,
     );
+
     const targetPortArea = this.getModelArea(targetPort);
 
     model.markArea(sourceNodeArea, false);

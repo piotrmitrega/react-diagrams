@@ -23,11 +23,7 @@ export class RightAngleLinkModel extends DefaultLinkModel {
       ...options,
     });
 
-    this.points.push(
-      new PointModel({
-        link: this,
-      }),
-    );
+    this.points.push(this.generatePoint(0, 0));
 
     this.lastHoverIndexOfPath = 0;
     this.calculateDirections();

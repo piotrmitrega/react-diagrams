@@ -56,14 +56,7 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
 
   constructor(options: G['OPTIONS']) {
     super(options);
-    this.points = [
-      new PointModel({
-        link: this,
-      }),
-      new PointModel({
-        link: this,
-      }),
-    ];
+    this.points = [this.generatePoint(0, 0), this.generatePoint(0, 0)];
     this.sourcePort = null;
     this.targetPort = null;
     this.renderedPaths = [];
@@ -111,10 +104,7 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
 
     super.deserialize(event);
     this.points = _.map(points || [], (point) => {
-      const p = new PointModel({
-        link: this,
-        position: new Point(point.x, point.y),
-      });
+      const p = this.generatePoint(point.x, point.y);
       p.deserialize({
         ...event,
         data: point,
@@ -270,7 +260,9 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
     if (this.sourcePort !== null) {
       this.sourcePort.removeLink(this);
     }
+    this.points[0].setPosition(port.getOffsetPosition());
     this.sourcePort = port;
+
     this.fireEvent({ port }, 'sourcePortChanged');
   }
 
@@ -333,20 +325,6 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
     this.points.splice(this.getPointIndex(pointModel), 1);
   }
 
-  removePointsBefore(pointModel: PointModel) {
-    this.points.splice(0, this.getPointIndex(pointModel));
-  }
-
-  removePointsAfter(pointModel: PointModel) {
-    this.points.splice(this.getPointIndex(pointModel) + 1);
-  }
-
-  removeMiddlePoints() {
-    if (this.points.length > 2) {
-      this.points.splice(0, this.points.length - 2);
-    }
-  }
-
   onLastPointDragged() {}
 
   onDragged() {
@@ -363,6 +341,8 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
     return new PointModel({
       link: this,
       position: new Point(x, y),
+      width: 0,
+      height: 0,
     });
   }
 }

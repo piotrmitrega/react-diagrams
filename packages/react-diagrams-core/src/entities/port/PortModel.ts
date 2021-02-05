@@ -1,13 +1,11 @@
 import { NodeModel } from '../node/NodeModel';
 import { LinkModel } from '../link/LinkModel';
 import * as _ from 'lodash';
-import { Point, Rectangle } from '@piotrmitrega/geometry';
+import { Point } from '@piotrmitrega/geometry';
 import {
-  BaseEntityEvent,
-  BaseModelOptions,
   BasePositionModel,
   BasePositionModelGenerics,
-  BasePositionModelListener,
+  BasePositionModelOptions,
   DeserializeEvent,
   SerializedBasePositionModel,
 } from '@piotrmitrega/react-canvas-core';
@@ -23,14 +21,7 @@ export enum PortModelAlignment {
   RIGHT = 'right',
 }
 
-export interface PortModelListener extends BasePositionModelListener {
-  /**
-   * fires when it first receives positional information
-   */
-  reportInitialPosition?: (event: BaseEntityEvent<PortModel>) => void;
-}
-
-export interface PortModelOptions extends BaseModelOptions {
+export interface PortModelOptions extends BasePositionModelOptions {
   name: string;
   alignment?: PortModelAlignment;
   maximumLinks?: number;
@@ -40,7 +31,6 @@ export interface PortModelOptions extends BaseModelOptions {
 export interface PortModelGenerics extends BasePositionModelGenerics {
   OPTIONS: PortModelOptions;
   PARENT: NodeModel;
-  LISTENER: PortModelListener;
 }
 
 export interface SerializedPortModel extends SerializedBasePositionModel {
@@ -59,22 +49,19 @@ export class PortModel<
 > extends BasePositionModel<G> {
   links: { [id: string]: LinkModel };
 
-  reportedPosition: boolean;
-
   constructor(options: G['OPTIONS']) {
     super({
       ...defaultOptions,
       ...options,
     });
+
     this.links = {};
-    this.reportedPosition = false;
   }
 
   deserialize(event: DeserializeEvent<this>) {
     this.stopFiringEvents();
 
     super.deserialize(event);
-    this.reportedPosition = false;
     this.options.name = event.data.name;
     this.options.alignment = event.data.alignment;
   }
@@ -113,14 +100,6 @@ export class PortModel<
     return this.options.name;
   }
 
-  getMaximumLinks(): number {
-    return this.options.maximumLinks;
-  }
-
-  setMaximumLinks(maximumLinks: number) {
-    this.options.maximumLinks = maximumLinks;
-  }
-
   removeLink(link: LinkModel) {
     delete this.links[link.getID()];
   }
@@ -145,35 +124,11 @@ export class PortModel<
     return null;
   }
 
-  reportPosition() {
-    _.forEach(this.getLinks(), (link) => {
-      link.getPointForPort(this).setPosition(this.getOffsetPosition());
-    });
-
-    this.fireEvent(
-      {
-        entity: this,
-      },
-      'reportInitialPosition',
-      true,
-    );
-  }
-
   getCenter(): Point {
     return new Point(
       this.getX() + this.width / 2,
       this.getY() + this.height / 2,
     );
-  }
-
-  updateCoords(coords: Rectangle) {
-    this.width = coords.getWidth();
-    this.height = coords.getHeight();
-    this.setPosition(coords.getTopLeft());
-    this.reportedPosition = true;
-    this.reportPosition();
-
-    this.resumeFiringEvents();
   }
 
   canLinkToPort(port: PortModel): boolean {
@@ -184,8 +139,57 @@ export class PortModel<
     return super.isLocked() || this.getParent().isLocked();
   }
 
+  calculatePosition = () => {
+    const { alignment, width, height } = this.getOptions();
+
+    const xOffset = width / 2;
+    const yOffset = height / 2;
+
+    const node = this.getNode();
+    const nodeWidth = node.getWidth();
+    const nodeHeight = node.getHeight();
+
+    const position = node.getPosition().clone();
+
+    switch (alignment) {
+      case PortModelAlignment.TOP_LEFT:
+        position.translate(-xOffset, -yOffset);
+        break;
+
+      case PortModelAlignment.TOP:
+        position.translate(nodeWidth / 2, -yOffset);
+        break;
+
+      case PortModelAlignment.TOP_RIGHT:
+        position.translate(nodeWidth + xOffset, -yOffset);
+        break;
+
+      case PortModelAlignment.LEFT:
+        position.translate(-xOffset, nodeHeight / 2);
+        break;
+
+      case PortModelAlignment.RIGHT:
+        position.translate(nodeWidth + xOffset, nodeHeight / 2);
+        break;
+
+      case PortModelAlignment.BOTTOM_LEFT:
+        position.translate(-xOffset, nodeHeight + yOffset);
+        break;
+
+      case PortModelAlignment.BOTTOM:
+        position.translate(nodeWidth / 2, nodeHeight + yOffset);
+        break;
+
+      case PortModelAlignment.BOTTOM_RIGHT:
+        position.translate(nodeWidth + xOffset, nodeHeight + yOffset);
+        break;
+    }
+
+    return position;
+  };
+
   calculateNormalOffset = () => {
-    const { alignment, portOffsetValue } = this.options;
+    const { alignment, portOffsetValue } = this.getOptions();
 
     switch (alignment) {
       case PortModelAlignment.BOTTOM:
@@ -216,4 +220,10 @@ export class PortModel<
 
     return offsetPosition;
   };
+
+  setParent(parent: G['PARENT']) {
+    super.setParent(parent);
+
+    this.setPosition(this.calculatePosition());
+  }
 }

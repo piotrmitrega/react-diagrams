@@ -13,6 +13,8 @@ export class DefaultPortFactory extends AbstractModelFactory<
   generateModel(): DefaultPortModel {
     return new DefaultPortModel({
       name: 'unknown',
+      width: 15,
+      height: 15,
     });
   }
 }

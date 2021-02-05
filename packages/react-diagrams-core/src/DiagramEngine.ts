@@ -214,10 +214,6 @@ export class DiagramEngine extends CanvasEngine<
     return selector;
   }
 
-  getPortCenter(port: PortModel): Point {
-    return this.getPortCoords(port).getOrigin();
-  }
-
   /**
    * Calculate rectangular coordinates of the port passed in.
    */
