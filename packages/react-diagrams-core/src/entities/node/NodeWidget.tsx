@@ -72,7 +72,6 @@ export class NodeWidget extends React.Component<NodeProps> {
       //now mark the links as dirty
       _.forEach(this.props.node.getPorts(), (port) => {
       	const rect = this.props.diagramEngine.getPortCoords(port);
-      	console.log("1111")
       	port.setPosition(rect.getTopLeft())
       });
     });

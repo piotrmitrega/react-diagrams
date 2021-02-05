@@ -3,7 +3,6 @@ import { LinkModel } from '../link/LinkModel';
 import * as _ from 'lodash';
 import { Point } from '@piotrmitrega/geometry';
 import {
-  BaseModelOptions,
   BasePositionModel,
   BasePositionModelGenerics,
   BasePositionModelOptions,
@@ -55,6 +54,7 @@ export class PortModel<
       ...defaultOptions,
       ...options,
     });
+
     this.links = {};
   }
 
@@ -139,8 +139,57 @@ export class PortModel<
     return super.isLocked() || this.getParent().isLocked();
   }
 
+  calculatePosition = () => {
+    const { alignment, width, height } = this.getOptions();
+
+    const xOffset = width / 2;
+    const yOffset = height / 2;
+
+    const node = this.getNode();
+    const nodeWidth = node.getWidth();
+    const nodeHeight = node.getHeight();
+
+    const position = node.getPosition().clone();
+
+    switch (alignment) {
+      case PortModelAlignment.TOP_LEFT:
+        position.translate(-xOffset, -yOffset);
+        break;
+
+      case PortModelAlignment.TOP:
+        position.translate(nodeWidth / 2, -yOffset);
+        break;
+
+      case PortModelAlignment.TOP_RIGHT:
+        position.translate(nodeWidth + xOffset, -yOffset);
+        break;
+
+      case PortModelAlignment.LEFT:
+        position.translate(-xOffset, nodeHeight / 2);
+        break;
+
+      case PortModelAlignment.RIGHT:
+        position.translate(nodeWidth + xOffset, nodeHeight / 2);
+        break;
+
+      case PortModelAlignment.BOTTOM_LEFT:
+        position.translate(-xOffset, nodeHeight + yOffset);
+        break;
+
+      case PortModelAlignment.BOTTOM:
+        position.translate(nodeWidth / 2, nodeHeight + yOffset);
+        break;
+
+      case PortModelAlignment.BOTTOM_RIGHT:
+        position.translate(nodeWidth + xOffset, nodeHeight + yOffset);
+        break;
+    }
+
+    return position;
+  };
+
   calculateNormalOffset = () => {
-    const { alignment, portOffsetValue } = this.options;
+    const { alignment, portOffsetValue } = this.getOptions();
 
     switch (alignment) {
       case PortModelAlignment.BOTTOM:
@@ -171,4 +220,10 @@ export class PortModel<
 
     return offsetPosition;
   };
+
+  setParent(parent: G['PARENT']) {
+    super.setParent(parent);
+
+    this.setPosition(this.calculatePosition());
+  }
 }
