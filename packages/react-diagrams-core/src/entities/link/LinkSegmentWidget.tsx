@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { DefaultLinkFactory } from './DefaultLinkFactory';
-import { DiagramEngine } from '@piotrmitrega/react-diagrams-core';
-import { DefaultLinkModel } from './DefaultLinkModel';
+import { DiagramEngine } from '../../DiagramEngine';
+import { LinkModel } from './LinkModel';
+import { LinkFactory } from './LinkFactory';
 
-export interface DefaultLinkSegmentWidgetProps {
+export interface LinkSegmentWidgetProps {
   path: string;
-  link: DefaultLinkModel;
+  link: LinkModel;
   selected: boolean;
   forwardRef: React.RefObject<SVGPathElement>;
-  factory: DefaultLinkFactory;
+  factory: LinkFactory;
   diagramEngine: DiagramEngine;
   onSelection: (selected: boolean) => any;
   extras: object;
 }
 
-export class DefaultLinkSegmentWidget extends React.Component<
-  DefaultLinkSegmentWidgetProps
-> {
+export class LinkSegmentWidget extends React.Component<LinkSegmentWidgetProps> {
   render() {
+  	console.log(this.props)
     const Bottom = React.cloneElement(
       this.props.factory.generateLinkSegment(
         this.props.link,

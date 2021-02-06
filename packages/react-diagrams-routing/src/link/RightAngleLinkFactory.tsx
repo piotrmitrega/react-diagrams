@@ -1,26 +1,22 @@
 import * as React from 'react';
 import { RightAngleLinkWidget } from './RightAngleLinkWidget';
-import { DiagramEngine } from '@piotrmitrega/react-diagrams-core';
-import {
-  DefaultLinkFactory,
-  DefaultLinkModel,
-} from '@piotrmitrega/react-diagrams-defaults';
+import { LinkFactory, LinkType } from '@piotrmitrega/react-diagrams-core';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
 
 /**
  * @author Daniel Lazar
  */
-export class RightAngleLinkFactory extends DefaultLinkFactory<
-  RightAngleLinkModel
-> {
-  static NAME = 'rightAngle';
-
+export class RightAngleLinkFactory extends LinkFactory<RightAngleLinkModel> {
   constructor() {
-    super(RightAngleLinkFactory.NAME);
+    super(LinkType.RIGHT_ANGLE);
   }
 
   generateModel(event): RightAngleLinkModel {
-    return new RightAngleLinkModel();
+    const model = new RightAngleLinkModel({});
+
+    this.eventEmitter.registerListeners(model);
+
+    return model;
   }
 
   generateReactWidget(event): JSX.Element {

@@ -1,6 +1,7 @@
 import { AbstractFactory } from './AbstractFactory';
 import { BaseModel } from '../core-models/BaseModel';
 import { CanvasEngine } from '../CanvasEngine';
+import { EventEmitter } from '../events/EventEmitter';
 
 export interface GenerateModelEvent {
   initialConfig?: any;

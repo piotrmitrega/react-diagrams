@@ -5,13 +5,10 @@ import {
   DiagramEngine,
   LinkWidget,
   PointModel,
+  LinkSegmentWidget,
+  PointWidget,
 } from '@piotrmitrega/react-diagrams-core';
 import { RightAngleLinkFactory } from './RightAngleLinkFactory';
-import {
-  DefaultLinkPointWidget,
-  DefaultLinkSegmentWidget,
-} from '@piotrmitrega/react-diagrams-defaults';
-import { Point } from '@piotrmitrega/geometry';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
 import { LinkArrow } from './LinkArrow';
 
@@ -84,7 +81,7 @@ export class RightAngleLinkWidget extends React.Component<
     const ref = React.createRef<SVGPathElement>();
 
     return (
-      <DefaultLinkSegmentWidget
+      <LinkSegmentWidget
         diagramEngine={this.props.diagramEngine}
         extras={extraProps}
         factory={this.props.diagramEngine.getFactoryForLink(this.props.link)}
@@ -238,7 +235,7 @@ export class RightAngleLinkWidget extends React.Component<
     ];
 
     return (
-      <DefaultLinkPointWidget
+      <PointWidget
         color={colors[index]}
         colorSelected={this.props.link.getOptions().selectedColor}
         key={point.getID()}
@@ -322,10 +319,6 @@ export class RightAngleLinkWidget extends React.Component<
     // }
 
     this.refPaths = [];
-    return (
-      <g data-default-link-test={this.props.link.getOptions().testName}>
-        {paths}
-      </g>
-    );
+    return <g>{paths}</g>;
   }
 }

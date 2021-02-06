@@ -10,6 +10,7 @@ import {
   BaseModel,
   BaseModelGenerics,
   BaseModelListener,
+  BaseModelOptions,
   DeserializeEvent,
   ModelGeometryInterface,
   SerializedBaseModel,
@@ -29,9 +30,16 @@ export interface LinkModelListener extends BaseModelListener {
   dragged?(event: BaseEntityEvent<LinkModel>): void;
 }
 
+export interface LinkModelOptions extends BaseModelOptions {
+  width?: number;
+  color?: string;
+  selectedColor?: string;
+}
+
 export interface LinkModelGenerics extends BaseModelGenerics {
   LISTENER: LinkModelListener;
   PARENT: DiagramModel;
+  OPTIONS: LinkModelOptions;
 }
 
 export interface SerializedLinkModel extends SerializedBaseModel {
@@ -55,7 +63,12 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
   protected renderedPaths: SVGPathElement[];
 
   constructor(options: G['OPTIONS']) {
-    super(options);
+    super({
+      color: 'gray',
+      width: 3,
+      selectedColor: 'rgb(0,192,255)',
+      ...options,
+    });
     this.points = [this.generatePoint(0, 0), this.generatePoint(0, 0)];
     this.sourcePort = null;
     this.targetPort = null;
@@ -149,6 +162,11 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
     }
 
     this.resumeFiringEvents();
+  }
+
+  setColor(color: string) {
+    this.options.color = color;
+    this.fireEvent({ color }, 'colorChanged');
   }
 
   getRenderedPath(): SVGPathElement[] {

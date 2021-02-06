@@ -1,15 +1,15 @@
 import createEngine, {
 	DiagramModel,
-	DefaultNodeModel,
-	DefaultPortModel,
-	DefaultLinkFactory,
-	DefaultLinkModel
+	NodeModel,
+	PortModel,
+	LinkFactory,
+	LinkModel
 } from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
-export class AdvancedLinkModel extends DefaultLinkModel {
+export class AdvancedLinkModel extends LinkModel {
 	constructor() {
 		super({
 			type: 'advanced',
@@ -18,7 +18,7 @@ export class AdvancedLinkModel extends DefaultLinkModel {
 	}
 }
 
-export class AdvancedPortModel extends DefaultPortModel {
+export class AdvancedPortModel extends PortModel {
 	createLinkModel(): AdvancedLinkModel | null {
 		return new AdvancedLinkModel();
 	}
@@ -89,7 +89,7 @@ export class AdvancedLinkSegment extends React.Component<{ model: AdvancedLinkMo
 	}
 }
 
-export class AdvancedLinkFactory extends DefaultLinkFactory {
+export class AdvancedLinkFactory extends LinkFactory {
 	constructor() {
 		super('advanced');
 	}
@@ -118,24 +118,24 @@ export default () => {
 	engine.getLinkFactories().registerFactory(new AdvancedLinkFactory());
 
 	// create some nodes
-	var node1 = new DefaultNodeModel('Source', 'rgb(0,192,255)');
-	let port1 = node1.addPort(new AdvancedPortModel(false, 'out-1', 'Out thick'));
-	let port2 = node1.addPort(new DefaultPortModel(false, 'out-2', 'Out default'));
+	var node1 = new NodeModel({ height: 16, width: 16, name:'Source',color: 'rgb(16,192,255)'});
+	let port1 = node1.addPort(new AdvancedPortModel({ height: 16, width: 16, name: 'out-1' }));
+	let port2 = node1.addPort(new PortModel({ height: 16, width: 16, name: 'out-2' }));
 	node1.setPosition(100, 100);
 
-	var node2 = new DefaultNodeModel('Target', 'rgb(192,255,0)');
-	var port3 = node2.addPort(new AdvancedPortModel(true, 'in-1', 'In thick'));
-	var port4 = node2.addPort(new DefaultPortModel(true, 'in-2', 'In default'));
+	var node2 = new NodeModel({ height: 16, width: 16, name:'Target',color: 'rgb(192,255,16)'});
+	var port3 = node2.addPort(new AdvancedPortModel({ height: 16, width: 16, name:'in-1'}));
+	var port4 = node2.addPort(new PortModel({ height: 16, width: 16, name:'in-2'}));
 	node2.setPosition(300, 100);
 
-	var node3 = new DefaultNodeModel('Source', 'rgb(0,192,255)');
-	node3.addPort(new AdvancedPortModel(false, 'out-1', 'Out thick'));
-	node3.addPort(new DefaultPortModel(false, 'out-2', 'Out default'));
+	var node3 = new NodeModel({ height: 16, width: 16, name:'Source',color: 'rgb(16,192,255)'});
+	node3.addPort(new AdvancedPortModel({ height: 16, width: 16, name: 'out-1' }));
+	node3.addPort(new PortModel({ height: 16, width: 16, name: 'out-2' }));
 	node3.setPosition(100, 200);
 
-	var node4 = new DefaultNodeModel('Target', 'rgb(192,255,0)');
-	node4.addPort(new AdvancedPortModel(true, 'in-1', 'In thick'));
-	node4.addPort(new DefaultPortModel(true, 'in-2', 'In default'));
+	var node4 = new NodeModel({ height: 16, width: 16, name:'Target',color: 'rgb(192,255,16)'});
+	node4.addPort(new AdvancedPortModel({ height: 16, width: 16, name:'in-1'}));
+	node4.addPort(new PortModel({ height: 16, width: 16, name:'in-2'}));
 	node4.setPosition(300, 200);
 
 	var model = new DiagramModel();

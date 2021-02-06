@@ -4,6 +4,11 @@ export * from './entities/label/LabelModel';
 export * from './entities/link/LinkModel';
 export * from './entities/link/PointModel';
 export * from './entities/link/LinkWidget';
+export * from './entities/link/LinkType';
+export * from './entities/link/LinkSegment';
+export * from './entities/link/LinkSegmentWidget';
+export * from './entities/link/PointWidget';
+export * from './entities/link/LinkFactory';
 
 export * from './entities/link-layer/LinkLayerModel';
 export * from './entities/link-layer/LinkLayerWidget';
@@ -18,6 +23,8 @@ export * from './entities/node/NodeModel';
 export * from './entities/node/NodeWidget';
 export * from './entities/port/PortModel';
 export * from './entities/port/PortWidget';
+export * from './entities/port/PortType';
+export * from './entities/port/BasicPortModel';
 
 export * from './entities/path/PathModel';
 

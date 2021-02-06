@@ -1,7 +1,7 @@
 import {
-  DiagramEngine,
-  PathModel,
-  PortModel,
+	DiagramEngine, LinkType,
+	PathModel,
+	PortModel
 } from '@piotrmitrega/react-diagrams-core';
 import {
   AbstractModelFactory,
@@ -26,7 +26,7 @@ export class RightAnglePathFactory extends AbstractModelFactory<
   private gridFactory: GridFactory;
 
   constructor() {
-    super(RightAngleLinkFactory.NAME);
+    super(LinkType.RIGHT_ANGLE);
 
     this.gridFactory = new GridFactory();
     this.pathFinding = new PathFinding();

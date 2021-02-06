@@ -1,6 +1,6 @@
 import createEngine, {
 	DiagramModel,
-	DefaultPortModel,
+	PortModel,
 	RightAngleLinkFactory,
 	LinkModel,
 	RightAngleLinkModel
@@ -15,9 +15,9 @@ import { SubscribeToEventsButton } from '../helpers/SubscribeToEventsButton';
 import { SerializeButton } from '../helpers/SerializeButton';
 
 // When new link is created by clicking on port the RightAngleLinkModel needs to be returned.
-export class RightAnglePortModel extends DefaultPortModel {
+export class RightAnglePortModel extends PortModel {
 	createLinkModel(factory?: AbstractModelFactory<LinkModel>) {
-		return new RightAngleLinkModel();
+		return new RightAngleLinkModel({});
 	}
 }
 

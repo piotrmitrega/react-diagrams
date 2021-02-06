@@ -1,9 +1,4 @@
-import {
-  DefaultLinkModel,
-  DefaultLinkModelOptions,
-} from '@piotrmitrega/react-diagrams-defaults';
-import { RightAngleLinkFactory } from './RightAngleLinkFactory';
-import { PointModel } from '@piotrmitrega/react-diagrams-core';
+import { LinkModel, LinkModelOptions, LinkType, PointModel } from '@piotrmitrega/react-diagrams-core';
 import { DeserializeEvent } from '@piotrmitrega/react-canvas-core';
 import { RightAngleLinkPathDirections } from './RightAngleLinkPathDirections';
 import { Point } from '@piotrmitrega/geometry';
@@ -13,13 +8,13 @@ export const getRightAnglePoint = (point1: Point, point2: Point) =>
     ? new Point(point1.x, point2.y)
     : new Point(point2.x, point1.y);
 
-export class RightAngleLinkModel extends DefaultLinkModel {
+export class RightAngleLinkModel extends LinkModel {
   lastHoverIndexOfPath: number;
   directions: RightAngleLinkPathDirections;
 
-  constructor(options: DefaultLinkModelOptions = {}) {
+  constructor(options: LinkModelOptions) {
     super({
-      type: RightAngleLinkFactory.NAME,
+      type: LinkType.RIGHT_ANGLE,
       ...options,
     });
 

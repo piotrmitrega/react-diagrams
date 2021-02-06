@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { DefaultLinkModel } from './DefaultLinkModel';
-import { DefaultLinkWidget } from './DefaultLinkWidget';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/core';
-import { AbstractReactFactory } from '@piotrmitrega/react-canvas-core';
-import { DiagramEngine } from '@piotrmitrega/react-diagrams-core';
+import {
+  AbstractReactFactory,
+  EventEmitter,
+} from '@piotrmitrega/react-canvas-core';
+import { DiagramEngine } from '../../DiagramEngine';
+import { LinkModel } from './LinkModel';
 
 namespace S {
   export const Keyframes = keyframes`
@@ -28,20 +30,16 @@ namespace S {
   `;
 }
 
-export class DefaultLinkFactory<
-  Link extends DefaultLinkModel = DefaultLinkModel
+export abstract class LinkFactory<
+  Link extends LinkModel = LinkModel
 > extends AbstractReactFactory<Link, DiagramEngine> {
-  constructor(type = 'default') {
+  protected constructor(type: string) {
     super(type);
   }
 
-  generateReactWidget(event): JSX.Element {
-    return <DefaultLinkWidget diagramEngine={this.engine} link={event.model} />;
-  }
+  abstract generateReactWidget(event): JSX.Element;
 
-  generateModel(event): Link {
-    return new DefaultLinkModel() as Link;
-  }
+  abstract generateModel(event): Link;
 
   generateLinkSegment(model: Link, selected: boolean, path: string) {
     return (
