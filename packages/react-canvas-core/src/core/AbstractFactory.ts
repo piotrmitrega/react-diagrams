@@ -1,5 +1,6 @@
 import { CanvasEngine } from '../CanvasEngine';
 import { FactoryBank } from './FactoryBank';
+import { EventEmitter } from '../events/EventEmitter';
 
 /**
  * Base factory for all the different types of entities.
@@ -16,12 +17,15 @@ export abstract class AbstractFactory<E extends CanvasEngine = CanvasEngine> {
   protected engine: E;
   protected bank: FactoryBank;
 
+  protected eventEmitter: EventEmitter;
+
   constructor(type: string) {
     this.type = type;
   }
 
   setDiagramEngine(engine: E) {
     this.engine = engine;
+    this.eventEmitter = engine.getEventEmitter();
   }
 
   setFactoryBank(bank: FactoryBank) {

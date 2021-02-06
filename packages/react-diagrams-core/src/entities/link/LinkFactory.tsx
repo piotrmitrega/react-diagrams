@@ -1,7 +1,10 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/core';
-import { AbstractReactFactory } from '@piotrmitrega/react-canvas-core';
+import {
+  AbstractReactFactory,
+  EventEmitter,
+} from '@piotrmitrega/react-canvas-core';
 import { DiagramEngine } from '../../DiagramEngine';
 import { LinkModel } from './LinkModel';
 

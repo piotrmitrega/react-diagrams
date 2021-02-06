@@ -12,7 +12,11 @@ export class RightAngleLinkFactory extends LinkFactory<RightAngleLinkModel> {
   }
 
   generateModel(event): RightAngleLinkModel {
-    return new RightAngleLinkModel({});
+    const model = new RightAngleLinkModel({});
+
+    this.eventEmitter.registerListeners(model);
+
+    return model;
   }
 
   generateReactWidget(event): JSX.Element {

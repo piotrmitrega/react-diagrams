@@ -11,6 +11,7 @@ import { ActionEventBus } from './core-actions/ActionEventBus';
 import { ZoomCanvasAction } from './actions/ZoomCanvasAction';
 import { DeleteItemsAction } from './actions/DeleteItemsAction';
 import { StateMachine } from './core-state/StateMachine';
+import { EventEmitter } from './events/EventEmitter';
 
 export interface CanvasEngineListener extends BaseListener {
   canvasReady?(): void;
@@ -42,6 +43,7 @@ export class CanvasEngine<
   protected eventBus: ActionEventBus;
   protected stateMachine: StateMachine;
   protected options: CanvasEngineOptions;
+  protected readonly eventEmitter: EventEmitter;
 
   constructor(options: CanvasEngineOptions = {}) {
     super();
@@ -66,6 +68,9 @@ export class CanvasEngine<
     if (this.options.registerDefaultDeleteItemsAction === true) {
       this.eventBus.registerAction(new DeleteItemsAction());
     }
+
+    this.eventEmitter = new EventEmitter();
+    this.eventEmitter.registerListeners(this);
   }
 
   getStateMachine() {
@@ -115,6 +120,9 @@ export class CanvasEngine<
 
   setModel(model: M) {
     this.model = model;
+
+    this.eventEmitter.registerListeners(model);
+
     if (this.canvas) {
       requestAnimationFrame(() => {
         this.repaintCanvas();
@@ -179,6 +187,10 @@ export class CanvasEngine<
 
   getMouseElement(event: MouseEvent): BaseModel {
     return null;
+  }
+
+  getEventEmitter(): EventEmitter {
+    return this.eventEmitter;
   }
 
   zoomToFit() {

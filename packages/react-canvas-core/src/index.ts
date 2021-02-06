@@ -19,6 +19,10 @@ export * from './core-models/BasePositionModel';
 export * from './entities/canvas/CanvasModel';
 export * from './entities/canvas/CanvasWidget';
 
+export * from './events/DiagramEventType';
+export * from './events/EventEmitter';
+export * from './events/Types';
+
 export * from './entities/layer/LayerModel';
 export * from './entities/layer/TransformLayerWidget';
 export * from './entities/layer/SmartLayerWidget';
