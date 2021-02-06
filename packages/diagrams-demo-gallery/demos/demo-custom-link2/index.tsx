@@ -1,18 +1,17 @@
 import createEngine, {
 	DiagramModel,
-	DefaultNodeModel,
-	DefaultPortModel,
-	DefaultLinkFactory,
-	DefaultLinkPointWidget,
-	DefaultLinkModel,
-	DefaultLinkWidget
+	NodeModel,
+	PortModel,
+	LinkFactory,
+	LinkModel,
+	LinkWidget
 } from '@piotrmitrega/react-diagrams';
-import { DiagramEngine, LinkWidget, PointModel } from '@piotrmitrega/react-diagrams-core';
+import {  PointModel } from '@piotrmitrega/react-diagrams-core';
 import * as React from 'react';
 import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
-export class AdvancedLinkModel extends DefaultLinkModel {
+export class AdvancedLinkModel extends LinkModel {
 	constructor() {
 		super({
 			type: 'advanced',
@@ -21,7 +20,7 @@ export class AdvancedLinkModel extends DefaultLinkModel {
 	}
 }
 
-export class AdvancedPortModel extends DefaultPortModel {
+export class AdvancedPortModel extends PortModel {
 	createLinkModel(): AdvancedLinkModel | null {
 		return new AdvancedLinkModel();
 	}
@@ -61,7 +60,7 @@ const CustomLinkArrowWidget = (props) => {
 	);
 };
 
-export class AdvancedLinkWidget extends DefaultLinkWidget {
+export class AdvancedLinkWidget extends LinkWidget {
 	generateArrow(point: PointModel, previousPoint: PointModel): JSX.Element {
 		return (
 			<CustomLinkArrowWidget
@@ -112,7 +111,7 @@ export class AdvancedLinkWidget extends DefaultLinkWidget {
 	}
 }
 
-export class AdvancedLinkFactory extends DefaultLinkFactory {
+export class AdvancedLinkFactory extends LinkFactory {
 	constructor() {
 		super('advanced');
 	}
@@ -137,19 +136,19 @@ export default () => {
 	engine.getLinkFactories().registerFactory(new AdvancedLinkFactory());
 
 	// create some nodes
-	var node1 = new DefaultNodeModel('Source', 'rgb(0,192,255)');
+	var node1 = new NodeModel('Source', 'rgb(0,192,255)');
 	let port1 = node1.addPort(new AdvancedPortModel(false, 'out'));
 	node1.setPosition(100, 100);
 
-	var node2 = new DefaultNodeModel('Target', 'rgb(192,255,0)');
+	var node2 = new NodeModel('Target', 'rgb(192,255,0)');
 	var port2 = node2.addPort(new AdvancedPortModel(true, 'in'));
 	node2.setPosition(500, 350);
 
-	var node3 = new DefaultNodeModel('Source', 'rgb(0,192,255)');
+	var node3 = new NodeModel('Source', 'rgb(0,192,255)');
 	let port3 = node3.addPort(new AdvancedPortModel(false, 'out'));
 	node3.setPosition(100, 500);
 
-	var node4 = new DefaultNodeModel('Target', 'rgb(192,255,0)');
+	var node4 = new NodeModel('Target', 'rgb(192,255,0)');
 	var port4 = node4.addPort(new AdvancedPortModel(true, 'in'));
 	node4.setPosition(500, 450);
 

@@ -63,7 +63,12 @@ export class LinkModel<G extends LinkModelGenerics = LinkModelGenerics>
   protected renderedPaths: SVGPathElement[];
 
   constructor(options: G['OPTIONS']) {
-    super(options);
+    super({
+      color: 'gray',
+      width: 3,
+      selectedColor: 'rgb(0,192,255)',
+      ...options,
+    });
     this.points = [this.generatePoint(0, 0), this.generatePoint(0, 0)];
     this.sourcePort = null;
     this.targetPort = null;

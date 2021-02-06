@@ -71,8 +71,8 @@ export class NodeWidget extends React.Component<NodeProps> {
     this.ob = new ResizeObserver((entities) => {
       //now mark the links as dirty
       _.forEach(this.props.node.getPorts(), (port) => {
-      	const rect = this.props.diagramEngine.getPortCoords(port);
-      	port.setPosition(rect.getTopLeft())
+        const rect = this.props.diagramEngine.getPortCoords(port);
+        port.setPosition(rect.getTopLeft());
       });
     });
     this.ob.observe(this.ref.current);

@@ -32,7 +32,11 @@ export class NodeModel<
   protected ports: { [s: string]: PortModel };
 
   constructor(options: G['OPTIONS']) {
-    super(options);
+    super({
+      width: 34,
+      height: 16,
+      ...options,
+    });
     this.ports = {};
   }
 

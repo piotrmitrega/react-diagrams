@@ -5,8 +5,8 @@ import {
   DiagramEngine,
   LinkWidget,
   PointModel,
-	LinkSegmentWidget,
-	PointWidget
+  LinkSegmentWidget,
+  PointWidget,
 } from '@piotrmitrega/react-diagrams-core';
 import { RightAngleLinkFactory } from './RightAngleLinkFactory';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
@@ -319,10 +319,6 @@ export class RightAngleLinkWidget extends React.Component<
     // }
 
     this.refPaths = [];
-    return (
-      <g>
-        {paths}
-      </g>
-    );
+    return <g>{paths}</g>;
   }
 }
