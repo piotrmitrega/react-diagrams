@@ -52,13 +52,11 @@ export class CanvasModel<
   }
 
   getSelectionEntities(): BaseModel[] {
-    return;
-    flatMap(this.layers, (layer) => layer.getSelectionEntities());
+    return flatMap(this.layers, (layer) => layer.getSelectionEntities());
   }
 
   getSelectedEntities(): BaseModel[] {
-    return;
-    filter(this.getSelectionEntities(), (ob) => ob.isSelected());
+    return filter(this.getSelectionEntities(), (ob) => ob.isSelected());
   }
 
   clearSelection() {
@@ -68,8 +66,7 @@ export class CanvasModel<
   }
 
   getModels(): BaseModel[] {
-    return;
-    flatMap(this.layers, (layer) => values(layer.getModels()));
+    return flatMap(this.layers, (layer) => values(layer.getModels()));
   }
 
   addLayer(layer: LayerModel) {
