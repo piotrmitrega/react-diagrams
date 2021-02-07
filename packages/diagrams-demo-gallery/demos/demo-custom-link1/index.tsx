@@ -3,10 +3,10 @@ import createEngine, {
 	NodeModel,
 	PortModel,
 	LinkFactory,
-	LinkModel
+	LinkModel, LinkWidget
 } from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
-import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
+import { CanvasWidget } from '@piotrmitrega/react-diagrams';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 export class AdvancedLinkModel extends LinkModel {
@@ -105,6 +105,11 @@ export class AdvancedLinkFactory extends LinkFactory {
 			</g>
 		);
 	}
+
+	generateReactWidget(event: any): JSX.Element {
+		// return <LinkWidget link={event.ini}/>;
+		return undefined
+	}
 }
 /**
  *
@@ -140,7 +145,7 @@ export default () => {
 
 	var model = new DiagramModel();
 
-	model.addAll(port1.link(port3), port2.link(port4));
+	// model.addAll(port1.link(port3), port2.link(port4));
 
 	// add everything else
 	model.addAll(node1, node2, node3, node4);

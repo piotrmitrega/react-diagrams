@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AbstractReactFactory, GenerateWidgetEvent } from '@piotrmitrega/react-canvas-core';
+import { AbstractReactFactory, GenerateWidgetEvent } from '@piotrmitrega/react-diagrams';
 import { DiagramEngine } from '@piotrmitrega/react-diagrams';
 
 import { EditableLabelModel } from './EditableLabelModel';

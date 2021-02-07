@@ -1,8 +1,7 @@
 import { DiamondNodeWidget } from './DiamondNodeWidget';
 import { DiamondNodeModel } from './DiamondNodeModel';
 import * as React from 'react';
-import { AbstractReactFactory } from '@piotrmitrega/react-canvas-core';
-import { DiagramEngine } from '@piotrmitrega/react-diagrams-core';
+import { AbstractReactFactory ,DiagramEngine } from '@piotrmitrega/react-diagrams';
 
 export class DiamondNodeFactory extends AbstractReactFactory<DiamondNodeModel, DiagramEngine> {
 	constructor() {

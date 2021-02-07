@@ -1,4 +1,5 @@
 import createEngine, {
+	AbstractModelFactory, CanvasWidget,
 	DiagramModel,
 	PortModel,
 	RightAngleLinkFactory,
@@ -7,7 +8,6 @@ import createEngine, {
 } from '@piotrmitrega/react-diagrams';
 import * as React from 'react';
 import { DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
-import { AbstractModelFactory, CanvasWidget } from '@piotrmitrega/react-canvas-core';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 import { DiamondNodeModel } from '../helpers/DiamondNodeModel';
 import { DiamondNodeFactory } from '../helpers/DiamondNodeFactory';
