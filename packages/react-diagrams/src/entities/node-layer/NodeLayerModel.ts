@@ -1,7 +1,7 @@
 import { NodeModel } from '../node/NodeModel';
 import { DiagramEngine } from '../../DiagramEngine';
 import { DiagramModel } from '../../models/DiagramModel';
-import { LayerModel, LayerModelGenerics } from '../label/layer/LayerModel';
+import { LayerModel, LayerModelGenerics } from '../layer/LayerModel';
 
 export interface NodeLayerModelGenerics extends LayerModelGenerics {
   CHILDREN: NodeModel;

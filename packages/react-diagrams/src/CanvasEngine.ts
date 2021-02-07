@@ -1,8 +1,8 @@
 import debounce from 'lodash/debounce';
-import { CanvasModel } from './entities/label/canvas/CanvasModel';
+import { CanvasModel } from './entities/canvas/CanvasModel';
 import { FactoryBank } from './core/FactoryBank';
 import { AbstractReactFactory } from './core/AbstractReactFactory';
-import { LayerModel } from './entities/label/layer/LayerModel';
+import { LayerModel } from './entities/layer/LayerModel';
 import { BaseListener, BaseObserver } from './core/BaseObserver';
 import { MouseEvent } from 'react';
 import { BaseModel } from './core-models/BaseModel';

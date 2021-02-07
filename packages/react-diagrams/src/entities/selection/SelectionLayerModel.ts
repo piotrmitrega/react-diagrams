@@ -1,7 +1,7 @@
 import { LayerModel } from '../layer/LayerModel';
-import { FactoryBank } from '../../../core/FactoryBank';
-import { AbstractModelFactory } from '../../../core/AbstractModelFactory';
-import { BaseModel } from '../../../core-models/BaseModel';
+import { FactoryBank } from '../../core/FactoryBank';
+import { AbstractModelFactory } from '../../core/AbstractModelFactory';
+import { BaseModel } from '../../core-models/BaseModel';
 
 export class SelectionLayerModel extends LayerModel {
   box: ClientRect;

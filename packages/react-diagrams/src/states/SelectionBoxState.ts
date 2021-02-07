@@ -1,4 +1,4 @@
-import { SelectionLayerModel } from '../entities/label/selection/SelectionLayerModel';
+import { SelectionLayerModel } from '../entities/selection/SelectionLayerModel';
 import {
   AbstractDisplacementState,
   AbstractDisplacementStateEvent,

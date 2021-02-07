@@ -6,11 +6,11 @@ import {
   BaseModelGenerics,
   BaseModelOptions,
   SerializedBaseModel,
-} from '../../../core-models/BaseModel';
-import { CanvasEngine } from '../../../CanvasEngine';
-import { AbstractModelFactory } from '../../../core/AbstractModelFactory';
-import { FactoryBank } from '../../../core/FactoryBank';
-import { DeserializeEvent } from '../../../core-models/BaseEntity';
+} from '../../core-models/BaseModel';
+import { CanvasEngine } from '../../CanvasEngine';
+import { AbstractModelFactory } from '../../core/AbstractModelFactory';
+import { FactoryBank } from '../../core/FactoryBank';
+import { DeserializeEvent } from '../../core-models/BaseEntity';
 
 export interface LayerModelOptions extends BaseModelOptions {
   isSvg?: boolean;

@@ -9,8 +9,8 @@ import {
   BaseEntityGenerics,
   BaseEntityListener,
   BaseEntityOptions,
-} from '../../../core-models/BaseEntity';
-import { BaseModel } from '../../../core-models/BaseModel';
+} from '../../core-models/BaseEntity';
+import { BaseModel } from '../../core-models/BaseModel';
 
 export interface CanvasListener extends BaseEntityListener {
   offsetUpdated?(

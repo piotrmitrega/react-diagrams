@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TransformLayerWidget } from '../layer/TransformLayerWidget';
 import styled from '@emotion/styled';
 import { SmartLayerWidget } from '../layer/SmartLayerWidget';
-import { CanvasEngine } from '../../../CanvasEngine';
+import { CanvasEngine } from '../../CanvasEngine';
 
 export interface DiagramProps {
   engine: CanvasEngine;

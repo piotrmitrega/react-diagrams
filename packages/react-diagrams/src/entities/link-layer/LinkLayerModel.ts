@@ -1,7 +1,7 @@
 import { LinkModel } from '../link/LinkModel';
 import { DiagramEngine } from '../../DiagramEngine';
 import { DiagramModel } from '../../models/DiagramModel';
-import { LayerModel, LayerModelGenerics } from '../label/layer/LayerModel';
+import { LayerModel, LayerModelGenerics } from '../layer/LayerModel';
 
 export interface LinkLayerModelGenerics extends LayerModelGenerics {
   CHILDREN: LinkModel;

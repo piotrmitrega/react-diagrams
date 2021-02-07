@@ -2,7 +2,7 @@ import { CanvasEngineOptions } from './CanvasEngine';
 import { DiagramEngine } from './DiagramEngine';
 import { NodeLayerFactory } from './entities/node-layer/NodeLayerFactory';
 import { LinkLayerFactory } from './entities/link-layer/LinkLayerFactory';
-import { SelectionBoxLayerFactory } from './entities/label/selection/SelectionBoxLayerFactory';
+import { SelectionBoxLayerFactory } from './entities/selection/SelectionBoxLayerFactory';
 import { RightAngleLinkFactory } from './entities/link/RightAngleLinkFactory';
 import { DefaultPathFactory } from './entities/path/DefaultPathFactory';
 import { RightAnglePathFactory } from './entities/path/RightAnglePathFactory';
@@ -10,7 +10,7 @@ import { DefaultDiagramState } from './states/DefaultDiagramState';
 
 export * from './CanvasEngine';
 export * from './Toolkit';
-export * from './entities/label/canvas/CanvasModel';
+export * from './entities/canvas/CanvasModel';
 
 export * from './models/DiagramModel';
 
@@ -28,20 +28,20 @@ export * from './core-models/BaseEntity';
 export * from './core-models/BaseModel';
 export * from './core-models/BasePositionModel';
 
-export * from './entities/label/canvas/CanvasModel';
-export * from './entities/label/canvas/CanvasWidget';
+export * from './entities/canvas/CanvasModel';
+export * from './entities/canvas/CanvasWidget';
 
 export * from './events/DiagramEventType';
 export * from './events/EventEmitter';
 export * from './events/Types';
 
-export * from './entities/label/layer/LayerModel';
-export * from './entities/label/layer/TransformLayerWidget';
-export * from './entities/label/layer/SmartLayerWidget';
+export * from './entities/layer/LayerModel';
+export * from './entities/layer/TransformLayerWidget';
+export * from './entities/layer/SmartLayerWidget';
 
-export * from './entities/label/selection/SelectionBoxLayerFactory';
-export * from './entities/label/selection/SelectionBoxWidget';
-export * from './entities/label/selection/SelectionLayerModel';
+export * from './entities/selection/SelectionBoxLayerFactory';
+export * from './entities/selection/SelectionBoxWidget';
+export * from './entities/selection/SelectionLayerModel';
 
 export * from './widgets/PeformanceWidget';
 

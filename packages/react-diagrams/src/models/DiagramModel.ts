@@ -13,11 +13,11 @@ import {
 import {
   CanvasModel,
   CanvasModelGenerics,
-} from '../entities/label/canvas/CanvasModel';
+} from '../entities/canvas/CanvasModel';
 import {
   LayerModel,
   SerializedLayer,
-} from '../entities/label/layer/LayerModel';
+} from '../entities/layer/LayerModel';
 import { BaseModel } from '../core-models/BaseModel';
 
 export interface DiagramListener extends BaseEntityListener {

@@ -7,7 +7,7 @@ import {
   DeserializeEvent,
   SerializedBaseEntity,
 } from './BaseEntity';
-import { CanvasModel } from '../entities/label/canvas/CanvasModel';
+import { CanvasModel } from '../entities/canvas/CanvasModel';
 
 export interface BaseModelListener extends BaseEntityListener {
   selectionChanged?(
