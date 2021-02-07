@@ -1,22 +1,22 @@
 {
 	"name": "@piotrmitrega/react-diagrams",
-	"version": "1.2.15",
+	"version": "1.2.16",
 	"author": "piotrmitrega",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/piotrmitrega/react-diagrams.git"
 	},
-  "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "../../node_modules/.bin/webpack",
-    "build:es": "../../node_modules/.bin/tsc",
-    "build:prod": "NODE_ENV=production ../../node_modules/.bin/webpack && NODE_ENV=production ../../node_modules/.bin/tsc",
-    "watch": "../../node_modules/.bin/tsc -w"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "../../node_modules/.bin/webpack",
+		"build:es": "../../node_modules/.bin/tsc",
+		"build:prod": "NODE_ENV=production ../../node_modules/.bin/webpack && NODE_ENV=production ../../node_modules/.bin/tsc",
+		"watch": "../../node_modules/.bin/tsc -w"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"keywords": [
 		"web",
 		"diagram",
@@ -31,14 +31,14 @@
 	"main": "./dist/index.js",
 	"module": "./dist/es/index.js",
 	"typings": "./dist/@types/index",
-  "dependencies": {
-    "pathfinding": "https://github.com/piotrmitrega/PathFinding.js.git",
-    "closest": "^0.0.1",
-    "lodash": "4.*",
-    "paths-js": "^0.4.9"
-  },
-  "peerDependencies": {
-    "react": "17.*"
-  },
+	"dependencies": {
+		"closest": "^0.0.1",
+		"lodash": "4.*",
+		"pathfinding": "https://github.com/piotrmitrega/PathFinding.js.git",
+		"paths-js": "^0.4.9"
+	},
+	"peerDependencies": {
+		"react": "17.*"
+	},
 	"gitHead": "1c3b68f03bffa2be82018890ac3bf6da62d644c8"
 }
