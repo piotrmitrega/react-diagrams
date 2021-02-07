@@ -1,6 +1,6 @@
 import * as React from 'react';
 import createEngine, { DefaultNodeModel, DiagramModel } from '@piotrmitrega/react-diagrams';
-import { CanvasWidget } from '@piotrmitrega/react-canvas-core';
+import { CanvasWidget } from '@piotrmitrega/react-diagrams';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 import { EditableLabelFactory } from './EditableLabelFactory';

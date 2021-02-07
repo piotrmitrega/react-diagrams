@@ -1,5 +1,5 @@
 import { LabelModel } from '@piotrmitrega/react-diagrams';
-import { BaseModelOptions, DeserializeEvent } from '@piotrmitrega/react-canvas-core';
+import { BaseModelOptions, DeserializeEvent } from '@piotrmitrega/react-diagrams';
 
 export interface EditableLabelOptions extends BaseModelOptions {
 	value?: string;

@@ -3,10 +3,12 @@
 	"compilerOptions": {
 		"declaration": true,
 		"outDir": "dist/es/",
-		"declarationDir": "dist/@types"
+		"declarationDir": "dist/@types",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
 	},
 	"include": [
-		"src/index.ts"
+		"src"
 	],
 	"exclude": [
 		"./dist"
