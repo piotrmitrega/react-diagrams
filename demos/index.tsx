@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { storiesOf, addParameters, addDecorator } from '@storybook/react';
+import { storiesOf, addParameters } from '@storybook/react';
 import { setOptions } from '@storybook/addon-options';
 import { themes } from '@storybook/theming';
 import './helpers/index.css';
 import { Toolkit } from '../src';
 
-Toolkit.TESTING = true;
 Toolkit.TESTING = true;
 
 addParameters({
@@ -15,8 +14,8 @@ addParameters({
 });
 
 setOptions({
-  name: 'STORM React Diagrams',
-  url: 'https://github.com/piotrmitrega/../../packages/react-diagrams/src',
+  name: 'React diagrams',
+  url: 'https://github.com/piotrmitrega/react-diagrams',
   addonPanelInRight: true,
 });
 
