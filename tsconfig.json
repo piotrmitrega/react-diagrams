@@ -2,7 +2,6 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"suppressExcessPropertyErrors": true,
-		"declaration": false,
 		"strictNullChecks": false,
 		"sourceMap": true,
 		"skipLibCheck": true,
@@ -13,12 +12,18 @@
 		"lib": [
 			"DOM",
 			"ES6"
-		]
+		],
+		"declaration": true,
+		"outDir": "dist/es/",
+		"declarationDir": "dist/@types",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
 	},
 	"include": [
 		"./src"
 	],
 	"exclude": [
+		"demos",
 		"node_modules",
 		"**/*.spec.ts",
 		"./dist"
