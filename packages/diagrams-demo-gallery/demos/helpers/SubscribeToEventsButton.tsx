@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { action } from '@storybook/addon-actions';
-import { DiagramModel } from '@piotrmitrega/react-diagrams-core';
+import { DiagramModel } from '@uxflow/engine-core';
 import { DemoButton } from './DemoWorkspaceWidget';
 
 type Props = {

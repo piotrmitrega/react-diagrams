@@ -5,7 +5,7 @@ import createEngine, {
 	RightAngleLinkFactory,
 	LinkModel,
 	RightAngleLinkModel
-} from '@piotrmitrega/react-diagrams';
+} from '@uxflow/engine';
 import * as React from 'react';
 import { DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';

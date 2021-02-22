@@ -2,7 +2,7 @@
 	"extends": "../../tsconfig",
 	"compilerOptions": {
 		"declaration": true,
-		"outDir": "dist/es/",
+		"outDir": "dist/",
 		"declarationDir": "dist/@types",
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true

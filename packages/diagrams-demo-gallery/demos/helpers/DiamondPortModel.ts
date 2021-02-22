@@ -1,4 +1,4 @@
-import { LinkModel, PortModel, PortModelAlignment, RightAngleLinkModel } from '@piotrmitrega/react-diagrams';
+import { LinkModel, PortModel, PortModelAlignment, RightAngleLinkModel } from '@uxflow/engine';
 
 export class DiamondPortModel extends PortModel {
 	constructor(alignment: PortModelAlignment) {

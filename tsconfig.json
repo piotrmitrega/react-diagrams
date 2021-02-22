@@ -2,25 +2,25 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"suppressExcessPropertyErrors": true,
-		"declaration": false,
 		"strictNullChecks": false,
 		"sourceMap": true,
 		"skipLibCheck": true,
 		"jsx": "react",
-		"target": "ES6",
+		"target": "ESNext",
 		"module": "commonjs",
 		"strict": false,
 		"lib": [
 			"DOM",
-			"ES6"
+			"ESNext"
+		],
+		"declaration": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"typeRoots": [
+			"./src/types"
 		]
 	},
-	"include": [
-		"./src"
-	],
 	"exclude": [
-		"node_modules",
-		"**/*.spec.ts",
-		"./dist"
+		"node_modules"
 	]
 }

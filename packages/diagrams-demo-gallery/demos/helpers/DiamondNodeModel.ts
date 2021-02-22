@@ -1,4 +1,4 @@
-import { PortModelAlignment, MultiPortNodeModel } from '@piotrmitrega/react-diagrams';
+import { PortModelAlignment, MultiPortNodeModel } from '@uxflow/engine';
 import { DiamondPortModel } from './DiamondPortModel';
 
 export interface DiamondNodeModelGenerics {

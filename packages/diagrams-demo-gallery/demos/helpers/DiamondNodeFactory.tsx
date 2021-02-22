@@ -1,7 +1,7 @@
 import { DiamondNodeWidget } from './DiamondNodeWidget';
 import { DiamondNodeModel } from './DiamondNodeModel';
 import * as React from 'react';
-import { AbstractReactFactory ,DiagramEngine } from '@piotrmitrega/react-diagrams';
+import { AbstractReactFactory ,DiagramEngine } from '@uxflow/engine';
 
 export class DiamondNodeFactory extends AbstractReactFactory<DiamondNodeModel, DiagramEngine> {
 	constructor() {

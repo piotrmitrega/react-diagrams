@@ -3,7 +3,7 @@ import { storiesOf, addParameters, addDecorator } from '@storybook/react';
 import { setOptions } from '@storybook/addon-options';
 import { themes } from '@storybook/theming';
 import './demos/helpers/index.css';
-import { Toolkit } from '@piotrmitrega/react-diagrams';
+import { Toolkit } from '@uxflow/engine';
 
 Toolkit.TESTING = true;
 Toolkit.TESTING = true;
@@ -16,7 +16,7 @@ addParameters({
 
 setOptions({
 	name: 'STORM React Diagrams',
-	url: 'https://github.com/piotrmitrega/react-diagrams',
+	url: 'https://github.com/uxflow/engine',
 	addonPanelInRight: true
 });
 

@@ -4,9 +4,9 @@ import createEngine, {
 	PortModel,
 	LinkFactory,
 	LinkModel, LinkWidget
-} from '@piotrmitrega/react-diagrams';
+} from '@uxflow/engine';
 import * as React from 'react';
-import { CanvasWidget } from '@piotrmitrega/react-diagrams';
+import { CanvasWidget } from '@uxflow/engine';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 
 export class AdvancedLinkModel extends LinkModel {

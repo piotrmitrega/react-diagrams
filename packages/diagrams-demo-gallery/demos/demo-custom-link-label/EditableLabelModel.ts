@@ -1,5 +1,5 @@
-import { LabelModel } from '@piotrmitrega/react-diagrams';
-import { BaseModelOptions, DeserializeEvent } from '@piotrmitrega/react-diagrams';
+import { LabelModel } from '@uxflow/engine';
+import { BaseModelOptions, DeserializeEvent } from '@uxflow/engine';
 
 export interface EditableLabelOptions extends BaseModelOptions {
 	value?: string;

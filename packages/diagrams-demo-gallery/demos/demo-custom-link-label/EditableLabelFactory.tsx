@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { AbstractReactFactory, GenerateWidgetEvent } from '@piotrmitrega/react-diagrams';
-import { DiagramEngine } from '@piotrmitrega/react-diagrams';
+import { AbstractReactFactory, GenerateWidgetEvent } from '@uxflow/engine';
+import { DiagramEngine } from '@uxflow/engine';
 
 import { EditableLabelModel } from './EditableLabelModel';
 import { EditableLabelWidget } from './EditableLabelWidget';

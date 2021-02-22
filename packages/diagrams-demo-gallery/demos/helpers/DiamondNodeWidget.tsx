@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DiamondNodeModel } from './DiamondNodeModel';
-import { DiagramEngine, PortModelAlignment, PortWidget } from '@piotrmitrega/react-diagrams';
+import { DiagramEngine, PortModelAlignment, PortWidget } from '@uxflow/engine';
 import styled from '@emotion/styled';
 
 export interface DiamondNodeWidgetProps {
