@@ -1,20 +1,15 @@
-import * as React from 'react';
+import React from 'react';
+import classnames from 'classnames';
+
 import { TransformLayerWidget } from '../layer/TransformLayerWidget';
-import styled from '@emotion/styled';
 import { SmartLayerWidget } from '../layer/SmartLayerWidget';
 import { CanvasEngine } from '../../CanvasEngine';
+
+import styles from './CanvasWidget.module.scss';
 
 export interface DiagramProps {
   engine: CanvasEngine;
   className?: string;
-}
-
-namespace S {
-  export const Canvas = styled.div`
-    position: relative;
-    cursor: move;
-    overflow: hidden;
-  `;
 }
 
 export class CanvasWidget extends React.Component<DiagramProps> {
@@ -76,8 +71,8 @@ export class CanvasWidget extends React.Component<DiagramProps> {
     const model = engine.getModel();
 
     return (
-      <S.Canvas
-        className={this.props.className}
+      <div
+        className={classnames(styles.canvas, this.props.className)}
         ref={this.ref}
         onMouseDown={(event) => {
           this.props.engine.getActionEventBus().fireAction({ event });
@@ -101,7 +96,7 @@ export class CanvasWidget extends React.Component<DiagramProps> {
             />
           </TransformLayerWidget>
         ))}
-      </S.Canvas>
+      </div>
     );
   }
 }

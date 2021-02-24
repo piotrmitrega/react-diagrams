@@ -11,16 +11,22 @@ module.exports = (isDevelopment) => ({
               ? 'style-loader'
               : MiniCssExtractPlugin.loader,
           },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: isDevelopment,
-            },
-          },
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: isDevelopment,
+							modules: {
+								mode: "local",
+								localIdentName: "[name]__[local]--[hash:base64:5]",
+								exportLocalsConvention: "camelCaseOnly",
+							},
+						},
+					},
           {
             loader: 'sass-loader',
             options: {
               sourceMap: isDevelopment,
+
             },
           },
         ],

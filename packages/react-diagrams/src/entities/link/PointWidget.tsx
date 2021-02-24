@@ -1,6 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import classnames from 'classnames';
+
 import { PointModel } from './PointModel';
-import styled from '@emotion/styled';
+
+import styles from './PointWidget.module.scss';
 
 export interface PointWidgetProps {
   point: PointModel;
@@ -10,12 +13,6 @@ export interface PointWidgetProps {
 
 export interface PointWidgetState {
   selected: boolean;
-}
-
-namespace S {
-  export const PointTop = styled.circle`
-    pointer-events: none;
-  `;
 }
 
 export class PointWidget extends React.Component<
@@ -55,8 +52,8 @@ export class PointWidget extends React.Component<
         <text x={point.getPosition().x} y={point.getPosition().y}>
           {this.getPointIndex()}
         </text>
-        <S.PointTop
-          className="point"
+        <circle
+          className={classnames('point', styles.pointTop)}
           cx={point.getPosition().x}
           cy={point.getPosition().y}
           opacity={0.0}

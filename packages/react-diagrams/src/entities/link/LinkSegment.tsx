@@ -1,29 +1,9 @@
-import * as React from 'react';
-import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/core';
+import React from 'react';
+import classnames from 'classnames';
+
 import { LinkModel } from './LinkModel';
 
-namespace S {
-  export const Keyframes = keyframes`
-		from {
-			stroke-dashoffset: 24;
-		}
-		to {
-			stroke-dashoffset: 0;
-		}
-	`;
-
-  const selected = css`
-    stroke-dasharray: 10, 2;
-    animation: ${Keyframes} 1s linear infinite;
-  `;
-
-  export const Path = styled.path<{ selected: boolean }>`
-    ${(p) => p.selected && selected};
-    fill: none;
-    pointer-events: all;
-  `;
-}
+import styles from './LinkSegment.module.scss';
 
 type Props = {
   model: LinkModel;
@@ -31,9 +11,9 @@ type Props = {
   path: string;
 };
 export const LinkSegment: React.FC<Props> = ({ model, selected, path }) => (
-  <S.Path
+  <path
+    className={classnames(styles.linkSegment, selected && styles.selected)}
     d={path}
-    selected={selected}
     stroke={
       selected ? model.getOptions().selectedColor : model.getOptions().color
     }

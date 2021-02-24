@@ -1,10 +1,11 @@
-import createEngine, {
+import {
+	createEngine,
 	AbstractModelFactory, CanvasWidget,
 	DiagramModel,
 	PortModel,
 	RightAngleLinkFactory,
 	LinkModel,
-	RightAngleLinkModel
+	RightAngleLinkModel, NodeType, CardType
 } from '@uxflow/engine';
 import * as React from 'react';
 import { DemoWorkspaceWidget } from '../helpers/DemoWorkspaceWidget';
@@ -39,7 +40,9 @@ export default () => {
 	];
 
 	positions.forEach(position => {
-		const node = new DiamondNodeModel();
+		const node = engine.getNodeFactories().getFactory(NodeType.CARD).generateModel({initialConfig: {
+			cardType: CardType.ONE
+			}})
 		node.setPosition(position[0], position[1]);
 		model.addNode(node)
 	})

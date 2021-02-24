@@ -1,24 +1,14 @@
-import * as React from 'react';
+import React from 'react';
+
 import { DiagramEngine } from '../../DiagramEngine';
 import { LabelModel } from './LabelModel';
-import styled from '@emotion/styled';
+
+import styles from './LabelWidget.module.scss';
 
 export interface LabelWidgetProps {
   engine: DiagramEngine;
   label: LabelModel;
   index: number;
-}
-
-namespace S {
-  export const Label = styled.div`
-    display: inline-block;
-    position: absolute;
-  `;
-
-  export const Foreign = styled.foreignObject`
-    pointer-events: none;
-    overflow: visible;
-  `;
 }
 
 export class LabelWidget extends React.Component<LabelWidgetProps> {
@@ -102,17 +92,18 @@ export class LabelWidget extends React.Component<LabelWidgetProps> {
   render() {
     const canvas = this.props.engine.getCanvas();
     return (
-      <S.Foreign
+      <div
+        className={styles.foreign}
         height={canvas.offsetHeight}
         key={this.props.label.getID()}
         width={canvas.offsetWidth}
       >
-        <S.Label ref={this.ref}>
+        <div className={styles.labelWidget} ref={this.ref}>
           {this.props.engine
             .getFactoryForLabel(this.props.label)
             .generateReactWidget({ model: this.props.label })}
-        </S.Label>
-      </S.Foreign>
+        </div>
+      </div>
     );
   }
 }

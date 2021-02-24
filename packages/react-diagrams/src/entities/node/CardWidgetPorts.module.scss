@@ -1,0 +1,39 @@
+$offset: 8px;
+
+.bottom {
+  bottom: -$offset;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bottom-left {
+  bottom: -$offset;
+  left: -$offset;
+}
+
+.bottom-right {
+  bottom: -$offset;
+  right: -$offset;
+}
+
+.left {
+  top: 50%;
+  transform: translateY(-50%);
+  left: -$offset;
+}
+
+.right {
+  top: 50%;
+  transform: translateY(-50%);
+  right: -$offset;
+}
+
+.top-left {
+  top: -$offset;
+  left: -$offset;
+}
+
+.top-right {
+  top: -$offset;
+  right: -$offset;
+}

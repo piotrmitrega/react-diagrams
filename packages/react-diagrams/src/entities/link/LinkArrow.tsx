@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Point } from '../../geometry';
 
 type Props = {
@@ -13,17 +13,20 @@ export const LinkArrow: React.FC<Props> = (props) => {
     90 +
     (Math.atan2(previousPoint.y - point.y, previousPoint.x - point.x) * 180) /
       Math.PI;
-
   return (
-    <g
-      className="arrow"
-      transform={`translate(${previousPoint.x}, ${previousPoint.y})`}
-    >
-      <g style={{ transform: `rotate(${angle}deg)` }}>
-        <g transform={'translate(0, -3)'}>
-          <polygon points="0,10 8,30 -8,30" />
+    <>
+      {/*<ReactComponent />*/}
+      <g
+        className="arrow"
+        // id={styles.arrow}
+        transform={`translate(${previousPoint.x}, ${previousPoint.y})`}
+      >
+        <g style={{ transform: `rotate(${angle}deg)` }}>
+          <g transform={'translate(0, -3)'}>
+            <polygon points="0,10 8,30 -8,30" />
+          </g>
         </g>
       </g>
-    </g>
+    </>
   );
 };

@@ -12,7 +12,10 @@ import {
   SerializedBasePositionModel,
 } from '../../core-models/BasePositionModel';
 import { Point } from '../../geometry';
-import { DeserializeEvent } from '../../core-models/BaseEntity';
+import {
+  BaseEntityEvent,
+  DeserializeEvent,
+} from '../../core-models/BaseEntity';
 
 export enum PortModelAlignment {
   TOP = 'top',
@@ -45,7 +48,7 @@ export interface SerializedPortModel extends SerializedBasePositionModel {
 }
 
 const defaultOptions = {
-  portOffsetValue: 20,
+  portOffsetValue: 30,
 };
 
 export class PortModel<
@@ -228,6 +231,14 @@ export class PortModel<
   setParent(parent: G['PARENT']) {
     super.setParent(parent);
 
-    this.setPosition(this.calculatePosition());
+    const position = this.calculatePosition();
+    this.setPosition(position.x, position.y);
+
+    this.getNode().registerListener({
+      positionChanged: (event: BaseEntityEvent<NodeModel>) => {
+        const position = this.calculatePosition();
+        this.setPosition(position.x, position.y);
+      },
+    });
   }
 }

@@ -1,9 +1,9 @@
+import keys from 'lodash/keys';
+import filter from 'lodash/filter';
 import { Action, ActionEvent, InputType } from './Action';
 import { KeyboardEvent, MouseEvent } from 'react';
 import { CanvasEngine } from '../CanvasEngine';
 import { BaseModel } from '../core-models/BaseModel';
-import keys from 'lodash/keys';
-import filter from 'lodash/filter';
 
 export class ActionEventBus {
   protected actions: { [id: string]: Action };

@@ -1,6 +1,7 @@
 import { Point } from './Point';
-import * as _ from 'lodash';
 import { Matrix } from './Matrix';
+import { Rectangle } from './Rectangle';
+import * as _ from 'lodash';
 
 export class Polygon {
   protected points: Point[];
@@ -139,5 +140,3 @@ export class Polygon {
     );
   }
 }
-
-import { Rectangle } from './Rectangle';

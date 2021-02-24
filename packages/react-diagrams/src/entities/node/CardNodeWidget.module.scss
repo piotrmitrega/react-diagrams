@@ -1,0 +1,33 @@
+.card-image {
+  width: 64px;
+  height: 64px;
+
+  &.selected {
+    fill: red;
+  }
+}
+
+.content-wrapper {
+  position: relative;
+}
+
+.card-widget {
+  display: flex;
+  flex-direction: column;
+  max-width: 64px;
+  margin: 10px;
+}
+
+.card-title {
+  border: none;
+  outline: none;
+  font-weight: bold;
+  background: transparent;
+  padding: 12px 0;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  width: 100%
+}

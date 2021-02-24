@@ -1,5 +1,5 @@
 import map from 'lodash/map';
-import * as React from 'react';
+import React from 'react';
 import { DiagramEngine } from '../../DiagramEngine';
 import { LinkModel } from './LinkModel';
 import { PointModel } from './PointModel';

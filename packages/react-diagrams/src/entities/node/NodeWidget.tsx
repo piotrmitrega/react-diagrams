@@ -1,29 +1,19 @@
-import * as React from 'react';
-import forEach from 'lodash/forEach';
+import React from 'react';
+import classnames from 'classnames';
 import { DiagramEngine } from '../../DiagramEngine';
 import { NodeModel } from './NodeModel';
-import styled from '@emotion/styled';
-import ResizeObserver from 'resize-observer-polyfill';
 import { ListenerHandle } from '../../core/BaseObserver';
 import { PeformanceWidget } from '../../widgets/PeformanceWidget';
 import { BaseEntityEvent } from '../../core-models/BaseEntity';
 import { BaseModel } from '../../core-models/BaseModel';
+import { NodePortsWidget } from './NodePortsWidget';
+
+import styles from './NodeWidget.module.scss';
 
 export interface NodeProps {
   node: NodeModel;
   children?: any;
   diagramEngine: DiagramEngine;
-}
-
-namespace S {
-  export const Node = styled.div`
-    position: absolute;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Chrome/Safari/Opera */
-    user-select: none;
-    cursor: move;
-    pointer-events: all;
-  `;
 }
 
 export class NodeWidget extends React.Component<NodeProps> {
@@ -65,36 +55,24 @@ export class NodeWidget extends React.Component<NodeProps> {
     });
   }
 
-  componentDidMount(): void {
-    this.ob = new ResizeObserver((entities) => {
-      //now mark the links as dirty
-      forEach(this.props.node.getPorts(), (port) => {
-        const rect = this.props.diagramEngine.getPortCoords(port);
-        port.setPosition(rect.getTopLeft().x, rect.getTopLeft().y);
-      });
-    });
-    this.ob.observe(this.ref.current);
-    this.installSelectionListener();
-  }
-
   render() {
+    const { diagramEngine, node } = this.props;
+
     return (
-      <PeformanceWidget
-        model={this.props.node}
-        serialized={this.props.node.serialize()}
-      >
+      <PeformanceWidget model={node} serialized={node.serialize()}>
         {() => (
-          <S.Node
-            className="node"
-            data-nodeid={this.props.node.getID()}
+          <div
+            className={classnames('node', styles.nodeWidget)}
+            data-nodeid={node.getID()}
             ref={this.ref}
             style={{
-              top: this.props.node.getY(),
-              left: this.props.node.getX(),
+              top: node.getY(),
+              left: node.getX(),
             }}
           >
-            {this.props.diagramEngine.generateWidgetForNode(this.props.node)}
-          </S.Node>
+            {diagramEngine.generateWidgetForNode(node)}
+            <NodePortsWidget ports={Object.values(node.getPorts())} />
+          </div>
         )}
       </PeformanceWidget>
     );

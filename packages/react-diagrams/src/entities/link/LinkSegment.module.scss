@@ -1,0 +1,11 @@
+@import "src/styles/animations";
+
+.link-segment {
+  fill: none;
+  pointer-events: all;
+
+  .selected {
+    stroke-dasharray: 10, 2;
+    animation: link-animation 1s linear infinite;
+  }
+}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DiagramEngine } from '../../DiagramEngine';
 import { NodeLayerModel } from './NodeLayerModel';
 import { NodeLayerWidget } from './NodeLayerWidget';

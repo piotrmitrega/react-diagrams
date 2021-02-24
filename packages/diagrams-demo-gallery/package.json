@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"start": "../../node_modules/.bin/start-storybook",
-		"storybook:build": "../../node_modules/.bin/build-storybook -c .storybook -o .out",
+		"storybook:build": "../../node_modules/.bin/build-storybook --no-dll",
 		"github": "../../node_modules/.bin/storybook-to-ghpages",
 		"test:run": "../../node_modules/.bin/jest --no-cache",
 		"test": "yarn storybook:build && yarn test:run"

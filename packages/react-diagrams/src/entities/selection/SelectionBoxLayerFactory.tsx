@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { SelectionLayerModel } from './SelectionLayerModel';
 import { SelectionBoxWidget } from './SelectionBoxWidget';
 import {

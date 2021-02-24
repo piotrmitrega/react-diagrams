@@ -1,8 +1,8 @@
 import { LinkModel } from './LinkModel';
 import {
-	BasePositionModel,
-	BasePositionModelGenerics,
-	BasePositionModelOptions
+  BasePositionModel,
+  BasePositionModelGenerics,
+  BasePositionModelOptions,
 } from '../../core-models/BasePositionModel';
 import { BaseModelListener } from '../../core-models/BaseModel';
 

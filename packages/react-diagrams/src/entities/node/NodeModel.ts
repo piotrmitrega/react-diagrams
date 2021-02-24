@@ -48,18 +48,6 @@ export class NodeModel<
     return new Rectangle(this.getPosition(), this.width, this.height);
   }
 
-  setPosition(point: Point);
-  setPosition(x: number, y: number);
-  setPosition(x, y?) {
-    const old = this.position;
-    super.setPosition(x, y);
-
-    //also update the port co-ordinates (for make glorious speed)
-    forEach(this.ports, (port) => {
-      port.setPosition(port.getX() + x - old.x, port.getY() + y - old.y);
-    });
-  }
-
   deserialize(event: DeserializeEvent<this>) {
     this.stopFiringEvents();
 

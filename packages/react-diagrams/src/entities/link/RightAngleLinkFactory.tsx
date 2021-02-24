@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { RightAngleLinkWidget } from './RightAngleLinkWidget';
 import { RightAngleLinkModel } from './RightAngleLinkModel';
 import { LinkFactory } from './LinkFactory';

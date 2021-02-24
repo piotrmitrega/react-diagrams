@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DiagramEngine } from '../../DiagramEngine';
 import { LinkModel } from './LinkModel';
 import { LinkFactory } from './LinkFactory';
@@ -40,7 +40,7 @@ export class LinkSegmentWidget extends React.Component<LinkSegmentWidgetProps> {
       'data-linkid': this.props.link.getID(),
       strokeOpacity: this.props.selected ? 0.1 : 0,
       strokeWidth: 20,
-      fill: 'none',
+      fill: 'red',
       onContextMenu: () => {
         if (!this.props.link.isLocked()) {
           event.preventDefault();
